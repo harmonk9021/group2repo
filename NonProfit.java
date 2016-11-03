@@ -1,8 +1,8 @@
 /**
- * TODO Write a description of class Item here.
+ * Represents a NonProfit User
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Cody Arnold 
+ * @version 11/3/16
  */
 public class NonProfit {
 	
@@ -19,7 +19,7 @@ public class NonProfit {
 	}
 	
 	// Adds item to Auction
-	//public void addItem(Item theItem) {
+	public void addItem(Item theItem) {
 		
-	//}
+	}
 }
