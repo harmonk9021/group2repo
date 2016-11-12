@@ -20,7 +20,7 @@ import java.util.Calendar;
  * files.
  * 
  * @author Jacob Ackerman
- * @version 11.12.2016.003A
+ * @version 11.12.2016.004A
  */
 public class Database implements java.io.Serializable 
 {
@@ -127,24 +127,30 @@ public class Database implements java.io.Serializable
      * 
      * @return A true/false value based on if the files saved correctly
      */
-    public boolean Update()
+    public boolean Update(String auctionFileName, String userFileName)
     {
         boolean didItWork;
-        didItWork = (dumpAuctionsToFile() && dumpUsersToFile());
+        didItWork = (dumpAuctionsToFile(auctionFileName) && dumpUsersToFile(userFileName));
         return didItWork;
     }
     
     public boolean Load(String auctionFileName, String userFileName)
     {
-        return false;
+        boolean didItWork;
+        didItWork = (loadAuctionsFromFile(auctionFileName) && loadUsersFromFile(userFileName));
+        return didItWork;
     }
     
-    private boolean dumpAuctionsToFile()
+    /*
+     * ===== Load/Save private functions =====
+     */
+    
+    private boolean dumpAuctionsToFile(String auctionFileName)
     {
         boolean didItWork = false;
         try
       {
-         FileOutputStream fileOut = new FileOutputStream("/data/auctions.ser");
+         FileOutputStream fileOut = new FileOutputStream(auctionFileName);
          ObjectOutputStream out = new ObjectOutputStream(fileOut);
          out.writeObject(myAuctionList);
          out.close();
@@ -159,12 +165,12 @@ public class Database implements java.io.Serializable
         return didItWork;
     }
     
-    private boolean dumpUsersToFile()
+    private boolean dumpUsersToFile(String userFileName)
     {
         boolean didItWork = false;
         try
       {
-         FileOutputStream fileOut = new FileOutputStream("/data/users.ser");
+         FileOutputStream fileOut = new FileOutputStream(userFileName);
          ObjectOutputStream out = new ObjectOutputStream(fileOut);
          out.writeObject(myUserList);
          out.close();
@@ -179,26 +185,53 @@ public class Database implements java.io.Serializable
         return didItWork;
     }
     
-    private boolean loadAuctionsFromFile()
+    private boolean loadAuctionsFromFile(String auctionFileName)
     {
         try
       {
-         FileInputStream fileIn = new FileInputStream("/tmp/employee.ser");
+         FileInputStream fileIn = new FileInputStream(auctionFileName);
          ObjectInputStream in = new ObjectInputStream(fileIn);
-         e = (Auction) in.readObject();
+         myAuctionList = (HashMap) in.readObject();
          in.close();
          fileIn.close();
       }catch(IOException i)
       {
          i.printStackTrace();
-         return;
+         return false;
       }catch(ClassNotFoundException c)
       {
-         System.out.println("Employee class not found");
+         System.out.println("Auction class not found");
          c.printStackTrace();
-         return;
+         return false;
       }
+        return true;
     }
+    
+    private boolean loadUsersFromFile(String userFileName)
+    {
+        try
+      {
+         FileInputStream fileIn = new FileInputStream(userFileName);
+         ObjectInputStream in = new ObjectInputStream(fileIn);
+         myUserList = (HashMap) in.readObject();
+         in.close();
+         fileIn.close();
+      }catch(IOException i)
+      {
+         i.printStackTrace();
+         return false;
+      }catch(ClassNotFoundException c)
+      {
+         System.out.println("User class not found");
+         c.printStackTrace();
+         return false;
+      }
+        return true;
+    }
+    
+    /*
+     * ===== END Load/Save private functions =====
+     */
     
     private boolean checkForAuctionFromYearAgo(Auction theAuction)
     {
@@ -234,7 +267,7 @@ public class Database implements java.io.Serializable
     
     private boolean checkForTooManyAuctionsOnDay(Auction theAuction)
     {
-        
+        return false;
     }
     
     private boolean checkUpcomingAuctionCount()
