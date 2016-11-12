@@ -51,7 +51,7 @@ public class Auction implements java.io.Serializable
     
     public Boolean addItem() {
     	Boolean itemExists;
-    	String theName = AuctionUI.get
+    	String theName = AuctionUI.getUserItemNameInput();
     	itemExists = checkForDuplicate(theName);
     	if (!itemExists) {
     		Item theItem = new Item(theName);
