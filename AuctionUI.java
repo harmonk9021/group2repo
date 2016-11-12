@@ -4,7 +4,23 @@
  * @author (your name) 
  * @version (a version number or a date)
  */
+
+import java.util.Scanner;
+
 public class AuctionUI 
 {
 	
+	Scanner scan = new  Scanner(System.in);
+	
+	public static String getUserItemNameInput() {
+		String theItemName = scan.nextLine();
+		
+		return theItemName;
+	}
+	
+	public static String getUserDescriptionInput() {
+		String theDescription = scan.nextLine();
+		
+		return theDescription;
+	}
 }

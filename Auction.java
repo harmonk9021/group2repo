@@ -17,9 +17,10 @@ public class Auction implements java.io.Serializable
 	 */
 	private static final long serialVersionUID = -2835612177821340774L;
 	
+	
 	public Scanner input = new Scanner(System.in);
 	public Date aucDate;
-	List<Item> myItems;
+	private List<Item> myItems;
 	public String auctionName;
 	public String myOrg;
 	public String myContactPerson;
@@ -35,6 +36,11 @@ public class Auction implements java.io.Serializable
     	aucDate = theDate;
 		auctionName = theName;
 		itemCount = 0;
+		myOrg = "";
+		myContactPerson = "";
+		myDescription = "";
+		myComment = "";
+		
 //		Scanner input = new Scanner(System.in);
  
     }
@@ -43,10 +49,13 @@ public class Auction implements java.io.Serializable
     	
     }
     
-    public Boolean addItem(Item theItem) {
+    public Boolean addItem() {
     	Boolean itemExists;
-    	itemExists = checkForDuplicate(theItem);
+    	String theName = AuctionUI.getUserItemNameInput();
+    	itemExists = checkForDuplicate(theName);
     	if (!itemExists) {
+    		Item theItem = new Item(theName);
+    		
     		myItems.add(theItem);
     		itemCount = myItems.size();
     		return true;
@@ -55,12 +64,12 @@ public class Auction implements java.io.Serializable
     	}
     }
     
-    public Boolean removeItem(Item theItem) {
+    public Boolean removeItem(String theName) {
         	Boolean itemRemoved = false;
         	int i;
         	
         	for (i = 0; i < myItems.size(); i++) {
-        		if (myItems.get(i).getName().equals(theItem.getName())) {
+        		if (myItems.get(i).getName().equals(theName)) {
         			myItems.remove(i);
         			itemRemoved = true;
         		}
@@ -69,12 +78,12 @@ public class Auction implements java.io.Serializable
         	return itemRemoved;
     }
     
-    public Boolean checkForDuplicate(Item theItem) {
+    public Boolean checkForDuplicate(String theName) {
     	Boolean itemExists = false;
     	int i;
     	
     	for (i = 0; i < myItems.size(); i++) {
-    		if (myItems.get(i).getName().equals(theItem.getName())) {
+    		if (myItems.get(i).getName().equals(theName)) {
     			itemExists = true;
     		}
     	}

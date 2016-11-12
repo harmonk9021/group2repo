@@ -42,12 +42,11 @@ public class Item extends ItemUI implements Serializable {
 	}
 	
 	
-	public void addBid(float bidAmount, String bidderName){
-		if(myBids.containsKey(bidderName)) {
-			addBidAlreadyHasBidderErrorUI();
-			return;
-		}
+	public boolean addBid(float bidAmount, String bidderName){
+		if(myBids.containsKey(bidderName)) return false;
+		else if(bidAmount < startingBid) return false;
 		myBids.put(bidderName, bidAmount);
+		return true;
 	}
 	
 	public float getBid(String bidderName){
@@ -67,21 +66,23 @@ public class Item extends ItemUI implements Serializable {
 	public void setDescription(String theDescription){
 		description = theDescription;
 	}
-	public void setQuantity(int theQuantity){
+	public boolean setQuantity(int theQuantity){
+		if(isEqualOrBelowZero(theQuantity)) return false;
 		quantity = theQuantity;
+		return true;
 	}
-	public void setStartingBid(float theStartingBid){
-	/*	if(isEqualOrBelowZero(theStartingBid)){
-			isEqualOrBelowZeroErrorIU("Starting Bid");
-			return -1;
-		}*/
+	public boolean setStartingBid(float theStartingBid){
+		if(isEqualOrBelowZero(theStartingBid)) return false;
 		startingBid = theStartingBid;
+		return true;
 	}
 	public void setCondition(String theCondition){
 		condition = theCondition;
 	}
-	public void setSize(String theSize){
+	public boolean setSize(String theSize){
+		if(!isValidSize(theSize)) return false;
 		size = theSize;
+		return true;
 	}
 	public void setComments(String theComments){
 		comments = theComments;
@@ -129,3 +130,4 @@ public class Item extends ItemUI implements Serializable {
 	}
 	
 }
+
