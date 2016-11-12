@@ -15,17 +15,18 @@ import java.util.Map;
  * files.
  * 
  * @author Jacob Ackerman
- * @version 11.11.2016.002A
+ * @version 11.12.2016.001A
  */
 public class Database implements java.io.Serializable 
 {
     
-    private Map<String, Auction> myAuctionList;
+    private Map<Date, Auction> myAuctionList;
     private Map<String, User> myUserList;
     private Date myDate;
     
     /**
-     * Constructor for objects of class MyClass
+     * Constructor for Database objects. Initializes an
+     * empty database.
      */
     public Database()
     {
@@ -36,16 +37,49 @@ public class Database implements java.io.Serializable
         
     }
     
-    public void addAuctionToDB(Auction theAuction)
+    /**
+     * This will add an auction to the database for long term storage, management,
+     * and easy passing between other objects. Will reject auctions in the following
+     * conditions:
+     *  - The non-profit host of the auction has one or more upcoming auctions
+     *  - The non-profit host of the auction has had an auction in the past year (less than 365 days)
+     *  - The auction submitted is for a day that already has 2 or more auctions hosted
+     *  - The number of upcoming auctions is 25 or greater
+     *  - The submitted auction is scheduled for more than one month in the future
+     *  - The submitted auction is scheduled to take place less than a week from the current date
+     * 
+     * This function is intended to be used in combination with the submission
+     * (creation) of a new auction. Object will be stored in a hash with the
+     * auction date as the key.
+     * 
+     * @param theAuction The auction object to be stored
+     * @return Whether the item was added or rejected
+     */
+    public boolean addAuctionToDB(Auction theAuction)
     {
-        myAuctionList.put(theAuction.getName(), theAuction); // placeholder based on assumed getter name
+        
+        myAuctionList.put(theAuction.getDate(), theAuction); 
+        
+        return true;
     }
     
-    public Auction getAuction(String key)
+    /**
+     * This function will return a single auction from the database hash.
+     * Provide the auction's starting date for the function.
+     * 
+     * @param key The auction date
+     * @return The auction object that matches the key
+     */
+    public Auction getAuction(Date key)
     {
         return myAuctionList.get(key);
     }
     
+    /**
+     * This function will return the full list of Auctions stored in the database.
+     * 
+     * @return List containing all the Auctions in the hash
+     */
     public List<Auction> getAuctionList()
     {
         return null;
@@ -66,6 +100,14 @@ public class Database implements java.io.Serializable
         return null;
     }
     
+    /**
+     * This function will package up the user and auction hashes into .ser
+     * files. Call this whenever you want to save all changes. Will return
+     * a boolean based on if the update worked (true) or if there was a
+     * problem (false).
+     * 
+     * @return A true/false value based on if the files saved correctly
+     */
     public boolean Update()
     {
         return false;
