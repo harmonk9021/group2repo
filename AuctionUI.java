@@ -10,6 +10,6 @@ public class AuctionUI
 	Scanner scan = new  Scanner(System.in);
 	
 	public static String getUserItemNameInput() {
-		String theItemName = new 
+		String theItemName = scan.nextLine();
 	}
 }
