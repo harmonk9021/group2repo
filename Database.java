@@ -20,7 +20,7 @@ import java.util.Calendar;
  * files.
  * 
  * @author Jacob Ackerman
- * @version 11.12.2016.004A
+ * @version 11.12.2016.005A
  */
 public class Database implements java.io.Serializable 
 {
@@ -106,7 +106,7 @@ public class Database implements java.io.Serializable
     
     public void addUserToDB(User theUser)
     {
-        myUserList.put(theUser.getUsername(), theUser); // placeholder based on assumed getter name
+        //myUserList.put(theUser.getUsername(), theUser); // placeholder based on assumed getter name
     }
     
     public User getUser(String key)
@@ -267,7 +267,26 @@ public class Database implements java.io.Serializable
     
     private boolean checkForTooManyAuctionsOnDay(Auction theAuction)
     {
-        return false;
+        ArrayList<Auction> searchDB = new ArrayList<>(myAuctionList.values());
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        int count = 0;
+        for (int i = 0; i < searchDB.size(); i++)
+        {
+            cal1.setTime(theAuction.getDate());
+            cal2.setTime(searchDB.get(i).getDate());
+            boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+            if (sameDay)
+                count++;
+        }
+        
+        if (count >= 2)
+            return false;
+        else
+            return true;
+        
+        
     }
     
     private boolean checkUpcomingAuctionCount()
