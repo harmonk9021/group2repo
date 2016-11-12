@@ -14,9 +14,13 @@ public class AuctionUI
 	
 	public static String getUserItemNameInput() {
 		String theItemName = scan.nextLine();
+		
+		return theItemName;
 	}
 	
 	public static String getUserDescriptionInput() {
+		String theDescription = scan.nextLine();
 		
+		return theDescription;
 	}
 }
