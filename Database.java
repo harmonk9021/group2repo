@@ -2,10 +2,13 @@
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Calendar;
+
 
 
 /**
@@ -15,7 +18,7 @@ import java.util.Map;
  * files.
  * 
  * @author Jacob Ackerman
- * @version 11.12.2016.001A
+ * @version 11.12.2016.002A
  */
 public class Database implements java.io.Serializable 
 {
@@ -23,6 +26,9 @@ public class Database implements java.io.Serializable
     private Map<Date, Auction> myAuctionList;
     private Map<String, User> myUserList;
     private Date myDate;
+    private static final int STANDARD_YEAR = 365;
+    private static final int STANDARD_MONTH = 30;
+    private static final int STANDARD_WEEK = 7;
     
     /**
      * Constructor for Database objects. Initializes an
@@ -57,10 +63,21 @@ public class Database implements java.io.Serializable
      */
     public boolean addAuctionToDB(Auction theAuction)
     {
+        boolean canAdd = false;
         
-        myAuctionList.put(theAuction.getDate(), theAuction); 
+        canAdd = (
+        checkForExistingAuction(theAuction) &&
+        checkForAuctionFromYearAgo(theAuction) &&
+        checkForTooManyAuctionsOnDay(theAuction) &&
+        checkUpcomingAuctionCount()
+           );
         
-        return true;
+        if (canAdd)
+        {
+            myAuctionList.put(theAuction.getDate(), theAuction); 
+        }
+        
+        return canAdd;
     }
     
     /**
@@ -82,7 +99,7 @@ public class Database implements java.io.Serializable
      */
     public List<Auction> getAuctionList()
     {
-        return null;
+        return new ArrayList<>(myAuctionList.values());
     }
     
     public void addUserToDB(User theUser)
@@ -152,4 +169,48 @@ public class Database implements java.io.Serializable
       }
         return didItWork;
     }
+    
+    private boolean checkForAuctionFromYearAgo(Auction theAuction)
+    {
+        ArrayList<Auction> searchDB = new ArrayList<>(myAuctionList.values());
+        int i = 0;
+        Calendar yearAgo = Calendar.getInstance();
+        yearAgo.add(Calendar.DATE, -1 * STANDARD_YEAR);
+        while (i <= searchDB.size() && searchDB.get(i).getDate().after(yearAgo.getTime()))
+        {
+            if (searchDB.get(i).getOrg().equals(theAuction.getOrg()))
+            {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+    
+    private boolean checkForExistingAuction(Auction theAuction)
+    {
+        ArrayList<Auction> searchDB = new ArrayList<>(myAuctionList.values());
+        int i = 0;
+        while (i <= searchDB.size() && searchDB.get(i).getDate().after(myDate))
+        {
+            if (searchDB.get(i).getOrg().equals(theAuction.getOrg()))
+            {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+    
+    private boolean checkForTooManyAuctionsOnDay(Auction theAuction)
+    {
+        
+    }
+    
+    private boolean checkUpcomingAuctionCount()
+    {
+        
+    }
+    
+     
 }
