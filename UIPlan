@@ -1,0 +1,62 @@
+
+public class UserUI {
+	public static void header(){
+		System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");	
+	}
+	
+	public static void mainMenu(){
+		header
+		"who are you?"
+		"1 bidder"
+		"2 Nonprofit"
+		"3 staff"
+		int type = scan.nextln()
+		if(type == 1) bidderMainMenu();
+		else if (type ==2) Nonprofitmainmenu
+		3: staff main menu
+			1 
+	}
+	
+	public static void bidderMainMenu(){
+		header();
+		"bidder name signed as bidder"
+		System.out.println("What would you like to do");
+		System.out.println("view Auctions");
+		sca.nextln()
+		
+		viewAuctionlist()
+	}
+	
+	public static void bidderMainMenu(){
+		header();
+		
+	}
+
+	public static void bidderMainMenu(){
+		header();
+		
+	}
+	
+	viewauctionlist(list Auction){
+		header()
+		for(i =0; 1< Auctionlist.length;i++){
+			"i auction name"
+			
+		}
+		
+		"please choose auction nunber"
+		scan
+		auctionBidderOptions();
+		
+	}
+	
+	auctionBidderOptions(){
+		header();
+		displayItemsforbidder();
+		"what would you like to do"
+		"1 bid on item 2 go back 3 exit auction central"
+		if(1) bidder.placebid(Item );
+		else if(2) viewAuctionlist();
+		else exit
+	}
+}
