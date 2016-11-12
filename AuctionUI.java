@@ -4,6 +4,9 @@
  * @author (your name) 
  * @version (a version number or a date)
  */
+
+import java.util.Scanner;
+
 public class AuctionUI 
 {
 	
@@ -11,5 +14,9 @@ public class AuctionUI
 	
 	public static String getUserItemNameInput() {
 		String theItemName = scan.nextLine();
+	}
+	
+	public static String getUserDescriptionInput() {
+		
 	}
 }
