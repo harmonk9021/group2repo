@@ -1,6 +1,8 @@
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +20,7 @@ import java.util.Calendar;
  * files.
  * 
  * @author Jacob Ackerman
- * @version 11.12.2016.002A
+ * @version 11.12.2016.003A
  */
 public class Database implements java.io.Serializable 
 {
@@ -114,7 +116,7 @@ public class Database implements java.io.Serializable
     
     public List<User> getUserList()
     {
-        return null;
+        return new ArrayList<>(myUserList.values());
     }
     
     /**
@@ -126,6 +128,13 @@ public class Database implements java.io.Serializable
      * @return A true/false value based on if the files saved correctly
      */
     public boolean Update()
+    {
+        boolean didItWork;
+        didItWork = (dumpAuctionsToFile() && dumpUsersToFile());
+        return didItWork;
+    }
+    
+    public boolean Load(String auctionFileName, String userFileName)
     {
         return false;
     }
@@ -170,6 +179,27 @@ public class Database implements java.io.Serializable
         return didItWork;
     }
     
+    private boolean loadAuctionsFromFile()
+    {
+        try
+      {
+         FileInputStream fileIn = new FileInputStream("/tmp/employee.ser");
+         ObjectInputStream in = new ObjectInputStream(fileIn);
+         e = (Auction) in.readObject();
+         in.close();
+         fileIn.close();
+      }catch(IOException i)
+      {
+         i.printStackTrace();
+         return;
+      }catch(ClassNotFoundException c)
+      {
+         System.out.println("Employee class not found");
+         c.printStackTrace();
+         return;
+      }
+    }
+    
     private boolean checkForAuctionFromYearAgo(Auction theAuction)
     {
         ArrayList<Auction> searchDB = new ArrayList<>(myAuctionList.values());
@@ -209,7 +239,21 @@ public class Database implements java.io.Serializable
     
     private boolean checkUpcomingAuctionCount()
     {
-        
+        ArrayList<Auction> searchDB = new ArrayList<>(myAuctionList.values());
+        int auctionCount = 0;
+        Calendar oneMonth = Calendar.getInstance();
+        oneMonth.add(Calendar.DATE, STANDARD_MONTH);
+        for (int i = 0; i < searchDB.size(); i++)
+        {
+            if (searchDB.get(i).getDate().after(myDate))
+            {
+                auctionCount++;
+            }
+        }
+        if (auctionCount >= 25)
+            return false;
+        else
+            return true;
     }
     
      
