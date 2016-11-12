@@ -17,6 +17,7 @@ public class Auction implements java.io.Serializable
 	 */
 	private static final long serialVersionUID = -2835612177821340774L;
 	
+	
 	public Scanner input = new Scanner(System.in);
 	public Date aucDate;
 	List<Item> myItems;
@@ -43,10 +44,13 @@ public class Auction implements java.io.Serializable
     	
     }
     
-    public Boolean addItem(Item theItem) {
+    public Boolean addItem(String theName) {
     	Boolean itemExists;
-    	itemExists = checkForDuplicate(theItem);
+    	
+    	itemExists = checkForDuplicate(theName);
     	if (!itemExists) {
+    		Item theItem = new Item(theName);
+    		
     		myItems.add(theItem);
     		itemCount = myItems.size();
     		return true;
@@ -55,12 +59,12 @@ public class Auction implements java.io.Serializable
     	}
     }
     
-    public Boolean removeItem(Item theItem) {
+    public Boolean removeItem(String theName) {
         	Boolean itemRemoved = false;
         	int i;
         	
         	for (i = 0; i < myItems.size(); i++) {
-        		if (myItems.get(i).getName().equals(theItem.getName())) {
+        		if (myItems.get(i).getName().equals(theName)) {
         			myItems.remove(i);
         			itemRemoved = true;
         		}
@@ -69,12 +73,12 @@ public class Auction implements java.io.Serializable
         	return itemRemoved;
     }
     
-    public Boolean checkForDuplicate(Item theItem) {
+    public Boolean checkForDuplicate(String theName) {
     	Boolean itemExists = false;
     	int i;
     	
     	for (i = 0; i < myItems.size(); i++) {
-    		if (myItems.get(i).getName().equals(theItem.getName())) {
+    		if (myItems.get(i).getName().equals(theName)) {
     			itemExists = true;
     		}
     	}
