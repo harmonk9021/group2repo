@@ -20,7 +20,7 @@ public class Auction implements java.io.Serializable
 	
 	public Scanner input = new Scanner(System.in);
 	public Date aucDate;
-	List<Item> myItems;
+	private List<Item> myItems;
 	public String auctionName;
 	public String myOrg;
 	public String myContactPerson;
@@ -36,6 +36,11 @@ public class Auction implements java.io.Serializable
     	aucDate = theDate;
 		auctionName = theName;
 		itemCount = 0;
+		myOrg = "";
+		myContactPerson = "";
+		myDescription = "";
+		myComment = "";
+		
 //		Scanner input = new Scanner(System.in);
  
     }
@@ -44,9 +49,9 @@ public class Auction implements java.io.Serializable
     	
     }
     
-    public Boolean addItem(String theName) {
+    public Boolean addItem() {
     	Boolean itemExists;
-    	
+    	String theName = AuctionUI.get
     	itemExists = checkForDuplicate(theName);
     	if (!itemExists) {
     		Item theItem = new Item(theName);
