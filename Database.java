@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Calendar;
+import java.util.Random;
 
 
 
@@ -20,7 +21,7 @@ import java.util.Calendar;
  * files.
  * 
  * @author Jacob Ackerman
- * @version 11.12.2016.005A
+ * @version 11.12.2016.007A
  */
 public class Database implements java.io.Serializable 
 {
@@ -239,7 +240,7 @@ public class Database implements java.io.Serializable
         int i = 0;
         Calendar yearAgo = Calendar.getInstance();
         yearAgo.add(Calendar.DATE, -1 * STANDARD_YEAR);
-        while (i <= searchDB.size() && searchDB.get(i).getDate().after(yearAgo.getTime()))
+        while (i < searchDB.size() && searchDB.get(i).getDate().after(yearAgo.getTime()))
         {
             if (searchDB.get(i).getOrg().equals(theAuction.getOrg()))
             {
@@ -254,7 +255,7 @@ public class Database implements java.io.Serializable
     {
         ArrayList<Auction> searchDB = new ArrayList<>(myAuctionList.values());
         int i = 0;
-        while (i <= searchDB.size() && searchDB.get(i).getDate().after(myDate))
+        while (i < searchDB.size() && searchDB.get(i).getDate().after(myDate))
         {
             if (searchDB.get(i).getOrg().equals(theAuction.getOrg()))
             {
@@ -268,17 +269,27 @@ public class Database implements java.io.Serializable
     private boolean checkForTooManyAuctionsOnDay(Auction theAuction)
     {
         ArrayList<Auction> searchDB = new ArrayList<>(myAuctionList.values());
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
+       // Calendar cal1 = Calendar.getInstance();
+       // Calendar cal2 = Calendar.getInstance();
         int count = 0;
         for (int i = 0; i < searchDB.size(); i++)
         {
-            cal1.setTime(theAuction.getDate());
-            cal2.setTime(searchDB.get(i).getDate());
-            boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+        //    cal1.setTime(theAuction.getDate());
+        //    cal2.setTime(searchDB.get(i).getDate());
+        //    boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+        //        cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+            
+            boolean sameDay = ((theAuction.getDate().getDay() == searchDB.get(i).getDate().getDay()) 
+                    && (theAuction.getDate().getMonth() == searchDB.get(i).getDate().getMonth()) &&
+                    (theAuction.getDate().getYear()== searchDB.get(i).getDate().getYear()));
+            //System.out.println("test: "+theAuction.getDate().getDay());
+            //System.out.println("curr check:"+searchDB.get(i).getDate().getDay());
             if (sameDay)
+            {
                 count++;
+                System.out.println(count);
+            }
+            
         }
         
         if (count >= 2)
@@ -308,5 +319,44 @@ public class Database implements java.io.Serializable
             return true;
     }
     
-     
+    /**
+     * Function that forcefully populates the database with arbitrary data.
+     * FOR TESTING PURPOSES ONLY, USE AT YOUR OWN RISK!
+     */
+    public void forcePopulate(int amount)
+    {
+        Auction tester;
+        Calendar date = Calendar.getInstance();
+        for (int i = 0; i < amount; i++)
+        {
+            //Calendar date = Calendar.getInstance();
+            //Random rand = new Random();
+            date.add(Calendar.DATE, i);
+            tester = new Auction(date.getTime(), "Test_Auction"+i);
+            tester.myOrg = "Org"+i;
+            
+            myAuctionList.put(date.getTime(), tester);
+        }
+        date.add(Calendar.DATE, -1 * STANDARD_YEAR - 1);
+        tester = new Auction(date.getTime(), "364 Days Ago");
+        tester.myOrg = "Org45";
+        myAuctionList.put(date.getTime(), tester);
+        
+        Date time = new Date();
+        //System.out.println(time);
+        time.setHours(10);
+        time.setDate(myDate.getDay()+14);
+        //System.out.println(time);
+        
+        tester = new Auction(time, "I'm scheduled");
+        tester.myOrg = "Org91";
+        myAuctionList.put(myDate, tester);
+        
+        time.setHours(16);
+        //time.setDate(myDate.getDay()+14);
+        
+        tester = new Auction(time, "I'm scheduled too");
+        tester.myOrg = "Org92";
+        myAuctionList.put(myDate, tester);
+    }
 }
