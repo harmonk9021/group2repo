@@ -1,0 +1,103 @@
+
+public class Ublah blab {
+	public static void header(){
+		System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");	
+	}
+	
+	public static void mainMenu(){
+		header
+		"who are you?"
+		"1 bidder"
+		"2 Nonprofit"
+		"3 staff"
+		int type = scan.nextln()
+		if(type == 1) bidderMainMenu();
+		else if (type ==2) Nonprofitmainmenu
+		3: staff main menu
+			1 
+	}
+	
+	public static void bidderMainMenu(){
+		header();
+		"bidder name signed as bidder"
+		System.out.println("What would you like to do");
+		System.out.println("1 view Auctions");
+		"2 exit auction central"
+		sca.nextln()
+		
+		if(1)viewAuctionlist();
+		else if(2) exit;
+		bidderMainMenu();
+	}
+	
+	public static void NonProfitMainMenu(){
+		header();
+		System.out.println("What would you like to do?");
+		System.out.println("1 Submit Auction Request");
+		"2 view my auction"
+		"3 exit auction central"
+		scan
+		
+		if(1) submitAuctionRequestform();
+		else if(2) AuctionNonProfitOptions();
+		else if(3) exit;
+		NonProfitMainMenu();
+		
+		
+	}
+	
+	submitAuctionRequestForm(){
+		header();
+		NonProfit.submitAuctionRequest();
+	}
+	
+	AuctionNonProfitOptions(){
+		header();
+		AuctionUI.displayItems();
+		"What would youlike to do"
+		"1 add item 2 go back 3 exit auction central"
+		
+		if(1) NonProfit.addItem();
+		else if(2) NonProfitMainMenu();
+		else exit;
+	}
+	
+	
+	public static void staffMainMenu(){
+		header();
+		"what would you like to do"
+		"1 view upcomming auctions"
+		"2 exit Auction Central"
+		
+		if(1) calendar.displayCalendar(todays date);
+		else if(3) exit();
+		StaffMainMenu();
+		
+	}
+	
+	viewauctionlist(list Auction){
+		header()
+		for(i =0; 1< Auctionlist.length;i++){
+			"i auction name"
+			
+		}
+		
+		"please choose auction nunber"
+		scan
+		auctionBidderOptions();
+		
+	}
+	
+	auctionBidderOptions(){
+		header();
+		AuctionUI.displayItemsforbidder();
+		"what would you like to do"
+		"1 bid on item 2 go back 3 exit auction central"
+		if(1) {
+			bidder.placebid(Item );
+			auctionBidderoptions;
+		}
+		else if(2) viewAuctionlist();
+		else exit
+	}
+}

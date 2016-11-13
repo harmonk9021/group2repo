@@ -64,19 +64,19 @@ public class Auction implements java.io.Serializable
     	}
     }
     
-    public Boolean removeItem(String theName) {
-        	Boolean itemRemoved = false;
-        	int i;
-        	
-        	for (i = 0; i < myItems.size(); i++) {
-        		if (myItems.get(i).getName().equals(theName)) {
-        			myItems.remove(i);
-        			itemRemoved = true;
-        		}
-        	}
-        	
-        	return itemRemoved;
-    }
+//    public Boolean removeItem(String theName) {
+//        	Boolean itemRemoved = false;
+//        	int i;
+//        	
+//        	for (i = 0; i < myItems.size(); i++) {
+//        		if (myItems.get(i).getName().equals(theName)) {
+//        			myItems.remove(i);
+//        			itemRemoved = true;
+//        		}
+//        	}
+//        	
+//        	return itemRemoved;
+//    }
     
     public Boolean checkForDuplicate(String theName) {
     	Boolean itemExists = false;
@@ -91,7 +91,7 @@ public class Auction implements java.io.Serializable
     	return itemExists;
     }
     
-    public List<Item> getAuctions() {
+    public List<Item> getItems() {
     	return myItems;
     }
     
@@ -107,8 +107,8 @@ public class Auction implements java.io.Serializable
     	return myOrg;
     }
     
-    public void setOrg() {
-    	myOrg = input.nextLine();
+    public void setOrg(String theInput) {
+    	myOrg = theInput;
     }
     
     public String getContactPerson() {
