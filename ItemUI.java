@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class ItemUI {
 	String addAuction = "Adding an Item";
-	Scanner scan = new  Scanner(System.in);
+	static Scanner scan = new  Scanner(System.in);
 	//DecimalFormat df = new DecimalFormat();
 	//df.setMaximumFractionDigits(2);
 	
@@ -56,15 +56,15 @@ public class ItemUI {
 	}
 	
 	
-	void isEqualOrBelowZeroErrorIU(String var){
+	public static void isEqualOrBelowZeroErrorIU(String var){
 		System.out.println("\n\n"+var+" needs to be a value above 0.");	
 	}
 	
-	void isValidSizeErrorUI(){
+	public static void isValidSizeErrorUI(){
 		System.out.println("\n\nSize needs to be a 'small', 'medium', or 'large'.");	
 	}
 	
-	void addBidAlreadyHasBidderErrorUI(){
+	public static void addBidAlreadyHasBidderErrorUI(){
 		System.out.println("\n\n you have already placed a bid on this item.");
 	}
 }

@@ -29,12 +29,11 @@ public class AuctionTest
 	public String myName;
 	Auction myAuction;
 	
-//	@Before
-//	public void setup() {
-//		myDate = new Date();
-//		myName = "Group 2";
-//		Auction myAuction = new Auction(myDate, myName);
-//	}
+	@Before
+	public void setup() {
+		myDate = new Date();
+		myName = "Group 2";
+	}
 	
 	@Test
 	public void testGetName() {
@@ -53,8 +52,39 @@ public class AuctionTest
 		myName = "Group 2";
 		Auction myAuction = new Auction(myDate, myName);
 		
-		int theCount = myAuction.getItemCount();
+//		int theCount = myAuction.getItemCount();
 		
-		assertEquals(0, theCount);
+//		assertEquals(0, theCount);
+	}
+	
+	@Test
+	public void testAddItemNoDuplicates() {
+		myDate = new Date();
+		myName = "Group 2";
+		
+		Auction myAuction = new Auction(myDate, myName);
+		Boolean testBoolean = myAuction.addItem();
+		
+		assertTrue(testBoolean);
+	}
+	
+	@Test
+	public void testCheckCurrentSameDate() {
+		Auction myAuction = new Auction(myDate, myName);
+		Boolean isCurrent = myAuction.checkCurrent(myDate);
+		
+		assertFalse(isCurrent);
+	}
+	
+	@Test
+	public void testCheckCurrentBeforeDate() {
+		Date testDate = new Date();
+		testDate.setDate(25);
+		
+		Auction myAuction = new Auction(myDate, myName);
+		Boolean isCurrent = myAuction.checkCurrent(testDate);
+		
+		assertTrue(isCurrent);
 	}
 }
+
