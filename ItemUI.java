@@ -15,11 +15,46 @@ public class ItemUI {
 	}
 	
 	
-	void header(String a){
-		System.out.println("\n\nAuctionCentral: " + a);
-		System.out.println("---------------------------------");
-		
+		public static String getUserItemNameInput(){
+		System.out.println("\n\nPlease Enter the name of the Item");
+		return scan.nextLine();
 	}
+	
+	public static String getUserItemDonorNameInput(){
+		System.out.println("\n\nPlease Enter the name of the Donor");
+		return scan.nextLine();
+	}
+	
+	public static String getUserItemDescriptionInput(){
+		System.out.println("\n\nPlease enter a descpription of the item: ");
+		return scan.nextLine();
+	}
+	
+	public static int getUserItemQuantityInput(){
+		System.out.println("\n\nPlease enter quantity: ");
+		return scan.nextInt();
+	}
+	
+	public static float getUserItemStartingBidInput(){
+		System.out.println("\n\nPlease enter starting bid: ");
+		return scan.nextFloat();
+	}
+	
+	public static String getUserItemConditionInput(){
+		System.out.println("\n\nPlease enter condition: ");
+		return scan.nextLine();
+	}
+	
+	public static String getUserItemSizeInput(){
+		System.out.println("\n\nPlease enter size(enter small, medium, or large): ");
+		return scan.nextLine();
+	}
+	
+	public static String getUserItemCommentsInput(){
+		System.out.println("\n\nPlease enter any comments(say none if you have no comments): ");
+		return scan.nextLine();
+	}
+	
 	
 	void isEqualOrBelowZeroErrorIU(String var){
 		System.out.println("\n\n"+var+" needs to be a value above 0.");	
