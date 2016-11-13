@@ -51,17 +51,44 @@ public class Auction implements java.io.Serializable
     
     public Boolean addItem() {
     	Boolean itemExists;
-    	String theName = AuctionUI.getUserItemNameInput();
+    	String theName = ItemUI.getUserItemNameInput();
     	itemExists = checkForDuplicate(theName);
     	if (!itemExists) {
     		Item theItem = new Item(theName);
-    		
+    		setItemParams(theItem);
     		myItems.add(theItem);
     		itemCount = myItems.size();
     		return true;
     	} else {
     		return false;
     	}
+    }
+    
+   private void setItemParams(Item theItem){
+	   boolean temp;
+	   
+    	theItem.setDonorName(ItemUI.getUserItemDonorNameInput());
+    	theItem.setDescription(ItemUI.getUserItemDescriptionInput());
+    	
+    	do{
+    		temp = theItem.setQuantity(ItemUI.getUserItemQuantityInput());
+    		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Quantity");
+    	} while (temp == false);
+    	
+    	do{
+    		temp = theItem.setStartingBid(ItemUI.getUserItemStartingBidInput());
+    		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Starting Bid");
+    	} while (temp == false);
+    	
+    	theItem.setCondition(ItemUI.getUserItemConditionInput());
+    	
+    	do{
+    		temp = theItem.setSize(ItemUI.getUserItemSizeInput());
+    		if(temp == false) ItemUI.isValidSizeErrorUI();
+    	} while (temp == false);
+    	
+    	theItem.setComments(ItemUI.getUserItemCommentsInput());
+    	
     }
     
 //    public Boolean removeItem(String theName) {
@@ -136,5 +163,4 @@ public class Auction implements java.io.Serializable
     }
     
 }
-
 
