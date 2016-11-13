@@ -109,7 +109,7 @@ public class Item extends ItemUI implements Serializable {
 	public String getCondition(){
 		return condition;
 	}
-	public String sgetSize(){
+	public String getSize(){
 		return size;
 	}
 	public String getComments(){
