@@ -43,6 +43,19 @@ public class UserUI
 	
 	public static void signIn() 
 	(
-		
+		System.out.println("Sign In");
+		System.out.println("Enter your username");
+		System.out.print(>);
+		String username = scan.nextLine();
+		System.out.println("Enter your password");
+		System.out.print(>);
+		String password = scan.nextLine();
+		if (User.authenticate(username, password)) {
+			System.out.println("Valadated");
+		} else {
+			System.out.println("Failed, try again");
+			System.out.println();
+			signIn();
+		}
 	)
 }

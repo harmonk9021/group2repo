@@ -17,7 +17,7 @@ public class Nonprofit implements java.io.Serializable extends User
 	
 	private String myEmail;
 	
-	private int myPhoneNumber;
+	private String myPhoneNumber;
 	
 	private String myContactPerson;
 	
@@ -26,7 +26,7 @@ public class Nonprofit implements java.io.Serializable extends User
 	private Auction currentAuction;
 	
 	
-	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber) 
+	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber) 
 	{
 		myName = theName;
         myUsername = theUsername;
@@ -54,7 +54,7 @@ public class Nonprofit implements java.io.Serializable extends User
 	
 	public void fillItem() 
 	{
-		
+		// Is this necesary?
 	}
 	
 	/**
@@ -65,6 +65,16 @@ public class Nonprofit implements java.io.Serializable extends User
 	 
 	public void setContactPerson(String theName) {
 		myContactPerson = theName;
+	}
+	
+	/**
+	 * Gets the name of the contact person.
+	 * 
+	 * @return myContactPerson The name of the contact person.
+	 */
+	
+	public String getContactPerson() {
+		return myContactPerson;
 	}
 	
 }

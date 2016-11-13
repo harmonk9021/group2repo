@@ -7,6 +7,9 @@
  * @author Andrew Dinh
  * @version 11/7/2016
  */
+ 
+import java.util.Date;
+ 
 public class Staff implements java.io.Serializable extends User
 {
     
@@ -18,12 +21,12 @@ public class Staff implements java.io.Serializable extends User
 	
 	private String myEmail;
 	
-	private int myPhoneNumber;
+	private String myPhoneNumber;
 	
     /**
      * Constructor for objects of class MyClass
      */
-    public Staff(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber)
+    public Staff(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber)
     {
         myName = theName;
         myUsername = theUsername;

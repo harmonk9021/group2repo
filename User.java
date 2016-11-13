@@ -18,16 +18,18 @@ public class User implements java.io.Serializable
 	
 	private String myEmail;
 	
-	private int myPhoneNumber;
+	private String myPhoneNumber;
     
     /**
-     * Constructor for objects of class MyClass
+     * Constructor for User class
      */
-    public User(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber)
+	 
+    public User(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber)
     {
         myName = theName;
         myUsername = theUsername;
-        myEmail = thePassword;
+        myPassword = thePassword;
+		myEmail = theEmail;
         myPhoneNumber = thePhoneNumber;
     }
     
@@ -38,10 +40,10 @@ public class User implements java.io.Serializable
      * @return Returns whether the authentication passed or failed
      */
     
-    public boolean authenticate(String username, String password) 
+    public boolean authenticate(String password) 
 	{
     	boolean result = false;
-    	if (myUsername.equals(username) && myPassword.equals(password)) 
+    	if (myPassword.equals(password)) 
 		{
     		result = true;
     	}
