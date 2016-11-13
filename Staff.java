@@ -10,13 +10,25 @@
 public class Staff implements java.io.Serializable extends User
 {
     
+	private String myName;
+	
+	private String myUsername;
+	
+	private String myPassword;
+	
+	private String myEmail;
+	
+	private int myPhoneNumber;
+	
     /**
      * Constructor for objects of class MyClass
      */
-    public Staff()
+    public Staff(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber)
     {
-        // initialise instance variables
- 
+        myName = theName;
+        myUsername = theUsername;
+        myEmail = thePassword;
+        myPhoneNumber = thePhoneNumber;
     }
     
     /**
@@ -25,7 +37,8 @@ public class Staff implements java.io.Serializable extends User
      */
     
     public Calender viewAuctions() {
-    	return null;
+		Calender calender = new Calender();
+    	return calender;
     }
     
     /**
@@ -33,8 +46,9 @@ public class Staff implements java.io.Serializable extends User
      * @Return Returns all past auctions from database.
      */
     
-    public Calender viewPastAuctions() {
-    	return null;
+    public Calender viewPastAuctions(Date theDate) {
+		Calender calender = new Calender(theDate);
+    	return calender;
     }
     
     /**
@@ -42,8 +56,9 @@ public class Staff implements java.io.Serializable extends User
      * @Return Returns all upcoming auctions from database.
      */
     
-    public Calender viewCurrentAuctions() {
-    	return null;
+    public Calender viewCurrentAuctions(Date theDate) {
+		Calender calender = new Calender(theDate);
+    	return calender;
     }
 
 }

@@ -4,6 +4,9 @@
  * @author Andrew Dinh
  * @version 11/11/2016
  */
+ 
+import java.util.Scanner;
+ 
 public class User implements java.io.Serializable 
 {
     
@@ -20,12 +23,12 @@ public class User implements java.io.Serializable
     /**
      * Constructor for objects of class MyClass
      */
-    public User()
+    public User(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber)
     {
-        myName = "";
-        myUsername = "";
-        myEmail = "";
-        myPhoneNumber = null;
+        myName = theName;
+        myUsername = theUsername;
+        myEmail = thePassword;
+        myPhoneNumber = thePhoneNumber;
     }
     
     /**
@@ -35,9 +38,11 @@ public class User implements java.io.Serializable
      * @return Returns whether the authentication passed or failed
      */
     
-    public boolean authenticate(String username, String password) {
+    public boolean authenticate(String username, String password) 
+	{
     	boolean result = false;
-    	if (myUsername.equals(username) && myPassword.equals(password)) {
+    	if (myUsername.equals(username) && myPassword.equals(password)) 
+		{
     		result = true;
     	}
     	return result;

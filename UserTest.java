@@ -1,8 +1,8 @@
 /**
  * TODO Write a description of class Item here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Andrew Dinh
+ * @version 11/12/2016
  */
 public class UserTest 
 {
