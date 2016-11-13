@@ -125,7 +125,7 @@ public class Item extends ItemUI implements Serializable {
 	
 	private boolean isValidSize(String theSize){
 		theSize.toLowerCase();
-		if(theSize == "small" || theSize == "medium" || theSize == "large") return true;
+		if(theSize.equals("small") || theSize.equals("medium") || theSize.equals("large")) return true;
 		else return false;
 	}
 	
