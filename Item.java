@@ -2,8 +2,13 @@ import java.io.*;
 import java.util.*;
 import java.lang.Float;
 
-
-public class Item extends ItemUI implements Serializable {
+/**	This class Holds all of the information about an Item that will be Auctioned for an auction.
+ * 
+ * @author Katie Harmon
+ * @version 11-12-2016
+ */
+public class Item implements Serializable {
+	private static final long serialVersionUID = -5193649884823674863L;
 	private String name;
 	private String donorName;
 	private HashMap<String, Float> myBids;
@@ -14,6 +19,7 @@ public class Item extends ItemUI implements Serializable {
 	private String size;
 	private String comments;
 	
+	/** Constructor for the Item class */
 	public Item(String theName){
 		myBids = new HashMap<String, Float>();
 		name = theName;
@@ -41,7 +47,10 @@ public class Item extends ItemUI implements Serializable {
 		comments = theComments;
 	}
 	
-	
+	/** This function adds a new bid from bidder to myBids if
+	 * 	the bidder has not made a bid before and if the bid is 
+	 *  greater than startingBid.
+	 * 	@returns true if the bid entered is added to myBids*/
 	public boolean addBid(float bidAmount, String bidderName){
 		if(myBids.containsKey(bidderName)) return false;
 		else if(bidAmount < startingBid) return false;
@@ -49,14 +58,19 @@ public class Item extends ItemUI implements Serializable {
 		return true;
 	}
 	
+	/** @returns -1 if bidderName is not found in myBids,
+	 * otherwise returns The bid amount that bidderName has placed */
 	public float getBid(String bidderName){
+		if(!myBids.containsKey(bidderName)) return -1;
 		return myBids.get(bidderName);
 	}
+	
+	/** Displays relevant information from this Item */
 	public void displayItem(){
-		displayItemUI(this);
+		ItemUI.displayItemUI(this);
 	}
 	
-	
+	/** Setters */
 	public void setName(String theName){
 		name = theName;
 	}
@@ -67,7 +81,7 @@ public class Item extends ItemUI implements Serializable {
 		description = theDescription;
 	}
 	public boolean setQuantity(int theQuantity){
-		if(isEqualOrBelowZero(theQuantity)) return false;
+		if(isEqualOrBelowZero((float)theQuantity)) return false;
 		quantity = theQuantity;
 		return true;
 	}
@@ -89,9 +103,9 @@ public class Item extends ItemUI implements Serializable {
 	}
 	
 	
-	
+	/** Getters */
 	public String getName(){
-		return donorName;
+		return name;
 	}
 	public String getDonorName(){
 		return donorName;
@@ -103,7 +117,6 @@ public class Item extends ItemUI implements Serializable {
 		return quantity;
 	}
 	public float getStartingBid(){
-	
 		return startingBid;
 	}
 	public String getCondition(){
@@ -116,13 +129,13 @@ public class Item extends ItemUI implements Serializable {
 		return comments;
 	}
 	
-	
-	
+	/** Helper for setQuantity and setStartingBid */
 	private boolean isEqualOrBelowZero(float value){
 		if(value <= 0) return true; 
 		else return false;
 	}
 	
+	/** helper for SetSize */
 	private boolean isValidSize(String theSize){
 		theSize.toLowerCase();
 		if(theSize == "small" || theSize == "medium" || theSize == "large") return true;
