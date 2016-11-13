@@ -1,21 +1,16 @@
 import java.util.Scanner;
-import java.text.DecimalFormat;
-
 
 public class ItemUI {
 	String addAuction = "Adding an Item";
-	Scanner scan = new  Scanner(System.in);
-	//DecimalFormat df = new DecimalFormat();
-	//df.setMaximumFractionDigits(2);
+	static Scanner scan = new  Scanner(System.in);
 	
-	void displayItemUI(Item item){
+	public static void displayItemUI(Item item){
 		System.out.println(item.getName()+"/tCondition: " + item.getCondition());
 		System.out.println("Starting Bid: $" + String.format("%.2f", item.getStartingBid()));
 		System.out.println(item.getDescription());
 	}
 	
-	
-		public static String getUserItemNameInput(){
+	public static String getUserItemNameInput(){
 		System.out.println("\n\nPlease Enter the name of the Item");
 		return scan.nextLine();
 	}
@@ -32,12 +27,17 @@ public class ItemUI {
 	
 	public static int getUserItemQuantityInput(){
 		System.out.println("\n\nPlease enter quantity: ");
-		return scan.nextInt();
+		int temp = scan.nextInt();
+		scan.nextLine();
+		return temp;
 	}
 	
 	public static float getUserItemStartingBidInput(){
+
 		System.out.println("\n\nPlease enter starting bid: ");
-		return scan.nextFloat();
+		float temp = scan.nextFloat();
+		scan.nextLine();
+		return temp;
 	}
 	
 	public static String getUserItemConditionInput(){
@@ -56,15 +56,15 @@ public class ItemUI {
 	}
 	
 	
-	void isEqualOrBelowZeroErrorIU(String var){
+	public static void isEqualOrBelowZeroErrorIU(String var){
 		System.out.println("\n\n"+var+" needs to be a value above 0.");	
 	}
 	
-	void isValidSizeErrorUI(){
+	public static void isValidSizeErrorUI(){
 		System.out.println("\n\nSize needs to be a 'small', 'medium', or 'large'.");	
 	}
 	
-	void addBidAlreadyHasBidderErrorUI(){
+	public static void addBidAlreadyHasBidderErrorUI(){
 		System.out.println("\n\n you have already placed a bid on this item.");
 	}
 }
