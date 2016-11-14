@@ -6,6 +6,7 @@
  */
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -27,19 +28,22 @@ public class Auction implements java.io.Serializable
 	public String myDescription;
 	public String myComment;
 	public int itemCount;
+	public Boolean isCurrent;
     
     /**
      * Constructor for objects of class MyClass
      */
-    public Auction(Date theDate, String theName)
+    public Auction(Date theDate, String theOrgName)
     {
     	aucDate = theDate;
-		auctionName = theName;
+    	myItems = new ArrayList<Item>();
+		auctionName = "";//theName;
 		itemCount = 0;
-		myOrg = "";
+		myOrg = theOrgName;
 		myContactPerson = "";
 		myDescription = "";
 		myComment = "";
+		isCurrent = true;
 		
 //		Scanner input = new Scanner(System.in);
  
@@ -108,14 +112,20 @@ public class Auction implements java.io.Serializable
     public Boolean checkForDuplicate(String theName) {
     	Boolean itemExists = false;
     	int i;
-    	
-    	for (i = 0; i < myItems.size(); i++) {
-    		if (myItems.get(i).getName().equals(theName)) {
-    			itemExists = true;
+    	if (itemCount == 0) {
+    		
+    		return itemExists;
+    	} else {
+    		for (i = 0; i < myItems.size(); i++) {
+    			if (myItems.get(i).getName().equals(theName)) {
+    				itemExists = true;
+    			}
     		}
+    		
+    		return itemExists;
     	}
     	
-    	return itemExists;
+    	
     }
     
     public List<Item> getItems() {
@@ -130,6 +140,10 @@ public class Auction implements java.io.Serializable
     	return auctionName;
     }
     
+    public void setName(String theName){
+    	auctionName = theName;
+    }
+    
     public String getOrg() {
     	return myOrg;
     }
@@ -142,24 +156,35 @@ public class Auction implements java.io.Serializable
     	return myContactPerson;
     }
     
-    public void setContactPerson() {
-    	myContactPerson = input.nextLine();
+    public void setContactPerson(String theInput) {
+    	myContactPerson = theInput;
     }
     
     public String getDescription() {
     	return myDescription;
     }
     
-    public void setDescription() {
-    	myDescription = input.nextLine();
+    public void setDescription(String theInput) {
+    	myDescription = theInput;
     }
     
     public String getComment() {
     	return myComment;
     }
     
-    public void setComment() {
-    	myComment = input.nextLine();
+    public void setComment(String theInput) {
+    	myComment = theInput;
+    }
+    
+    public Boolean checkCurrent(Date theDate) {
+    	if (aucDate.equals(theDate)) {
+    		isCurrent = false;
+    	} else if (aucDate.after(theDate)) {
+    		isCurrent = false;
+    	}
+    	
+    	return isCurrent;
+    	
     }
     
 }
