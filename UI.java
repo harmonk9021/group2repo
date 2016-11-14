@@ -119,7 +119,10 @@ public class UI {
 		System.out.print("What would you like to do?\n1 add Item to Auction\n2 return to main menu\n>");
 		int input = scan.nextInt();
 		scan.nextLine();
-		if(input == 1) thisUser.getCurrentAuction().addItem();
+		if(input == 1) {
+			thisUser.getCurrentAuction().addItem();
+			database.addAuctionToDB(thisUser.getCurrentAuction());
+		}
 		else if(input == 2) return;
 		auctionNonProfitMenu();
 		
