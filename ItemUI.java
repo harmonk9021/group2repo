@@ -64,6 +64,10 @@ public class ItemUI {
 		System.out.println("\n\nSize needs to be a 'small', 'medium', or 'large'.");	
 	}
 	
+	public static void isEmptyStringUI(String var) {
+		System.out.println("\n\nYou must enter something for " + var + ".");
+	}
+	
 	public static void addBidAlreadyHasBidderErrorUI(){
 		System.out.println("\n\n you have already placed a bid on this item.");
 	}
