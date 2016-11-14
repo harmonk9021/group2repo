@@ -360,3 +360,16 @@ public class Database implements java.io.Serializable
         myAuctionList.put(myDate, tester);
     }
 }
+
+ /***Katies*/
+    public boolean canAdd(Auction theAuction){
+    	boolean canAdd = false;
+        
+        canAdd = (
+        checkForExistingAuction(theAuction) &&
+        checkForAuctionFromYearAgo(theAuction) &&
+        checkForTooManyAuctionsOnDay(theAuction) &&
+        checkUpcomingAuctionCount()
+           );
+        return canAdd;
+    }
