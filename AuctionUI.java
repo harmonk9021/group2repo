@@ -10,15 +10,15 @@ import java.util.Scanner;
 public class AuctionUI 
 {
 	
-	Scanner scan = new  Scanner(System.in);
+	static Scanner scan = new  Scanner(System.in);
 	
 	public static void displayItemsForBidder(Auction theAuction) {
 		
 		System.out.println(theAuction.getName() + ", " + theAuction.getDate().getMonth() +
 							theAuction.getDate().getDate() + ", " + 
 							theAuction.getDate().getYear() + ", " +
-							theAuction.getDate().getHour() + ":" +
-							theAuction.getDate().getMinutes() + ".")
+							theAuction.getDate().getHours() + ":" +
+							theAuction.getDate().getMinutes() + ".");
 		System.out.println("Items offered for sale:");
 		System.out.format("%-5s %-20s %-10s %-10s %-10s\n", "ID", "Item Name", "Condition",
 				"Min bid", "My Bid");
@@ -30,8 +30,8 @@ public static void displayItems(Auction theAuction) {
 		System.out.println(theAuction.getName() + ", " + theAuction.getDate().getMonth() +
 							theAuction.getDate().getDate() + ", " + 
 							theAuction.getDate().getYear() + ", " +
-							theAuction.getDate().getHour() + ":" +
-							theAuction.getDate().getMinutes() + ".")
+							theAuction.getDate().getHours() + ":" +
+							theAuction.getDate().getMinutes() + ".");
 		System.out.println("Items offered for sale:");
 		System.out.format("%-5s %-20s %-10s %-10s\n", "ID", "Item Name", "Condition",
 				"Min bid");
@@ -63,5 +63,13 @@ public static void displayItems(Auction theAuction) {
 		String myComment = scan.nextLine();
 
 		return myComment;
+	}
+	
+	public static void itemExistsAlready() {
+		System.out.println("The item you entered already exists in the system!");
+	}
+	
+	public static void isEmptyStringUI(String var) {
+		System.out.println("\n\nYou must enter something for " + var + ".");
 	}
 }
