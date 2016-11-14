@@ -11,6 +11,8 @@ public class UI {
 	
 	public void mainMenu(){
 		database.Load("Auctions.ser", "Users.ser");
+                System.out.println("Users in system: " + database.getUserList().toString());
+                System.out.println("Auctions in system: " + database.getAuctionList().toString());
 		System.out.println("Please Enter Name");
 		String userName = scan.nextLine();//thisUser.setUserName(scan.nextLine());
 		System.out.print("Are you a new User?(type Y or N)\n>");
@@ -54,9 +56,10 @@ public class UI {
 	
 	
 	public void bidderMainMenu(){
-	
+            System.out.println("If you're reading this, it means you were recognized as a bidder");
+        }
 	public void viewAuctionList(){
-	
+        }
 	public void auctionBidderMenu(Auction theAuction){
 		AuctionUI.displayItemsForBidder(theAuction, thisUser.getUserName());
 		
@@ -110,10 +113,133 @@ public class UI {
 		System.out.print("Press enter to continue\n>");
 		scan.nextLine();
 		System.out.println("\n");
+                database.Update("Auctions.ser", "Users.ser");
 	}
 	
 	private Date getDate(){
+            System.out.println("Enter the date you would like your auction on (MM/DD/YYYY HH:MM am/pm): ");
+                
+		String theDate = scan.nextLine();
+                Date date = new Date();
+                int parser = 0;
+                //date.setMonth(0);
+                if(theDate.charAt(1) == '1')
+                {
+                    //date.setMonth(1);
+                    parser = 1;
+                }
+                else if(theDate.charAt(1) == '2')
+                {
+                    //date.setMonth(2);
+                    parser = 2;
+                }
+                else if(theDate.charAt(1) == '3')
+                {
+                    //date.setMonth(3);
+                    parser = 3;
+                }
+                else if(theDate.charAt(1) == '4')
+                {
+                    //date.setMonth(4);
+                    parser = 4;
+                }
+                else if(theDate.charAt(1) == '5')
+                {
+                    //date.setMonth(5);
+                    parser = 5;
+                }
+                else if(theDate.charAt(1) == '6')
+                {
+                    //date.setMonth(6);
+                    parser = 6;
+                }
+                else if(theDate.charAt(1) == '7')
+                {
+                    //date.setMonth(7);
+                    parser = 7;
+                }
+                else if(theDate.charAt(1) == '8')
+                {
+                    //date.setMonth(8);
+                    parser = 8;
+                }
+                else if(theDate.charAt(1) == '9')
+                {
+                    //date.setMonth(9);
+                    parser = 9;
+                }
+                if(theDate.charAt(0) == '1')
+                {
+                    //date.setMonth(date.getMonth()+10);
+                    parser += 10;
+                }
+                date.setMonth(parser);
+                parser = 0;
+                
+                if(theDate.charAt(4) == '1')
+                {
+                    //date.setMonth(1);
+                    parser = 1;
+                }
+                else if(theDate.charAt(4) == '2')
+                {
+                    //date.setMonth(2);
+                    parser = 2;
+                }
+                else if(theDate.charAt(4) == '3')
+                {
+                    //date.setMonth(3);
+                    parser = 3;
+                }
+                else if(theDate.charAt(4) == '4')
+                {
+                    //date.setMonth(4);
+                    parser = 4;
+                }
+                else if(theDate.charAt(4) == '5')
+                {
+                    //date.setMonth(5);
+                    parser = 5;
+                }
+                else if(theDate.charAt(4) == '6')
+                {
+                    //date.setMonth(6);
+                    parser = 6;
+                }
+                else if(theDate.charAt(4) == '7')
+                {
+                    //date.setMonth(7);
+                    parser = 7;
+                }
+                else if(theDate.charAt(4) == '8')
+                {
+                    //date.setMonth(8);
+                    parser = 8;
+                }
+                else if(theDate.charAt(4) == '9')
+                {
+                    //date.setMonth(9);
+                    parser = 9;
+                }
+                if(theDate.charAt(3) == '1')
+                {
+                    //date.setMonth(date.getMonth()+10);
+                    parser += 10;
+                }
+                else if(theDate.charAt(3) == '2')
+                {
+                    //date.setMonth(date.getMonth()+10);
+                    parser += 20;
+                }
+                else if(theDate.charAt(3) == '3')
+                {
+                    //date.setMonth(date.getMonth()+10);
+                    parser += 30;
+                }
+                date.setDate(parser);
 
+		return date;
+        }
 	public void auctionNonProfitMenu(){ 
 		AuctionUI.displayItems(thisUser.getCurrentAuction());
 		System.out.print("What would you like to do?\n1 add Item to Auction\n2 return to main menu\n>");
