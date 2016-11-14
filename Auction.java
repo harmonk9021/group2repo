@@ -19,7 +19,7 @@ public class Auction implements java.io.Serializable
 	private static final long serialVersionUID = -2835612177821340774L;
 	
 	
-	public Scanner input = new Scanner(System.in);
+	public  transient Scanner input = new Scanner(System.in);
 	public Date aucDate;
 	private List<Item> myItems;
 	public String auctionName;
