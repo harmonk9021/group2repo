@@ -9,7 +9,7 @@ import java.util.Date;
  * @author Andrew Dinh
  * @version 11/7/2016
  */
-public class Staff implements java.io.Serializable extends User
+public class Staff extends User implements java.io.Serializable 
 {
     
 	private String myName;
@@ -39,7 +39,7 @@ public class Staff implements java.io.Serializable extends User
      */
     
     public Calendar viewAuctions() {
-		Calendar calender = new Calendar();
+		Calendar calender = new Calendar(new Date());
     	return calender;
     }
     
