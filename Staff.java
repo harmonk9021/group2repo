@@ -1,3 +1,5 @@
+import java.util.Date;
+
 /**
  * This is the staff class used to define people that
  * are staff members of Action Central. The unique feature
@@ -18,12 +20,12 @@ public class Staff implements java.io.Serializable extends User
 	
 	private String myEmail;
 	
-	private int myPhoneNumber;
+	private String myPhoneNumber;
 	
     /**
      * Constructor for objects of class MyClass
      */
-    public Staff(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber)
+    public Staff(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber)
     {
         myName = theName;
         myUsername = theUsername;
@@ -36,8 +38,8 @@ public class Staff implements java.io.Serializable extends User
      * @Return Returns all of the auctions from database.
      */
     
-    public Calender viewAuctions() {
-		Calender calender = new Calender();
+    public Calendar viewAuctions() {
+		Calendar calender = new Calendar();
     	return calender;
     }
     
@@ -46,8 +48,8 @@ public class Staff implements java.io.Serializable extends User
      * @Return Returns all past auctions from database.
      */
     
-    public Calender viewPastAuctions(Date theDate) {
-		Calender calender = new Calender(theDate);
+    public Calendar viewPastAuctions(Date theDate) {
+		Calendar calender = new Calendar(theDate);
     	return calender;
     }
     
@@ -56,8 +58,8 @@ public class Staff implements java.io.Serializable extends User
      * @Return Returns all upcoming auctions from database.
      */
     
-    public Calender viewCurrentAuctions(Date theDate) {
-		Calender calender = new Calender(theDate);
+    public Calendar viewCurrentAuctions(Date theDate) {
+		Calendar calender = new Calendar(theDate);
     	return calender;
     }
 
