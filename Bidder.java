@@ -27,7 +27,7 @@ public class Bidder extends User implements java.io.Serializable
 	
 	private String myEmail;
 	
-	private int myPhoneNumber;
+	private String myPhoneNumber;
     
 	private Map<Item, Float> myBids;
     
@@ -35,7 +35,7 @@ public class Bidder extends User implements java.io.Serializable
      * Constructor for Bidder
      */
 	 
-    public Bidder(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber)
+    public Bidder(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber)
     {
 		myName = theName;
         myUsername = theUsername;

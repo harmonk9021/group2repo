@@ -6,7 +6,7 @@
  * @author Andrew Dinh
  * @version 11/11/2016
  */
-public class Nonprofit implements java.io.Serializable extends User 
+public class Nonprofit extends User implements java.io.Serializable
 {
 	
 	private String myName;
@@ -17,7 +17,7 @@ public class Nonprofit implements java.io.Serializable extends User
 	
 	private String myEmail;
 	
-	private int myPhoneNumber;
+	private String myPhoneNumber;
 	
 	private String myContactPerson;
 	
@@ -26,7 +26,7 @@ public class Nonprofit implements java.io.Serializable extends User
 	private Auction currentAuction;
 	
 	
-	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, int thePhoneNumber) 
+	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber) 
 	{
 		myName = theName;
         myUsername = theUsername;
@@ -45,6 +45,7 @@ public class Nonprofit implements java.io.Serializable extends User
 			currentAuction = auction;
 			activeAuction = true;
 			result = true;
+		}
 	}
 	
 	public void addItem(Item theItem) 
