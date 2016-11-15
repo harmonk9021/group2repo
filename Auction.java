@@ -1,10 +1,8 @@
 /**
- * This auction class is used to store information about
- * a non profit's auction as well as store and access all 
- * the items that are available in the auction.
+ * TODO Write a description of class Item here.
  * 
  * @author Kyle Phan
- * @version 11/13/16
+ * @version 11/11/16
  */
 
 
@@ -21,7 +19,7 @@ public class Auction implements java.io.Serializable
 	private static final long serialVersionUID = -2835612177821340774L;
 	
 	
-	public Scanner input = new Scanner(System.in);
+	public  transient Scanner input = new Scanner(System.in);
 	public Date aucDate;
 	private List<Item> myItems;
 	public String auctionName;
@@ -35,13 +33,13 @@ public class Auction implements java.io.Serializable
     /**
      * Constructor for objects of class MyClass
      */
-    public Auction(Date theDate, String theName)
+    public Auction(Date theDate, String theOrgName)
     {
     	aucDate = theDate;
     	myItems = new ArrayList<Item>();
-		auctionName = theName;
+		auctionName = "";//theName;
 		itemCount = 0;
-		myOrg = "";
+		myOrg = theOrgName;
 		myContactPerson = "";
 		myDescription = "";
 		myComment = "";
@@ -51,46 +49,19 @@ public class Auction implements java.io.Serializable
  
     }
     
-    public void fillOutInfo() {
-    	boolean temp;
-    	
-    	do{
-    		temp = setOrg(AuctionUI.getUserOrgInput());
-    		if(temp == false) AuctionUI.isEmptyStringUI("organization name");
-    	} while (temp == false);
-    	
-    	do{
-    		temp = setContactPerson(AuctionUI.getUserContactPersonInput());
-    		if(temp == false) AuctionUI.isEmptyStringUI("contact person name");
-    	} while (temp == false);
-    	
-    	do{
-    		temp = setDescription(AuctionUI.getUserDescriptionInput());
-    		if(temp == false) AuctionUI.isEmptyStringUI("auction description");
-    	} while (temp == false);
-    	
+    public void setup() {
     	
     }
     
     public Boolean addItem() {
     	Boolean itemExists;
-    	Boolean temp;
-    	String theName;
-    	
-    	do{
-    		theName = ItemUI.getUserItemNameInput();
-    		temp = isEmptyString(theName);
-    		if(temp == true) ItemUI.isEmptyStringUI("item name");
-    	} while (temp == true);
-    	
-    	
-//    	String theName = ItemUI.getUserItemNameInput();
+    	String theName = ItemUI.getUserItemNameInput();
     	itemExists = checkForDuplicate(theName);
-    	if (itemExists == false) {
+    	if (!itemExists) {
     		Item theItem = new Item(theName);
     		setItemParams(theItem);
     		myItems.add(theItem);
-    		itemCount += 1;
+    		itemCount = myItems.size();
     		return true;
     	} else {
     		return false;
@@ -113,11 +84,7 @@ public class Auction implements java.io.Serializable
     		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Starting Bid");
     	} while (temp == false);
     	
-    	do{
-    		temp = theItem.setCondition(ItemUI.getUserItemConditionInput());
-    		if(temp == false) ItemUI.isEmptyStringUI("condition");
-    	} while (temp == false);
-    	
+    	theItem.setCondition(ItemUI.getUserItemConditionInput());
     	
     	do{
     		temp = theItem.setSize(ItemUI.getUserItemSizeInput());
@@ -147,7 +114,7 @@ public class Auction implements java.io.Serializable
     	int i;
     	if (itemCount == 0) {
     		
-    		return false;
+    		return itemExists;
     	} else {
     		for (i = 0; i < myItems.size(); i++) {
     			if (myItems.get(i).getName().equals(theName)) {
@@ -173,34 +140,32 @@ public class Auction implements java.io.Serializable
     	return auctionName;
     }
     
+    public void setName(String theName){
+    	auctionName = theName;
+    }
+    
     public String getOrg() {
     	return myOrg;
     }
     
-    public Boolean setOrg(String theInput) {
-    	if (isEmptyString(theInput)) return false;
+    public void setOrg(String theInput) {
     	myOrg = theInput;
-    	return true;
     }
     
     public String getContactPerson() {
     	return myContactPerson;
     }
     
-    public Boolean setContactPerson(String theInput) {
-    	if (isEmptyString(theInput)) return false;
+    public void setContactPerson(String theInput) {
     	myContactPerson = theInput;
-    	return true;
     }
     
     public String getDescription() {
     	return myDescription;
     }
     
-    public Boolean setDescription(String theInput) {
-    	if (isEmptyString(theInput)) return false;
+    public void setDescription(String theInput) {
     	myDescription = theInput;
-    	return true;
     }
     
     public String getComment() {
@@ -216,19 +181,11 @@ public class Auction implements java.io.Serializable
     		isCurrent = false;
     	} else if (aucDate.after(theDate)) {
     		isCurrent = false;
-    	} else {
-    		isCurrent = true;
     	}
     	
     	return isCurrent;
     	
     }
-    
-    private boolean isEmptyString(String theInput) {
-		String blankString = "";
-		if (theInput.equals(blankString)) return true;
-		else return false;
-	}
     
 }
 
