@@ -57,8 +57,11 @@ public class Item extends ItemUI implements Serializable {
 	}
 	
 	
-	public void setName(String theName){
+	public boolean setName(String theName){
+		if (isEmptyString(theName)) return false;
 		name = theName;
+		return true;
+		
 	}
 	public void setDonorName(String theDonorName){
 		donorName = theDonorName;
@@ -76,8 +79,10 @@ public class Item extends ItemUI implements Serializable {
 		startingBid = theStartingBid;
 		return true;
 	}
-	public void setCondition(String theCondition){
+	public boolean setCondition(String theCondition){
+		if (isEmptyString(theCondition)) return false;
 		condition = theCondition;
+		return true;
 	}
 	public boolean setSize(String theSize){
 		if(!isValidSize(theSize)) return false;
@@ -116,7 +121,11 @@ public class Item extends ItemUI implements Serializable {
 		return comments;
 	}
 	
-	
+	private boolean isEmptyString(String theInput) {
+		String blankString = "";
+		if (theInput.equals(blankString)) return true;
+		else return false;
+	}
 	
 	private boolean isEqualOrBelowZero(float value){
 		if(value <= 0) return true; 
@@ -125,7 +134,7 @@ public class Item extends ItemUI implements Serializable {
 	
 	private boolean isValidSize(String theSize){
 		theSize.toLowerCase();
-		if(theSize == "small" || theSize == "medium" || theSize == "large") return true;
+		if(theSize.equals("small") || theSize.equals("medium") || theSize.equals("large")) return true;
 		else return false;
 	}
 	
