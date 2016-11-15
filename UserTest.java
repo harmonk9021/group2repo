@@ -55,7 +55,6 @@ public class UserTest
 	
 	@Test
 	public void testAddItem() {
-		Item testItem = new Item("Shoes");
 		testNonprofit.addItem(testAuction);
 		assertEquals(testAuction.itemCount, 1);
 	}
