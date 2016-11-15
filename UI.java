@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class UI {
@@ -41,7 +42,7 @@ public class UI {
 				nonProfitMainMenu();
 			}
 			else{
-				//thisUser = new Bidder(userName);
+				//thisUser = new Bidder(userName, userName, "", "", 0); // Just to satisfy constructor requirements
 				thisUser.setType("Bidder");
 				bidderMainMenu();
 			}
@@ -56,14 +57,101 @@ public class UI {
 	
 	
 	public void bidderMainMenu(){
-            System.out.println("If you're reading this, it means you were recognized as a bidder");
+            //System.out.println("If you're reading this, it means you were recognized as a bidder");
+            int choice;
+            do
+            {
+            header();
+            System.out.println("What would you like to do?");
+            System.out.println("1 View available auctions\n2 Exit Auction Central\n>");
+            choice = scan.nextInt();
+            if (choice == 1)
+            {
+                viewAuctionList();
+            }
+            else if (choice == 2)
+            {
+                return;
+            }
+            
+                //bidderMainMenu();
+                } while(choice != 2);
         }
 	public void viewAuctionList(){
+            List<Auction> aucList = database.getAuctionList();
+            if (aucList == null || aucList.isEmpty())
+            {
+                System.out.println("Sorry, there are no upcoming auctions for the current\nmonth right now. Please check back later.");
+                //bidderMainMenu();
+            }
+            else
+            {
+                //while (true)
+                {
+                System.out.println("Here are the available auctions coming in the next month:");
+                for (int i = 0; i < aucList.size(); i++)
+                {
+                    if (aucList.get(i).getDate().after(new Date()))
+                    {
+                        System.out.println("" + (i+1) + " " + aucList.get(i).getName() + ", hosted " + aucList.get(i).getDate().toString());
+                    }
+                }
+                System.out.println("Enter a number to view the auction details, or press \"0\" to return to the main menu: \n>");
+                int choice = scan.nextInt();
+                if (choice == 0)
+                {
+                    //bidderMainMenu();
+                    return;
+                }
+                else
+                {
+                    auctionBidderMenu(aucList.get(choice-1));
+                }
+                }
+            }
         }
 	public void auctionBidderMenu(Auction theAuction){
+            int option;    
+            do
+                {
 		AuctionUI.displayItemsForBidder(theAuction, thisUser.getUserName());
+                System.out.println("Enter the ID number of the item you would like to bid on or enter \"0\" to return to the main menu.\n>");
+                int choice = scan.nextInt();
+                if (choice == 0)
+                {
+                    //bidderMainMenu();
+                    return;
+                }
+                List<Item> items = theAuction.getItems();
+                choice--;
+                items.get(choice).displayItem();
+                System.out.println("What would you like to do?\n\n1 Bid on this item.\n2Go back\n>");
+                option = scan.nextInt();
+                if (option == 1)
+                {
+                    System.out.println("Submit a bit of at least the minimum bid ($" + items.get(choice).getStartingBid() + "0)\n>");
+                    float bid = 0;
+                    while (bid < items.get(choice).getStartingBid())
+                    {
+                        System.out.println("Submit a bit of at least the minimum bid ($" + items.get(choice).getStartingBid() + "0)\n>");
+                        bid = scan.nextFloat();
+                    }
+                    
+                    thisUser.placeBid(items.get(choice), bid);
+                    System.out.println("Congratulations. You have placed a bid of $" + bid + "0 on item \"" + items.get(choice).getName() + "\".");
+                    //bidderMainMenu();
+                    return;
+                }
+                //else if (option == 2)
+                
+                    //auctionBidderMenu(theAuction);
+                    
+                } while (option != 2);
+                
 		
 	}
+        
+        
 	
 	public void nonProfitMainMenu(){
 		header();

@@ -1,4 +1,6 @@
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO Write a description of class Item here.
@@ -22,6 +24,10 @@ public class User implements java.io.Serializable
 	private String type;
 	
 	private Auction currentAuction;
+        
+        private Map<Item, Float> myBids;
+        
+        
     
     /**
      * Constructor for objects of class MyClass
@@ -32,6 +38,8 @@ public class User implements java.io.Serializable
         myUsername = "";
         myEmail = "";
         myPhoneNumber = 0;
+        type = "";
+        myBids = new HashMap<Item, Float>();
     }
     
     /**
@@ -89,4 +97,25 @@ public class User implements java.io.Serializable
 		return currentAuction;
 	}
     
+    public boolean placeBid(Item theItem, float theBid) {
+		boolean result = false;
+		if (theItem.addBid(theBid, myUsername)) {
+			myBids.put(theItem, theBid);
+			result = true;
+		}
+		return result;
+	}
+	
+	public boolean removeBid(Item theItem) {
+		float theBid = myBids.get(theItem);
+		boolean result = false;
+		if (myBids.remove(theItem, theBid)) {
+			result = true;
+		}
+		return result;
+	}
+	
+	public Map<Item, Float> viewBids() {
+		return myBids;
+	}
 }

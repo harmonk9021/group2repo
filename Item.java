@@ -80,7 +80,7 @@ public class Item extends ItemUI implements Serializable {
 		return true;
 	}
 	public boolean setCondition(String theCondition){
-		if (isEmptyString(theCondition)) return false;
+		if (theCondition.isEmpty()) return false;
 		condition = theCondition;
 		return true;
 	}
@@ -96,7 +96,7 @@ public class Item extends ItemUI implements Serializable {
 	
 	
 	public String getName(){
-		return donorName;
+		return name;
 	}
 	public String getDonorName(){
 		return donorName;

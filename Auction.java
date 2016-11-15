@@ -78,14 +78,19 @@ public class Auction implements java.io.Serializable
     		temp = theItem.setQuantity(ItemUI.getUserItemQuantityInput());
     		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Quantity");
     	} while (temp == false);
+        
     	
     	do{
     		temp = theItem.setStartingBid(ItemUI.getUserItemStartingBidInput());
     		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Starting Bid");
     	} while (temp == false);
     	
-    	theItem.setCondition(ItemUI.getUserItemConditionInput());
-    	
+        do
+        {
+    	temp = theItem.setCondition(ItemUI.getUserItemConditionInput());
+        } while (temp == false);
+        
+        
     	do{
     		temp = theItem.setSize(ItemUI.getUserItemSizeInput());
     		if(temp == false) ItemUI.isValidSizeErrorUI();
