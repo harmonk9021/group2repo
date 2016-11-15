@@ -8,11 +8,17 @@
  * @version 11/11/2016
  */
  
+import java.util.HashMap;
 import java.util.Map;
  
-public class Bidder implements java.io.Serializable extends User
+public class Bidder extends User implements java.io.Serializable 
 {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6430847179779764843L;
+
 	private String myName;
 	
 	private String myUsername;
@@ -23,7 +29,7 @@ public class Bidder implements java.io.Serializable extends User
 	
 	private int myPhoneNumber;
     
-	private Map<Item, float> myBids
+	private Map<Item, Float> myBids;
     
     /**
      * Constructor for Bidder
@@ -35,27 +41,28 @@ public class Bidder implements java.io.Serializable extends User
         myUsername = theUsername;
         myEmail = thePassword;
         myPhoneNumber = thePhoneNumber;
-		myBids = new Map<Item, float>();
+		myBids = new HashMap<Item, Float>();
     }
 	
 	public boolean placeBid(Item theItem, float theBid) {
-		result = false;
-		if (theItem.addBid(theBid)) {
-			myBids.add(theItem, theBid);
+		boolean result = false;
+		if (theItem.addBid(theBid, myUsername)) {
+			myBids.put(theItem, theBid);
 			result = true;
 		}
 		return result;
 	}
 	
 	public boolean removeBid(Item theItem) {
-		result = false;
-		if (myBids.remove(theItem)) {
+		float theBid = myBids.get(theItem);
+		boolean result = false;
+		if (myBids.remove(theItem, theBid)) {
 			result = true;
 		}
 		return result;
 	}
 	
-	public Map<Item, float> viewBids() {
+	public Map<Item, Float> viewBids() {
 		return myBids;
 	}
 
