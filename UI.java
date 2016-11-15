@@ -333,6 +333,10 @@ public class UI {
 		return date;
         }
 	public void auctionNonProfitMenu(){ 
+		if (thisUser.getCurrentAuction() == null) {
+			System.out.println("You have no current auctions.");
+			nonProfitMainMenu();
+		} else {
 		AuctionUI.displayItems(thisUser.getCurrentAuction());
 		System.out.print("What would you like to do?\n1 add Item to Auction\n2 return to main menu\n>");
 		int input = scan.nextInt();
@@ -343,7 +347,7 @@ public class UI {
 		}
 		else if(input == 2) return;
 		auctionNonProfitMenu();
-		
+		}
 	}
 	
 	public void staffMainMenu(){
