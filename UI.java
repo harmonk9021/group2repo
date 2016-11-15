@@ -20,9 +20,13 @@ public class UI {
 		String newUser = scan.nextLine();
 		if(newUser.equals("N") || newUser.equals("n")){
 			thisUser = database.getUser(userName);
+			if (thisUser == null) {
+				System.out.println("This User is not in database.");
+			} else {
 			if(thisUser.getType().equals("Bidder")) bidderMainMenu();
 			else if(thisUser.getType().equals("Nonprofit")) nonProfitMainMenu();
 			else staffMainMenu();
+			}
 		}
 		else{
 			thisUser = new User();
