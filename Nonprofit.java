@@ -36,21 +36,20 @@ public class Nonprofit extends User implements java.io.Serializable
 		activeAuction = false;
 		currentAuction = null;
 	}
-	
+	/*
 	public boolean submitAuctionRequest(Auction theAuction)
 	{
 		boolean result = false;
-		Auction auction = new Auction(theAuction);
-		if (auction != null) {
+		if (theAuction) {
 			currentAuction = auction;
 			activeAuction = true;
 			result = true;
 		}
 	}
-	
+	*/
 	public void addItem(Item theItem) 
 	{
-		currentAuction.addItem(theItem);
+		currentAuction.addItem();
 	}
 	
 	public void fillItem() 
@@ -66,6 +65,16 @@ public class Nonprofit extends User implements java.io.Serializable
 	 
 	public void setContactPerson(String theName) {
 		myContactPerson = theName;
+	}
+
+	public String getOrgName() {
+		return myName;
+	}
+	public boolean hasCurrentAuction() {
+		return activeAuction;
+	}
+	public String getContactPerson() {
+		return myContactPerson;
 	}
 	
 }
