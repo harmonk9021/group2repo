@@ -27,17 +27,13 @@ public class ItemUI {
 	
 	public static int getUserItemQuantityInput(){
 		System.out.println("\n\nPlease enter quantity: ");
-		int temp = scan.nextInt();
-		scan.nextLine();
-		return temp;
+		return scan.nextInt();
 	}
 	
 	public static float getUserItemStartingBidInput(){
 
 		System.out.println("\n\nPlease enter starting bid: ");
-		float temp = scan.nextFloat();
-		scan.nextLine();
-		return temp;
+		return scan.nextFloat();
 	}
 	
 	public static String getUserItemConditionInput(){
@@ -62,10 +58,6 @@ public class ItemUI {
 	
 	public static void isValidSizeErrorUI(){
 		System.out.println("\n\nSize needs to be a 'small', 'medium', or 'large'.");	
-	}
-	
-	public static void isEmptyStringUI(String var) {
-		System.out.println("\n\nYou must enter something for " + var + ".");
 	}
 	
 	public static void addBidAlreadyHasBidderErrorUI(){

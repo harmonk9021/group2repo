@@ -5,6 +5,16 @@
  * @version 11/12/16
  */
 
+/* ***********************************************
+ * ***********************************************
+ * ***********************************************
+ * 
+ * CURRENTLY JUST A WAY TO GET FAMILIAR WITH JUNIT 
+ * 
+ * ***********************************************
+ * ***********************************************
+ * ***********************************************
+ * */
 
 import static org.junit.Assert.*;
 
@@ -19,11 +29,12 @@ public class AuctionTest
 	public String myName;
 	Auction myAuction;
 	
-	@Before
-	public void setup() {
-		myDate = new Date();
-		myName = "Group 2";
-	}
+//	@Before
+//	public void setup() {
+//		myDate = new Date();
+//		myName = "Group 2";
+//		Auction myAuction = new Auction(myDate, myName);
+//	}
 	
 	@Test
 	public void testGetName() {
@@ -36,57 +47,14 @@ public class AuctionTest
 		assertEquals("Group 2", theName);
 	}
 	
-
 	@Test
-	public void testAddItemNoDuplicates() {
+	public void testGetItemCount() {
 		myDate = new Date();
 		myName = "Group 2";
-		
 		Auction myAuction = new Auction(myDate, myName);
-		Boolean testBoolean = myAuction.addItem();
 		
-		assertTrue(testBoolean);
-	}
-	
-	@Test
-	public void testAddItemDuplicate() {
-		myDate = new Date();
-		myName = "Group 2";
+		int theCount = myAuction.getItemCount();
 		
-		Auction myAuction = new Auction(myDate, myName);
-		myAuction.addItem();
-		Boolean testBoolean = myAuction.addItem();
-		assertFalse(testBoolean);
-	}
-	
-	@Test
-	public void testCheckCurrentSameDate() {
-		Auction myAuction = new Auction(myDate, myName);
-		Boolean isCurrent = myAuction.checkCurrent(myDate);
-		
-		assertFalse(isCurrent);
-	}
-	
-	@Test
-	public void testCheckCurrentBeforeDate() {
-		Date testDate = new Date();
-		testDate.setDate(25);
-		
-		Auction myAuction = new Auction(myDate, myName);
-		Boolean isCurrent = myAuction.checkCurrent(testDate);
-		
-		assertTrue(isCurrent);
-	}
-	
-	@Test
-	public void testCheckCurrentAfterDate() {
-		Date testDate = new Date();
-		testDate.setDate(1);
-		
-		Auction myAuction = new Auction(myDate, myName);
-		Boolean isCurrent = myAuction.checkCurrent(testDate);
-		
-		assertTrue(isCurrent);
+		assertEquals(0, theCount);
 	}
 }
-

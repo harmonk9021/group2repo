@@ -6,7 +6,7 @@
  * @author Andrew Dinh
  * @version 11/11/2016
  */
-public class Nonprofit implements java.io.Serializable extends User 
+public class Nonprofit extends User implements java.io.Serializable
 {
 	
 	private String myName;
@@ -36,25 +36,27 @@ public class Nonprofit implements java.io.Serializable extends User
 		activeAuction = false;
 		currentAuction = null;
 	}
-	
-	public boolean submitAuctionRequest(Auction theAuction)
+	/*
+	public void submitAuctionRequest(Auction theAuction)
 	{
 		boolean result = false;
-		Auction auction = new Auction(theAuction);
-		if (auction != null) {
+		
+		if (addAuctionToDB(theAuction)) {
 			currentAuction = auction;
 			activeAuction = true;
 			result = true;
+		}
 	}
+	//
 	
 	public void addItem(Item theItem) 
 	{
-		currentAuction.addItem(theItem);
+		currentAuction.addItem();
 	}
 	
 	public void fillItem() 
 	{
-		// Is this necesary?
+		
 	}
 	
 	/**
@@ -66,15 +68,17 @@ public class Nonprofit implements java.io.Serializable extends User
 	public void setContactPerson(String theName) {
 		myContactPerson = theName;
 	}
-	
-	/**
-	 * Gets the name of the contact person.
-	 * 
-	 * @return myContactPerson The name of the contact person.
-	 */
-	
+
 	public String getContactPerson() {
 		return myContactPerson;
+	}
+	
+	public String getOrgName() {
+		return myName;
+	}
+
+	public boolean hasCurrentAuction() {
+		return activeAuction;
 	}
 	
 }

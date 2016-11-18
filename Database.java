@@ -107,7 +107,7 @@ public class Database implements java.io.Serializable
     
     public void addUserToDB(User theUser)
     {
-        //myUserList.put(theUser.getUsername(), theUser); // placeholder based on assumed getter name
+        myUserList.put(theUser.getUserName(), theUser); // placeholder based on assumed getter name
     }
     
     public User getUser(String key)
@@ -197,8 +197,9 @@ public class Database implements java.io.Serializable
          fileIn.close();
       }catch(IOException i)
       {
-         i.printStackTrace();
+         //i.printStackTrace();
          return false;
+          //Update(auctionFileName);
       }catch(ClassNotFoundException c)
       {
          System.out.println("Auction class not found");
@@ -219,7 +220,7 @@ public class Database implements java.io.Serializable
          fileIn.close();
       }catch(IOException i)
       {
-         i.printStackTrace();
+         //i.printStackTrace();
          return false;
       }catch(ClassNotFoundException c)
       {
@@ -359,4 +360,19 @@ public class Database implements java.io.Serializable
         tester.myOrg = "Org92";
         myAuctionList.put(myDate, tester);
     }
+    
+    /***Katies*/
+    public boolean canAdd(Auction theAuction){
+    	boolean canAdd = false;
+        
+        canAdd = (
+        checkForExistingAuction(theAuction) &&
+        checkForAuctionFromYearAgo(theAuction) &&
+        checkForTooManyAuctionsOnDay(theAuction) &&
+        checkUpcomingAuctionCount()
+           );
+        return canAdd;
+    }
 }
+
+ 
