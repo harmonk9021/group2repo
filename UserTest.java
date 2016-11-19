@@ -32,7 +32,7 @@ public class UserTest
 		testBidder = new Bidder("John", "bidguy", "pass123", "John@email.com", "555-1234");
 		testNonprofit = new Nonprofit("Toys4Kids", "Nonprof", "word123", "Toys4Kids@email.com", "999-8765");
 		testStaff = new Staff("Kim", "staffperson", "pard123", "Kim@email.com", "111-2345");
-		testAuction = new Auction(new AuctionDate(), testNonprofit.getOrgName());
+		testAuction = new Auction(new AuctionDate(), testNonprofit.getName());
 		testDatabase = new Database();
 		testDatabase.addUserToDB(testBidder); 
 		testDatabase.addUserToDB(testNonprofit); 
@@ -48,14 +48,14 @@ public class UserTest
 	
 	@Test
 	public void testSubmitAuctionRequest() {
-		Auction testAuction = new Auction(new AuctionDate(), testNonprofit.getOrgName());
+		Auction testAuction = new Auction(new AuctionDate(), testNonprofit.getName());
 		testNonprofit.submitAuctionRequest(testAuction);
 		assertTrue(testNonprofit.hasCurrentAuction());
 	}
 	
 	@Test
 	public void testAddItem() {
-		testNonprofit.addItem(testAuction);
+		testNonprofit.addItem("Shoes", "John", "Gently Used", 1, (float) 25.00, "Good", "Medium", "None");
 		assertEquals(testAuction.itemCount, 1);
 	}
 	
