@@ -25,6 +25,14 @@ public class Nonprofit extends User implements java.io.Serializable
 	
 	private Auction currentAuction;
 	
+	/**
+     * Constructor for objects of class Nonprofit.
+     * @param theName Name of the Nonprofit organization (NPO).
+     * @param theUsername The username that the NPO uses to log in.
+     * @param thePassword The password that the NPO uses to log in.
+     * @param theEmail the email of the NPO.
+     * @param thePhoneNumber The phone number to contact the NPO with.
+     */
 	
 	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber) 
 	{
@@ -36,45 +44,70 @@ public class Nonprofit extends User implements java.io.Serializable
 		activeAuction = false;
 		currentAuction = null;
 	}
-	/*
+	
+	/**
+	 * Submits a new auction for the NPO.
+	 * @param theAution the auction that the NPO wants to set up.
+	 * @return Returns if the auction request was successful.
+	 */
+	
+	
 	public boolean submitAuctionRequest(Auction theAuction)
 	{
 		boolean result = false;
-		if (theAuction) {
-			currentAuction = auction;
+		if (theAuction != null) {
+			currentAuction = theAuction;
 			activeAuction = true;
 			result = true;
 		}
-	}
-	*/
-	public void addItem(Item theItem) 
-	{
-		currentAuction.addItem();
+		return result;
 	}
 	
-	public void fillItem() 
+	
+	/**
+	 * Adds an item into the auction that the NPO is hosting.
+	 * 
+	 */
+	
+	public boolean addItem(String theName, String theDonorName, String theDescription,
+			int theQuantity, float theStartingBid, String theCondition,
+			String theSize, String theComments) 
 	{
-		
+		boolean result = false;
+		Item item = new Item(theName, theDonorName, theDescription, theQuantity, theStartingBid, 
+				theCondition, theSize, theComments);
+		if (currentAuction.addItem(item)) {
+			result = true;
+		}
+		return result;
 	}
+
 	
 	/**
 	 * Sets the name of the contact person.
-	 * 
+	 *
 	 * @param theName The name being passed in.
 	 */
 	 
 	public void setContactPerson(String theName) {
 		myContactPerson = theName;
 	}
-
-	public String getOrgName() {
-		return myName;
-	}
-	public boolean hasCurrentAuction() {
-		return activeAuction;
-	}
+		
+	/**
+	 * Gets the name of the contact person for the NPO
+	 * @return Returns the name of the contact person.
+	 */
+	
 	public String getContactPerson() {
 		return myContactPerson;
 	}
 	
+	/**
+	 * Checks to see if the NPO has an upcoming auction.
+	 * @return Returns if the NPO has an upcoming auction.
+	 */
+	
+	public boolean hasCurrentAuction() {
+		return activeAuction;
+	}	
 }
