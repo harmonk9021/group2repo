@@ -15,20 +15,21 @@ import java.util.Calendar;
  * @version 11.17.2016.001A
  * @author Jacob Ackerman
  */
-public class auctionDate {
+public class AuctionDate {
     private int myYear;
     private int myMonth;
     private int myDay;
     private int myHour;
     
     private static final int AM_PM_CONVERSION = 12;
-    
+    private static final int MAX_HOUR_24 = 23;
+    private static final int MAX_MONTHS = 12;
     
     /**
      * Default constructor. Creates an auctionDate object with all fields initialized
      * to the current date and hour.
      */
-    public auctionDate()
+    public AuctionDate()
     {
         Calendar cal = Calendar.getInstance();
         myYear = cal.get(Calendar.YEAR);
@@ -44,62 +45,75 @@ public class auctionDate {
      * @param year An int that specifies the desired year
      * @param month An int that specifies the desired month (1-12 values valid)
      * @param day An int that specifies the desired day of the month (1-31* values valid)
-     * @param hour An int that specifies the desired hour (24 hour clock, 0-24 values valid)
+     * @param hour An int that specifies the desired hour (24 hour clock, 0-23 values valid)
      * 
      * *Date value may be reduced to 30 or 28 depending on the inputted month
      */
-    public auctionDate(int year, int month, int day, int hour)
+    public AuctionDate(int year, int month, int day, int hour)
     {
         myYear = year;
-        myMonth = month;
+        if (month >= 1 && month <= MAX_MONTHS)
+            myMonth = month;
+        else
+            throw new IllegalArgumentException("Month was outside valid range (1-12)");
+        if (day > 31)
+        {
+            throw new IllegalArgumentException("Day was outside valid range (1-31)");
+        }
+        else if (day > Months.FEBURARY.getDays() && myMonth == Months.FEBURARY.getMonth())
+            day = Months.FEBURARY.getDays(); // Not doing leap year checking, it's not worth it
+        else if (myMonth == Months.SEPTEMBER.getMonth() || myMonth == Months.APRIL.getMonth() || 
+                myMonth == Months.JUNE.getMonth() || myMonth == Months.NOVEMBER.getMonth())
+            day = 30;
         myDay = day;
-        myHour = hour;
+        if (hour >= 0 && hour <= MAX_HOUR_24)
+            myHour = hour;
+        else
+            throw new IllegalArgumentException("Hour was outside valid range (0-23)");
     }
     
     /**
-     * This will take a <value/object to be specified, depending on what is considered
-     * important and/or useful> and compare it to this auctionDate object. Will
+     * This will take an AuctionDate object and compare it to this auctionDate object. Will
      * return true if:
      *    -The day field of the two objects is the same AND
      *    -The month field of the two objects is the same AND
      *    -The year field of the two objects is the same
      * Otherwise will return false.
      * 
-     * @param [TO BE DETERMINED]
+     * @param theDate The date to compare against
      * @return Boolean flag stating true if both objects are on the same day
      */
-    public boolean isSameDay()
+    public boolean isSameDay(AuctionDate theDate)
     {
-        return true;
+        return (theDate.myDay == myDay && 
+                theDate.myMonth == myMonth && theDate.myYear == myYear);
     }
     
     /**
-     * This will take a <value/object to be specified, depending on what is considered
-     * important and/or useful> and compare it to this auctionDate object. Will
+     * This will take an AuctionDate object and compare it to this auctionDate object. Will
      * return true if:
      *    -The month field of the two objects is the same AND
      *    -The year field of the two objects is the same
      * Otherwise will return false.
      * 
-     * @param [TO BE DETERMINED]
+     * @param theDate The date to compare against
      * @return Boolean flag stating true if both objects are on the same month
      */
-    public boolean isSameMonth()
+    public boolean isSameMonth(AuctionDate theDate)
     {
-        return true;
+        return (theDate.myMonth == myMonth && theDate.myYear == myYear);
     }
     
     /**
-     * This will take a <value/object to be specified, depending on what is considered
-     * important and/or useful> and check to see if the passed in object less than
+     * This will take an AuctionDate object and check to see if the passed in object less than
      * a year in the past from this object. Will return true if:
      *      -The parameter is less than 365 days (1 year) from this object
      * Otherwise will return false.
      * 
-     * @param [TO BE DETERMINED]
+     * @param theDate The date to compare against
      * @return Boolean flag stating true if this date is within a year of the passed in parameter
      */
-    public boolean isWithinYear()
+    public boolean isWithinYear(AuctionDate theDate)
     {
         return true;
     }
@@ -115,6 +129,26 @@ public class auctionDate {
     public int[] getNextXDays(int days)
     {
         return null;
+    }
+    
+    /**
+     * This function will take an AuctionDate object and check whether it is 
+     * within a specified amount of hours, positive and negative, from the date
+     * object it is called on. Will return true if:
+     *      -The passed in AuctionDate is more than X hours before, or X hours
+     *       after this AuctionDate
+     *      -The passed in AuctionDate is exactly X hours before, or X hours
+     *       after this AuctionDate
+     * Otherwise will return false.
+     * 
+     * @param theDate The date to compare against
+     * @param hours The amount of hours away to check (represents the X value)
+     * @return Boolean flag stating true if the passed in date is X hours away
+     *         from this date, and false otherwise
+     */
+    public boolean isWithinXHours(AuctionDate theDate, int hours)
+    {
+        return true;
     }
     
     @Override
