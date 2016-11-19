@@ -1,5 +1,3 @@
-import java.util.Date;
-
 /**
  * This is the staff class used to define people that
  * are staff members of Action Central. The unique feature
@@ -12,6 +10,12 @@ import java.util.Date;
 public class Staff extends User implements java.io.Serializable 
 {
     
+	/**
+	 * Generated serial ID
+	 */
+	
+	private static final long serialVersionUID = -5499586537579673988L;
+
 	private String myName;
 	
 	private String myUsername;
@@ -23,8 +27,14 @@ public class Staff extends User implements java.io.Serializable
 	private String myPhoneNumber;
 	
     /**
-     * Constructor for objects of class MyClass
+     * Constructor for objects of class Staff.
+     * @param theName Name of the staff member.
+     * @param theUsername The username that the staff member uses to log in.
+     * @param thePassword The password that the staff member uses to log in.
+     * @param theEmail the email of the staff member.
+     * @param thePhoneNumber The phone number to contact the staff person with.
      */
+	
     public Staff(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber)
     {
         myName = theName;
@@ -34,33 +44,12 @@ public class Staff extends User implements java.io.Serializable
     }
     
     /**
-     * Views all auctions past and future.
-     * @Return Returns all of the auctions from database.
+     * Views all upcoming auctions in the next month.
+     * @Return Returns a calendar of all of the auctions to be displayed.
      */
     
     public AuctionCalendar viewAuctions() {
-		AuctionCalendar calender = new AuctionCalendar(new Date());
+	AuctionCalendar calender = new AuctionCalendar(new AuctionDate());
     	return calender;
     }
-    
-    /**
-     * Views all auctions past and future.
-     * @Return Returns all past auctions from database.
-     */
-    
-    public AuctionCalendar viewPastAuctions(Date theDate) {
-		AuctionCalendar calender = new AuctionCalendar(theDate);
-    	return calender;
-    }
-    
-    /**
-     * Views all auctions past and future.
-     * @Return Returns all upcoming auctions from database.
-     */
-    
-    public AuctionCalendar viewCurrentAuctions(Date theDate) {
-		AuctionCalendar calender = new AuctionCalendar(theDate);
-    	return calender;
-    }
-
 }
