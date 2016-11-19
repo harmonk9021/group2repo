@@ -15,7 +15,7 @@ import java.util.Calendar;
  * @version 11.17.2016.001A
  * @author Jacob Ackerman
  */
-public class auctionDate {
+public class AuctionDate {
     private int myYear;
     private int myMonth;
     private int myDay;
@@ -28,7 +28,7 @@ public class auctionDate {
      * Default constructor. Creates an auctionDate object with all fields initialized
      * to the current date and hour.
      */
-    public auctionDate()
+    public AuctionDate()
     {
         Calendar cal = Calendar.getInstance();
         myYear = cal.get(Calendar.YEAR);
@@ -48,7 +48,7 @@ public class auctionDate {
      * 
      * *Date value may be reduced to 30 or 28 depending on the inputted month
      */
-    public auctionDate(int year, int month, int day, int hour)
+    public AuctionDate(int year, int month, int day, int hour)
     {
         myYear = year;
         myMonth = month;

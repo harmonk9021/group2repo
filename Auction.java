@@ -20,7 +20,7 @@ public class Auction implements java.io.Serializable
 	
 	
 	public  transient Scanner input = new Scanner(System.in);
-	public Date aucDate;
+	public AuctionDate aucDate;
 	private List<Item> myItems;
 	public String auctionName;
 	public String myOrg;
@@ -33,7 +33,7 @@ public class Auction implements java.io.Serializable
     /**
      * Constructor for objects of class MyClass
      */
-    public Auction(Date theDate, String theOrgName)
+    public Auction(AuctionDate theDate, String theOrgName)
     {
     	aucDate = theDate;
     	myItems = new ArrayList<Item>();

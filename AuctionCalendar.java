@@ -5,20 +5,20 @@ import java.util.*;
  * @author Cody Arnold 
  * @version 11/17/16
  */
-public class Calendar implements java.io.Serializable 
-{	Date theDate;
-	int theAuctionCount;
-	Collection<Auction> myAuctions;
+public class AuctionCalendar implements java.io.Serializable {	
+	private AuctionDate theDate;
+	private int theAuctionCount;
+	private Collection<Auction> myAuctions;
 	
-	public Calendar(Date startingDate){
-		theDate = startingDate;
-      myAuctions = new ArrayList<Auction>();
-      theAuctionCount = 0;
+	public AuctionCalendar(AuctionDate startingDate) {
+	    theDate = startingDate;
+        myAuctions = new ArrayList<Auction>();
+        theAuctionCount = 0;
 	}
    
    
-   public void addAuction(Auction theAuction) {
-      
+   public boolean addAuction(Auction theAuction) {
+      return true;
    }
    
    public Collection<Auction> getAuctions() {
