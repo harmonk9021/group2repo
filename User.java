@@ -1,16 +1,21 @@
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * TODO Write a description of class Item here.
+ * This is the user class that the Bidder, Nonprofit, and staff
+ * classes inherit from. It will be used to to contain all of the 
+ * getter and setters that each class shares. 
  * 
  * @author Andrew Dinh
  * @version 11/11/2016
  */
+
 public class User implements java.io.Serializable 
 {
     
+	/**
+	 * Generated serial ID.
+	 */
+	
+	private static final long serialVersionUID = -4482170880572973916L;
+
 	private String myName;
 	
 	private String myUsername;
@@ -19,27 +24,18 @@ public class User implements java.io.Serializable
 	
 	private String myEmail;
 	
-	private int myPhoneNumber;
-	
-	private String type;
-	
-	private Auction currentAuction;
-        
-        private Map<Item, Float> myBids;
-        
-        
+	private String myPhoneNumber;
     
     /**
-     * Constructor for objects of class MyClass
-     */
+     * Constructor for objects of class User.
+     */        
+    
     public User()
     {
         myName = "";
         myUsername = "";
         myEmail = "";
-        myPhoneNumber = 0;
-        type = "";
-        myBids = new HashMap<Item, Float>();
+        myPhoneNumber = "";
     }
     
     /**
@@ -57,65 +53,93 @@ public class User implements java.io.Serializable
     	return result;
     }
     
+    /**
+     * Sets the name of the user.
+     * @param theUsername String of the name to use.
+     */
+    
+    public void setName(String theName) {
+    	myName = theName;
+    }
+    
+    /**
+     * Gets the name of the user.
+     * @return Returns the name.
+     */
+    
+    public String getName() {
+    	return myName;
+    }
+    
+    /**
+     * Sets the username of the user.
+     * @param theUsername String of the username to use.
+     */
+    
     public void setUserName(String theUsername){
     	myUsername = theUsername;
     }
+    
+    /**
+     * Gets the username of the user.
+     * @return Returns the username.
+     */
     
     public String getUserName(){
     	return myUsername;
     }
     
+    /**
+     * Sets the password of the user.
+     * @param thePassword String of the password.
+     */
+    
     public void setPassword(String thePassword){
     	myPassword = thePassword;
     }
     
-    public void setType(String theType){
-    	type = theType;
+    /**
+     * Gets the password of the user.
+     * @return Returns the password.
+     */
+    
+    public String getPassword() {
+    	return myPassword;
     }
     
-    public String getType(){
-    	return type;
+    /**
+     * Sets the email of the user.
+     * @param theUsername String of the email to use.
+     */
+    
+    public void setEmail(String theEmail) {
+    	myEmail = theEmail;
     }
     
-    public void addItem(Auction currentAuction) 
-	{
-		boolean result = currentAuction.addItem();
-	}
+    /**
+     * Gets the email of the user.
+     * @return Returns the email.
+     */
     
-    public void submitAuctionRequest(Auction theAuction){
-    	Date theDate = new Date();
-    	
-    	
+    public String getEmail() {
+    	return myEmail;
     }
     
-    /***Katie***/
-    public void setCurrentAuction(Auction auction){
-		currentAuction = auction;
-	}
+    /**
+     * Sets the phone number of the user.
+     * @param theUsername String of the phone number to use.
+     */
     
-    public Auction getCurrentAuction() {
-		return currentAuction;
-	}
+    public void setPhoneNumber(String thePhoneNumber) {
+    	myPhoneNumber = thePhoneNumber;
+    }
     
-    public boolean placeBid(Item theItem, float theBid) {
-		boolean result = false;
-		if (theItem.addBid(theBid, myUsername)) {
-			myBids.put(theItem, theBid);
-			result = true;
-		}
-		return result;
-	}
-	
-	public boolean removeBid(Item theItem) {
-		float theBid = myBids.get(theItem);
-		boolean result = false;
-		if (myBids.remove(theItem, theBid)) {
-			result = true;
-		}
-		return result;
-	}
-	
-	public Map<Item, Float> viewBids() {
-		return myBids;
-	}
+    /**
+     * Gets the phone number of the user.
+     * @return Returns the phone number.
+     */
+    
+    public String getPhoneNumber() {
+    	return myPhoneNumber;
+    }
 }
