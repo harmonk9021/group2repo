@@ -38,8 +38,8 @@ public class Staff extends User implements java.io.Serializable
      * @Return Returns all of the auctions from database.
      */
     
-    public Calendar viewAuctions() {
-		Calendar calender = new Calendar(new Date());
+    public AuctionCalendar viewAuctions() {
+		AuctionCalendar calender = new AuctionCalendar(new Date());
     	return calender;
     }
     
@@ -48,8 +48,8 @@ public class Staff extends User implements java.io.Serializable
      * @Return Returns all past auctions from database.
      */
     
-    public Calendar viewPastAuctions(Date theDate) {
-		Calendar calender = new Calendar(theDate);
+    public AuctionCalendar viewPastAuctions(Date theDate) {
+		AuctionCalendar calender = new AuctionCalendar(theDate);
     	return calender;
     }
     
@@ -58,8 +58,8 @@ public class Staff extends User implements java.io.Serializable
      * @Return Returns all upcoming auctions from database.
      */
     
-    public Calendar viewCurrentAuctions(Date theDate) {
-		Calendar calender = new Calendar(theDate);
+    public AuctionCalendar viewCurrentAuctions(Date theDate) {
+		AuctionCalendar calender = new AuctionCalendar(theDate);
     	return calender;
     }
 

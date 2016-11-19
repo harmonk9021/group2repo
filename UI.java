@@ -364,8 +364,8 @@ public class UI {
 	public void viewCalendar(){
 		header();
 		Date today = new Date();
-		Calendar calendar = new Calendar(today);
-		calendar.displayCalendar();
+		AuctionCalendar calendar = new AuctionCalendar(today);
+		//calendar.displayCalendar();
 		
 		System.out.println("What would you like to do?");
 		System.out.print("type in the day of the Auctions you want to see(type MM DD)\n>");
@@ -373,7 +373,7 @@ public class UI {
 		int day = scan.nextInt();
 		scan.nextLine();
 		Date dateChosen = new Date(today.getYear(), month, day);
-		calendar.viewAnAuction(dateChosen);
+		//calendar.viewAnAuction(dateChosen);
 	}
 	
 	public void header(){
