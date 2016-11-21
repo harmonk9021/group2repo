@@ -115,7 +115,18 @@ public class AuctionDate {
      */
     public boolean isWithinYear(AuctionDate theDate)
     {
-        return true;
+        
+        if ((theDate.myYear == myYear - 1) && (theDate.myMonth >= myMonth))
+        {
+            if (theDate.myDay >= myDay || (theDate.myMonth > myMonth))
+                return true;
+        }
+     
+        else if (theDate.myYear == myYear)
+        {
+            return true;
+        }
+        return false;
     }
     
     /**
@@ -128,7 +139,25 @@ public class AuctionDate {
      */
     public int[] getNextXDays(int days)
     {
-        return null;
+        int currDay = myDay;
+        Months currMonth = null;
+        currMonth = Months.convertToMonth(myMonth);
+        int nextDays[] = new int[days];
+        nextDays[0] = currDay;
+        currDay++;
+        for (int i = 1; i < days; i++)
+        {
+            if(currDay > currMonth.getDays())
+            {
+                int tmp = currMonth.getMonth();
+                tmp++;
+                currMonth = Months.convertToMonth(tmp);
+                currDay = 1;
+            }
+            nextDays[i] = currDay;
+            currDay++;
+        }
+        return nextDays;
     }
     
     /**
@@ -148,7 +177,24 @@ public class AuctionDate {
      */
     public boolean isWithinXHours(AuctionDate theDate, int hours)
     {
-        return true;
+        if ((theDate.myHour - myHour <= hours) && (theDate.myHour - myHour > 0))
+            return true; // This doesn't actually account for rollovers into the 
+                         // next day at the moment, but I can't actually think of 
+                         // a realistic situation where that needs to be accounted for.
+        else if ((myHour - theDate.myHour <= hours) && (myHour - theDate.myHour > 0))
+            return true;
+        else
+            return false;
+    }
+    
+    /**
+     * DO NOT USE!
+     * FOR TESTING PURPOSES ONLY!
+     */
+    public int[] conTest()
+    {
+        int[] stuff = {myYear, myMonth, myDay, myHour};
+        return stuff;
     }
     
     @Override
