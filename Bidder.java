@@ -19,16 +19,6 @@ public class Bidder extends User implements java.io.Serializable
 	 */
 	
 	private static final long serialVersionUID = -6430847179779764843L;
-
-	private String myName;
-	
-	private String myUsername;
-	
-	private String myPassword;
-	
-	private String myEmail;
-	
-	private String myPhoneNumber;
     
 	private Map<Item, Float> myBids;
     
@@ -45,6 +35,7 @@ public class Bidder extends User implements java.io.Serializable
     {
 		myName = theName;
         myUsername = theUsername;
+        myPassword = thePassword;
         myEmail = thePassword;
         myPhoneNumber = thePhoneNumber;
 		myBids = new HashMap<Item, Float>();
