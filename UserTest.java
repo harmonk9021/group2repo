@@ -6,9 +6,10 @@
  * @version 11/12/2016
  */
  
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.junit.Before;
@@ -37,13 +38,23 @@ public class UserTest
 		testDatabase.addUserToDB(testBidder); 
 		testDatabase.addUserToDB(testNonprofit); 
 		testDatabase.addUserToDB(testStaff); 
-		testDatabase.addAuctionToDB(testAuction);
 	}
 	
 	@Test
-	public void testAuthenticate() {
+	public void testAuthenticatePass() {
 		assertTrue(testBidder.authenticate("bidguy", "pass123"));
+		assertTrue(testNonprofit.authenticate("Nonprof", "word123"));
+		assertTrue(testStaff.authenticate("staffperson", "pard123"));
+	}
+	
+	@Test
+	public void testAuthenticateFail() {
 		assertFalse(testBidder.authenticate("bidguy", "badpass"));
+		assertFalse(testNonprofit.authenticate("Nonprof", "badpass"));
+		assertFalse(testStaff.authenticate("staffperson", "badpass"));
+		assertFalse(testBidder.authenticate("baduser", "pass123"));
+		assertFalse(testNonprofit.authenticate("baduser", "word123"));
+		assertFalse(testStaff.authenticate("baduser", "pard123"));
 	}
 	
 	@Test
@@ -55,8 +66,8 @@ public class UserTest
 	
 	@Test
 	public void testAddItem() {
-		testNonprofit.addItem("Shoes", "John", "Gently Used", 1, (float) 25.00, "Good", "Medium", "None");
-		assertEquals(testAuction.itemCount, 1);
+//		testNonprofit.addItem("Shoes", "John", "Gently Used", 1, (float) 25.00, "Good", "Medium", "None");
+		assertTrue(testAuction.getItems().contains("Shoes"));
 	}
 	
 	@Test
