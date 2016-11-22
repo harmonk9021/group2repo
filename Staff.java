@@ -15,16 +15,6 @@ public class Staff extends User implements java.io.Serializable
 	 */
 	
 	private static final long serialVersionUID = -5499586537579673988L;
-
-	private String myName;
-	
-	private String myUsername;
-	
-	private String myPassword;
-	
-	private String myEmail;
-	
-	private String myPhoneNumber;
 	
     /**
      * Constructor for objects of class Staff.
@@ -39,7 +29,8 @@ public class Staff extends User implements java.io.Serializable
     {
         myName = theName;
         myUsername = theUsername;
-        myEmail = thePassword;
+        myPassword = thePassword;
+        myEmail = theEmail;
         myPhoneNumber = thePhoneNumber;
     }
     
