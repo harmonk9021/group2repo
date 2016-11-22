@@ -16,15 +16,15 @@ public class User implements java.io.Serializable
 	
 	private static final long serialVersionUID = -4482170880572973916L;
 
-	private String myName;
+	String myName;
 	
-	private String myUsername;
+	String myUsername;
 	
-	private String myPassword;
+	String myPassword;
 	
-	private String myEmail;
+	String myEmail;
 	
-	private String myPhoneNumber;
+	String myPhoneNumber;
     
     /**
      * Constructor for objects of class User.
@@ -34,6 +34,7 @@ public class User implements java.io.Serializable
     {
         myName = "";
         myUsername = "";
+        myPassword = "";
         myEmail = "";
         myPhoneNumber = "";
     }

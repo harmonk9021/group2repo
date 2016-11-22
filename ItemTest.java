@@ -3,6 +3,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/**	This class Tests the methods found in the Item class
+ * 
+ * @author Katie Harmon
+ * @version 11-20-2016
+ */
 public class ItemTest {
 	Item generalItem;
 	
@@ -112,5 +118,16 @@ public class ItemTest {
 	@Test
 	public void testSetSizeOnInvalidSize(){
 		assertFalse(generalItem.setSize("shirt"));
+	}
+	
+	@Test
+	public void testDeleteBidOnBidExists(){
+		assertTrue(generalItem.addBid((float)200.00, "Steven"));
+		assertTrue(generalItem.deleteBid("Steven"));
+	}
+	
+	@Test
+	public void testDeleteBidOnBidDoesNotExists(){
+		assertFalse(generalItem.deleteBid("Steven"));
 	}
 }

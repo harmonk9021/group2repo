@@ -9,16 +9,11 @@
 public class Nonprofit extends User implements java.io.Serializable
 {
 	
-	private String myName;
-	
-	private String myUsername;
-	
-	private String myPassword;
-	
-	private String myEmail;
-	
-	private String myPhoneNumber;
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5388228290817876502L;
+
 	private String myContactPerson;
 	
 	private boolean activeAuction; 
@@ -38,7 +33,8 @@ public class Nonprofit extends User implements java.io.Serializable
 	{
 		myName = theName;
         myUsername = theUsername;
-        myEmail = thePassword;
+        myPassword = thePassword;
+        myEmail = theEmail;
         myPhoneNumber = thePhoneNumber;
 		myContactPerson = "";
 		activeAuction = false;
