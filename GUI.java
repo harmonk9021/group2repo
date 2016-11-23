@@ -34,12 +34,12 @@ public class GUI {
 		myFrame.setSize(400, 400);
 		myFrame.setLayout(bLayout);
 		
-		loginScreen();
+		loginInputPanel();
 		
 		myFrame.setVisible(true);
 	}
 	
-	public void loginScreen() {
+	public void loginInputPanel() {
 		JPanel inputPanel = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -70,11 +70,7 @@ public class GUI {
 		inputPanel.add(passwordField, c);
 		c.ipadx = 30;
 		c.gridy = 2;
-//		inputPanel.add(authenticate, c);
-//		username.setText("Username");
-//		password.setText("Password");
-//		username.setMinimumSize(username.getPreferredSize());
-		
+
 		JPanel buttonPanel = new JPanel();
 		GridBagLayout btnGridBag = new GridBagLayout();
 		buttonPanel.setLayout(btnGridBag);
@@ -85,20 +81,40 @@ public class GUI {
 		
 		authenticate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (myUserLogin.getUser(usernameField.getText()) == null) {
+				String enteredUsername = usernameField.getText();
+				String enteredPassword = passwordField.getText();
+				if (myUserLogin.getUser(enteredUsername) == null) {
 					System.out.println("User is null");
+					
+//					FIXME
+//					Label shows up only when JFrame is resized. Don't remember how to fix this.
+//					JLabel noUserFound = new JLabel("The username entered was not found!");
+//					c.gridy = 3;
+//					inputPanel.add(noUserFound, c);
+//					inputPanel.repaint();
+					
 				} else {
-					User user = myUserLogin.getUser(usernameField.getText());
-					if (user instanceof Bidder) {
-						BidderGUI bidGUI = new BidderGUI(user);
-						bidGUI.start();
-					} else if (user instanceof Nonprofit) {
-						NonprofitGUI npoGUI = new NonprofitGUI(user);
-						npoGUI.start();
-					} else if  (user instanceof Staff) {
-						StaffGUI staffGUI = new StaffGUI(user);
-						staffGUI.start();
+					System.out.println("Bidder exists in Login");
+					
+					if (!myUserLogin.isValidPassword(enteredUsername, enteredPassword)) {
+						JLabel noInvalidPassword = new JLabel("The username or password entered is incorrect.");
+						c.gridy = 3;
+						inputPanel.add(noInvalidPassword, c);
+						inputPanel.repaint();
+					} else {
+						User user = myUserLogin.getUser(usernameField.getText());
+						if (user instanceof Bidder) {
+							BidderGUI bidGUI = new BidderGUI(user);
+							bidGUI.start();
+						} else if (user instanceof Nonprofit) {
+							NonprofitGUI npoGUI = new NonprofitGUI(user);
+							npoGUI.start();
+						} else if  (user instanceof Staff) {
+							StaffGUI staffGUI = new StaffGUI(user);
+							staffGUI.start();
+						}
 					}
+					
 				}
 			}
 		});
@@ -106,4 +122,6 @@ public class GUI {
 		myFrame.add(inputPanel, BorderLayout.CENTER);
 		myFrame.add(buttonPanel, BorderLayout.SOUTH);
 	}
+	
+	
 }
