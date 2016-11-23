@@ -88,7 +88,17 @@ public class GUI {
 				if (myUserLogin.getUser(usernameField.getText()) == null) {
 					System.out.println("User is null");
 				} else {
-					
+					User user = myUserLogin.getUser(usernameField.getText());
+					if (user instanceof Bidder) {
+						BidderGUI bidGUI = new BidderGUI(user);
+						bidGUI.start();
+					} else if (user instanceof Nonprofit) {
+						NonprofitGUI npoGUI = new NonprofitGUI(user);
+						npoGUI.start();
+					} else if  (user instanceof Staff) {
+						StaffGUI staffGUI = new StaffGUI(user);
+						staffGUI.start();
+					}
 				}
 			}
 		});
