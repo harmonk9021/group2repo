@@ -11,7 +11,11 @@ public class Main {
 		
 		//UI ui = new UI();
 	//	ui.mainMenu();
-		GUI gui = new GUI();
+		
+		Login myLogin = new Login("Users.ser");
+		myLogin.loadUserInfo(myLogin.fileName);
+		
+		GUI gui = new GUI(myLogin);
 		gui.start();
 		//database.Update("Auctions.ser", "Users.ser");
 		System.out.println("GoodBye");
