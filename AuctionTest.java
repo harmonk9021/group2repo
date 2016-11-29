@@ -38,19 +38,30 @@ public class AuctionTest
 	public String expectedItemSize2 = "Small";
 	public String expectedItemComment2 = "Leave me alone, I know what I'm doing.";
 	
+	Item myItem;
+	Item myItem2;
+	Item myItemAgain;
+	
 	@Before
 	public void setup() {
-		myCurrentDate = new AuctionDate(2016, 11, 21, 12);
+		myCurrentDate = new AuctionDate(2016, 12, 21, 12);
 		myName = "Group 2";
+		
+		myItem = new Item(expectedItemName, expectedItemDonor, expectedItemDesc,
+				   expectedItemQuantity, expectedStartingBid, expectedItemCond,
+				   expectedItemSize, expectedItemComment);
+		myItemAgain = new Item(expectedItemName, expectedItemDonor, expectedItemDesc,
+				   expectedItemQuantity, expectedStartingBid, expectedItemCond,
+				   expectedItemSize, expectedItemComment);
+		myItem2 = new Item(expectedItemName2, expectedItemDonor2, expectedItemDesc2,
+				   expectedItemQuantity2, expectedStartingBid2, expectedItemCond2,
+				   expectedItemSize2, expectedItemComment2);
+
+		myAuction = new Auction(myCurrentDate, myName);
 	}
 	
 	@Test
 	public void testAddItemNoDuplicatesCheckingArrayListAndReturnBoolean() {
-		myName = "Group 2";
-		Item myItem = new Item(expectedItemName, expectedItemDonor, expectedItemDesc,
-							   expectedItemQuantity, expectedStartingBid, expectedItemCond,
-							   expectedItemSize, expectedItemComment);
-		Auction myAuction = new Auction(myCurrentDate, myName);
 		Boolean testBoolean = myAuction.addItem(myItem);
 		Boolean testBoolean2 = myAuction.getItems().contains(myItem);
 		
@@ -60,8 +71,6 @@ public class AuctionTest
 	
 	@Test
 	public void testAddItemMultipleUnique() {
-		myName = "Group 2";
-		Auction myAuction = new Auction(myCurrentDate, myName);
 	
 		String expectedItemName3 = "Test Driver";
 		String expectedItemDonor3 = "Jean-Eric Vergne";
@@ -71,18 +80,12 @@ public class AuctionTest
 		String expectedItemCond3 = "Used";
 		String expectedItemSize3 = "Small";
 		String expectedItemComment3 = "N/A";
-
-		Item myItem = new Item(expectedItemName, expectedItemDonor, expectedItemDesc,
-							   expectedItemQuantity, expectedStartingBid, expectedItemCond,
-							   expectedItemSize, expectedItemComment);
 		
 		Boolean testBoolean = myAuction.addItem(myItem); //Boolean returned by function
 		Boolean testBoolean7 = myAuction.getItems().contains(myItem); //Boolean returned if array contains Item
 		assertTrue(testBoolean7); //Check if Item is added immediately after add
 		
-		Item myItem2 = new Item(expectedItemName2, expectedItemDonor2, expectedItemDesc2,
-				   expectedItemQuantity2, expectedStartingBid2, expectedItemCond2,
-				   expectedItemSize2, expectedItemComment2);
+
 		Boolean testBoolean2 = myAuction.addItem(myItem2); //Boolean returned by function
 		Boolean testBoolean8 = myAuction.getItems().contains(myItem2); //Boolean returned if array contains Item
 		assertTrue(testBoolean8); //Check if Item is added immediately after add
@@ -110,21 +113,11 @@ public class AuctionTest
 	
 	@Test
 	public void testAddItemDuplicateItemsSameNameSameInfo() {
-		myName = "Group 2";
-
-		Item myItem = new Item(expectedItemName, expectedItemDonor, expectedItemDesc,
-							   expectedItemQuantity, expectedStartingBid, expectedItemCond,
-							   expectedItemSize, expectedItemComment);
-		Item myItem2 = new Item(expectedItemName, expectedItemDonor, expectedItemDesc,
-				   expectedItemQuantity, expectedStartingBid, expectedItemCond,
-				   expectedItemSize, expectedItemComment);
-
-		Auction myAuction = new Auction(myCurrentDate, myName);
 		Boolean testBoolean = myAuction.addItem(myItem);
-		Boolean testBoolean2 = myAuction.addItem(myItem2);
+		Boolean testBoolean2 = myAuction.addItem(myItemAgain); //Katies change
 
 		Boolean testBoolean4 = myAuction.getItems().contains(myItem);
-		Boolean testBoolean5 = myAuction.getItems().contains(myItem2);
+		Boolean testBoolean5 = myAuction.getItems().contains(myItemAgain); //Katies change
 
 		assertTrue(testBoolean);
 		assertFalse(testBoolean2);
@@ -135,16 +128,7 @@ public class AuctionTest
 	
 	@Test
 	public void testAddItemDuplicateItemsSameNameDiffInfo() {
-		myName = "Group 2";
-		
-		Item myItem = new Item(expectedItemName, expectedItemDonor, expectedItemDesc,
-							   expectedItemQuantity, expectedStartingBid, expectedItemCond,
-							   expectedItemSize, expectedItemComment);
-		Item myItem2 = new Item("Driver 1", expectedItemDonor2, expectedItemDesc2,
-				   expectedItemQuantity2, expectedStartingBid2, expectedItemCond2,
-				   expectedItemSize2, expectedItemComment2);
-
-		Auction myAuction = new Auction(myCurrentDate, myName);
+		myItem2.setName(expectedItemName);
 		Boolean testBoolean = myAuction.addItem(myItem);
 		Boolean testBoolean2 = myAuction.addItem(myItem2);
 
@@ -159,6 +143,66 @@ public class AuctionTest
 		assertFalse(testBoolean5);
 	}
 	
+	@Test
+	public void testRemoveItemOnItemExists() {
+		myAuction.addItem(myItem);
+		assertEquals(0, myAuction.removeItem(myItem));
+	}
+
+	@Test
+	public void testRemoveItemOnItemDoesNotExists() {
+		assertEquals(2, myAuction.removeItem(myItem));
+	}
+	
+	@Test
+	public void testRemoveItemOnItemExistsWithin2Days() {
+		AuctionDate today = new AuctionDate();
+		myAuction.setDate(today);
+		myAuction.addItem(myItem);
+		assertEquals(1, myAuction.removeItem(myItem));
+	}
+	
+	@Test
+	public void testRemoveItemOnItemDoesNotExistsWithin2Days() {
+		AuctionDate today = new AuctionDate();
+		myAuction.setDate(today);
+		assertEquals(2, myAuction.removeItem(myItem));
+	}
+	
+	@Test
+	public void testRemoveBidOnBidExists(){
+		myAuction.addItem(myItem);
+		myItem.addBid(1000, "Steven");
+		assertEquals(0, myAuction.removeBid(myItem, "Steven"));
+	}
+	
+	@Test
+	public void testRemoveBidOnBidDoesNotExists(){
+		myAuction.addItem(myItem);
+		assertEquals(2, myAuction.removeBid(myItem, "Steven"));
+	}
+	
+	@Test
+	public void testRemoveBidOnBidExistsWithin2Days(){
+		AuctionDate today = new AuctionDate();
+		myAuction.setDate(today);
+		myAuction.addItem(myItem);
+		myItem.addBid(1000, "Steven");
+		assertEquals(1, myAuction.removeBid(myItem, "Steven"));
+	}
+	
+	@Test
+	public void testRemoveBidOnBidDoesNotExistsWithin2Days(){
+		AuctionDate today = new AuctionDate();
+		myAuction.setDate(today);
+		myAuction.addItem(myItem);
+		assertEquals(1, myAuction.removeBid(myItem, "Steven"));
+	}
+	
+	@Test
+	public void testRemoveBidOnItemDoesNotExist(){
+		assertEquals(3, myAuction.removeBid(myItem, "Steven"));
+	}
 //	@Test
 //	public void testCheckCurrentSameDate() {
 //		Auction myAuction = new Auction(myDate, myName);
