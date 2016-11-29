@@ -75,6 +75,34 @@ public class Auction implements java.io.Serializable
     	}
     }
     
+    /**
+     * @returns 0 if Item was successfully removed
+     * @returns 1 if Item was not removed due to being within two days before auction date 
+     * @returns 2 if Item was not removed because it did not exist
+     */
+    public int removeItem(Item theItem){
+    	AuctionDate today = new AuctionDate();
+    	if (!myItems.contains(theItem)) return 2;
+    	if (aucDate.isWithin2Days(today)) return 1;
+    	myItems.remove(theItem);
+    	return 0;
+    }
+    
+    /**
+     * @return 0 if the bid was successfully removed
+     * @return 1 if the bid was not removed due to being within two days before auction date 
+     * @return 2 if the bid was not removed because it did not exist
+     * @return 3 if the item does not exist
+     */
+    public int removeBid(Item theItem, String theName){
+    	AuctionDate today = new AuctionDate();
+    	if (!myItems.contains(theItem)) return 3;
+    	if (aucDate.isWithin2Days(today)) return 1;
+    	boolean responce = theItem.deleteBid(theName);
+    	if (responce == false) return 2;
+    	return 0;
+    	
+    }
         
     /**
      * <<<<<<<<<<<<<<<<<<<<------>>>>>>>>>>>>>>>>>>>>
@@ -95,32 +123,33 @@ public class Auction implements java.io.Serializable
      * 
      * @param theItem is the Item object with empty fields.
      */
-   private void setItemParams(Item theItem){
-	   boolean temp;
-	   
-    	theItem.setDonorName(ItemUI.getUserItemDonorNameInput());
-    	theItem.setDescription(ItemUI.getUserItemDescriptionInput());
-    	
-    	do{
-    		temp = theItem.setQuantity(ItemUI.getUserItemQuantityInput());
-    		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Quantity");
-    	} while (temp == false);
-    	
-    	do{
-    		temp = theItem.setStartingBid(ItemUI.getUserItemStartingBidInput());
-    		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Starting Bid");
-    	} while (temp == false);
-    	
-    	theItem.setCondition(ItemUI.getUserItemConditionInput());
-    	
-    	do{
-    		temp = theItem.setSize(ItemUI.getUserItemSizeInput());
-    		if(temp == false) ItemUI.isValidSizeErrorUI();
-    	} while (temp == false);
-    	
-    	theItem.setComments(ItemUI.getUserItemCommentsInput());
-    	
-    }
+    
+//   private void setItemParams(Item theItem){
+//	   boolean temp;
+//	   
+//    	theItem.setDonorName(ItemUI.getUserItemDonorNameInput());
+//    	theItem.setDescription(ItemUI.getUserItemDescriptionInput());
+//    	
+//    	do{
+//    		temp = theItem.setQuantity(ItemUI.getUserItemQuantityInput());
+//    		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Quantity");
+//    	} while (temp == false);
+//    	
+//    	do{
+//    		temp = theItem.setStartingBid(ItemUI.getUserItemStartingBidInput());
+//    		if(temp == false) ItemUI.isEqualOrBelowZeroErrorIU("Starting Bid");
+//    	} while (temp == false);
+//    	
+//    	theItem.setCondition(ItemUI.getUserItemConditionInput());
+//    	
+//    	do{
+//    		temp = theItem.setSize(ItemUI.getUserItemSizeInput());
+//    		if(temp == false) ItemUI.isValidSizeErrorUI();
+//    	} while (temp == false);
+//    	
+//    	theItem.setComments(ItemUI.getUserItemCommentsInput());
+//    	
+//    }
     
 //    public Boolean removeItem(String theName) {
 //        	Boolean itemRemoved = false;
@@ -171,6 +200,8 @@ public class Auction implements java.io.Serializable
     	return myItems;
     }
     
+    
+    
     /**
      * Getter for the date this Auction was scheduled for.
      * 
@@ -178,6 +209,15 @@ public class Auction implements java.io.Serializable
      */
     public AuctionDate getDate() {
     	return aucDate;
+    }
+    
+    /**
+     * setter for the date this Auction was scheduled for.
+     * 
+     * @param theDate is the new date of the Auction
+     */
+    public void setDate(AuctionDate theDate) {
+    	aucDate = theDate;
     }
     
     /**
