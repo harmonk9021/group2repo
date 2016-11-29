@@ -23,6 +23,8 @@ public class Login implements java.io.Serializable  {
 	public Login(String fileName){
 	//	loadUserInfo(fileName);
 		this.fileName = fileName;
+		this.myUserList = new HashMap<String, User>();
+		this.loadUserInfo(fileName);
 	}
 	
 	/**
