@@ -49,6 +49,32 @@ public class Login implements java.io.Serializable  {
 	        return didItWork;
 	    }
 	
+	/**
+	 * @return true if the bidder was successfully created and added into the system
+	 * @return false if the bidder was not added because the name was already in use
+	 */
+	public boolean createAndAddBidder(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber){
+		Bidder temp = new Bidder(theName, theUsername, thePassword, theEmail, thePhoneNumber);
+		return addUser(temp);
+	}
+	
+	/**
+	 * @return true if the Non-profit was succesfully created and added into the system
+	 * @return false if the Non-profit was not added because the name was already in use
+	 */
+	public boolean createAndAddNonprofit(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber){
+		Nonprofit temp = new Nonprofit(theName, theUsername, thePassword, theEmail, thePhoneNumber);
+		return addUser(temp);
+	}
+	
+	/**
+	 * @return true if the staff was successfully created and added into the system
+	 * @return false if the staff was not added because the name was already in use
+	 */
+	public boolean createAndAddStaff(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber){
+		Staff temp = new Staff(theName, theUsername, thePassword, theEmail, thePhoneNumber);
+		return addUser(temp);
+	}
 	
 	 /**@ return true if the user was succesfully added to the system
 	  * @ return false if the name is already in use
