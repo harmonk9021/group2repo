@@ -129,6 +129,15 @@ public class AuctionDate {
         return false;
     }
     
+    public boolean isWithin2Days(AuctionDate theDate)
+    {
+    	int today, aucDate;
+    	today = theDate.myYear*1000000 + theDate.myMonth*10000 + theDate.myDay*100 + theDate.myHour;
+    	aucDate = this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
+    	if(aucDate - today < 200) return true;
+    	else return false;
+    }
+    
     /**
      * This function will return an int array containing the days of the month
      * from this date to the specified number of days in the future, rolling 
