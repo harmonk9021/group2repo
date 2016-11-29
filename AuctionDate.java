@@ -1,5 +1,9 @@
 
+
 import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -62,9 +66,9 @@ public class AuctionDate {
         }
         else if (day > Months.FEBURARY.getDays() && myMonth == Months.FEBURARY.getMonth())
             day = Months.FEBURARY.getDays(); // Not doing leap year checking, it's not worth it
-        else if (myMonth == Months.SEPTEMBER.getMonth() || myMonth == Months.APRIL.getMonth() || 
-                myMonth == Months.JUNE.getMonth() || myMonth == Months.NOVEMBER.getMonth())
-            day = 30;
+//        else if (myMonth == Months.SEPTEMBER.getMonth() || myMonth == Months.APRIL.getMonth() || 
+//                myMonth == Months.JUNE.getMonth() || myMonth == Months.NOVEMBER.getMonth())
+//            day = 30;
         myDay = day;
         if (hour >= 0 && hour <= MAX_HOUR_24)
             myHour = hour;
@@ -129,13 +133,23 @@ public class AuctionDate {
         return false;
     }
     
-    public boolean isWithin2Days(AuctionDate theDate)
+    
+    public boolean isTwoOrMoreDaysBefore(AuctionDate theDate)
     {
-    	int today, aucDate;
-    	today = theDate.myYear*1000000 + theDate.myMonth*10000 + theDate.myDay*100 + theDate.myHour;
-    	aucDate = this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
-    	if(aucDate - today < 200) return true;
-    	else return false;
+    	LocalDate thisDate = LocalDate.of(this.myYear, Month.of(this.myMonth), this.myDay);
+    	LocalDate paramDate = LocalDate.of(theDate.myYear, Month.of(theDate.myMonth), theDate.myDay);
+    	long daysBetween = ChronoUnit.DAYS.between(paramDate, thisDate);
+//    	if (daysBetween == 1 || daysBetween == 0) return 0;
+//    	if(daysBetween > 1) return 1;
+//    	return 2;
+    	if(daysBetween >= 2) return true;
+    	return false;
+    	
+    	//    	int today, aucDate;
+//    	today = theDate.myYear*1000000 + theDate.myMonth*10000 + theDate.myDay*100 + theDate.myHour;
+//    	aucDate = this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
+//    	if(aucDate - today < 200) return true;
+//    	else return false;
     }
     
     /**
