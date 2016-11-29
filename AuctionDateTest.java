@@ -133,4 +133,54 @@ public class AuctionDateTest {
         result = test.isWithinXHours(caseB, 4);
         assertEquals("Case B fails!", caseBExpected, result);
     }
+    
+    @Test
+    public void testIsWithin2DaysOnDateIsBefore2Days(){
+    	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
+    	AuctionDate date2 = new AuctionDate(2016, 10, 20, 13);
+    	//assertFalse(date2.isWithin2Days(date1));
+    	assertFalse(date1.isWithin2Days(date2));
+    	
+    }
+    
+    @Test
+    public void testIsWithin2DaysOnDateIs2Days(){
+    	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
+    	AuctionDate date2 = new AuctionDate(2016, 11, 19, 12);
+//    	assertFalse(date2.isWithin2Days(date1));
+    	assertFalse(date1.isWithin2Days(date2));
+    }
+    
+    @Test
+    public void testIsWithin2DaysOnDateIsWithin2Days(){
+    	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
+    	AuctionDate date2 = new AuctionDate(2016, 11, 21, 11);
+//    	assertTrue(date2.isWithin2Days(date1));
+    	assertTrue(date1.isWithin2Days(date2));
+    }
+    
+    @Test
+    public void testIsWithin2DaysOnDateIsAfterDate(){
+    	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
+    	AuctionDate date2 = new AuctionDate(2016, 12, 01, 12);
+//    	assertTrue(date2.isWithin2Days(date1));
+    	assertTrue(date1.isWithin2Days(date2));
+    }
+    
+    
+    @Test
+    public void testIsWithin2DaysOnDateIsBefore2DaysSwitchBetweenYears(){
+    	AuctionDate date1 = new AuctionDate(2017, 01, 01, 12);
+    	AuctionDate date2 = new AuctionDate(2016, 12, 29, 12);
+//    	assertFalse(date2.isWithin2Days(date1));
+    	assertFalse(date1.isWithin2Days(date2));
+    } 
+    @Test
+    public void testIsWithin2DaysOnDateIsWithin2DaysSwitchBetweenYears(){
+    	AuctionDate date1 = new AuctionDate(2017, 01, 01, 12);
+    	AuctionDate date2 = new AuctionDate(2016, 12, 31, 12);
+//    	assertFalse(date2.isWithin2Days(date1));
+    	assertTrue(date1.isWithin2Days(date2));
+    } 
+    
 }
