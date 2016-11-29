@@ -12,7 +12,7 @@ import java.util.Calendar;
  * use Date class that comes in the standard Java library. It is intended to
  * provide a quick and easy way to create and compare specific dates.
  * 
- * @version 11.17.2016.001A
+ * @version 11.29.2016.001A
  * @author Jacob Ackerman
  */
 public class AuctionDate {
@@ -62,8 +62,8 @@ public class AuctionDate {
         }
         else if (day > Months.FEBURARY.getDays() && myMonth == Months.FEBURARY.getMonth())
             day = Months.FEBURARY.getDays(); // Not doing leap year checking, it's not worth it
-        else if (myMonth == Months.SEPTEMBER.getMonth() || myMonth == Months.APRIL.getMonth() || 
-                myMonth == Months.JUNE.getMonth() || myMonth == Months.NOVEMBER.getMonth())
+        else if (day > Months.JUNE.getDays() && (myMonth == Months.SEPTEMBER.getMonth() || myMonth == Months.APRIL.getMonth() || 
+                myMonth == Months.JUNE.getMonth() || myMonth == Months.NOVEMBER.getMonth()))
             day = 30;
         myDay = day;
         if (hour >= 0 && hour <= MAX_HOUR_24)
