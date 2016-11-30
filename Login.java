@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * This Class will handle logging into Auction Central.
  *  
@@ -49,6 +50,34 @@ public class Login implements java.io.Serializable  {
 	        return didItWork;
 	    }
 	
+	 /**
+	  * This method creates a User object based on the parameters,
+	  * should create Bidder, Nonprofit or Staff based on permission level.
+	  * @param theName is the name of the user to be created
+	  * @param theUsername is the username of the user to be created
+	  * @param thePassword is the password of the user to be created
+	  * @param theEmail is the email of the user to be created
+	  * @param thePhoneNumber is the phone number of the user to be created
+	  * @param thePermissions is the user's permission level, 1 = Bidder, 2 = Nonprofit, 3 = Staff 
+	  * @return boolean if user was added, true if addUser is successful, false if addUser fails
+	  * @author Kyle Phan
+	  * @version 11/29/16
+	  */
+	 public boolean createUser(String theName, String theUsername, String thePassword,
+			 				   String theEmail, String thePhoneNumber, String thePermissions) {
+		 boolean createSuccessful = false;
+		 if (thePermissions == "1") {
+			 createSuccessful = createAndAddBidder(theName, theUsername, thePassword, theEmail, thePhoneNumber);
+			 
+		 } else if (thePermissions == "2") {
+			 createSuccessful = createAndAddNonprofit(theName, theUsername, thePassword, theEmail, thePhoneNumber);
+		 } else if (thePermissions == "3") {
+			 createSuccessful = createAndAddStaff(theName, theUsername, thePassword, theEmail, thePhoneNumber);
+		 }
+		 
+		 return createSuccessful;
+	 }
+	
 	/**
 	 * @return true if the bidder was successfully created and added into the system
 	 * @return false if the bidder was not added because the name was already in use
@@ -83,6 +112,7 @@ public class Login implements java.io.Serializable  {
 	    {
 		 	if(isUnusedUserName(theUser.getUserName())){
 		 		myUserList.put(theUser.getUserName(), theUser); // placeholder based on assumed getter name
+		 		writeUserInfo(this.fileName);
 		 		return true;
 		 	}
 		 	else return false;

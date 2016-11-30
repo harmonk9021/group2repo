@@ -1,4 +1,5 @@
 
+
 public class Main {
 	//public static Database mainDatabase = new Database();
 	
@@ -13,7 +14,11 @@ public class Main {
 	//	ui.mainMenu();
 		
 		Login myLogin = new Login("Users.ser");
-		myLogin.loadUserInfo(myLogin.fileName);
+//		Bidder theTestBidder = new Bidder("Test Bidder", "testbidder1", "1234", 
+//										  "Bidder@test.com", "1231231234");
+//		myLogin.addUser(theTestBidder);
+//		myLogin.writeUserInfo("Users.ser");
+		myLogin.loadUserInfo("Users.ser");
 		
 		GUI gui = new GUI(myLogin);
 		gui.start();
