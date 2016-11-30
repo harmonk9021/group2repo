@@ -33,39 +33,35 @@ public class GUI {
 	final static String INPUTPANEL = "Login Page";
 	final static String REGISPANEL = "Registration Page";
 	
-	/*
-	 * 
-	 */
 	private JFrame myFrame;
-	private Login myUserLogin;
-	private JPanel inputPanel;
-	private JPanel buttonPanel;
-	private JPanel regisInputPanel;
-	private JPanel regisButtonPanel;
+	private Login myUserLogin;	//Stores the Login object that contains all users
+	private JPanel inputPanel;	//JPanel that contains all JLabels and JTextFields for existing user login
+	private JPanel buttonPanel;	//JPanel for buttons for existing user login
+	private JPanel regisInputPanel;	//JPanel for Textfields for users registering for an account
+	private JPanel regisButtonPanel;	//JPanel for buttons users registering for an account
+	private JPanel loginPanel;	//JPanel that contains both input and button panels for existing user login 
+								//to be added to containerPanel for use with CardLayout
+	private JPanel regisPanel;	//Contains all input and button panels for registration for use with CardLayout 
+	private JPanel containerPanel;	//Holds all different panels for use with CardLayout
 	
-	private JPanel loginPanel;
-	private JPanel regisPanel;
+	private JLabel noUserFoundLabel;	//Popup JLabel notification that becomes visible if invalid username is entered.
+	private JLabel emptyFieldsLabel;	//Label stating all fields required, will turn red if textfields are empty.
 	
-	private JPanel containerPanel;
+	private JTextField nameField;	//Textfield for registration name input
+	private JTextField usernameField;	//Textfield for login Username input
+	private JTextField passwordField;	//Textfield for login Password input
+	private JTextField regisUsernameField;	//Textfield for registration Username input
+	private JTextField regisPasswordField;	//for registration Password input
+	private JTextField emailField;	//for registration email input
+	private JTextField phoneNumField;	//for registration phone num. input
 	
-	private JLabel noUserFoundLabel;
-	private JLabel emptyFieldsLabel;
-	
-	private JTextField nameField;
-	private JTextField usernameField;
-	private JTextField passwordField;
-	private JTextField regisUsernameField;
-	private JTextField regisPasswordField;
-	private JTextField emailField;
-	private JTextField phoneNumField;
-	
-	private JRadioButton bidderButton;
+	//Used so select which type of user for registration
+	private JRadioButton bidderButton;	
 	private JRadioButton nonprofitButton;
 	private JRadioButton staffButton;
 	private ButtonGroup buttonGroup;
 	
-	private GridBagConstraints c;
-	
+	private GridBagConstraints c;	//Used to give coordinates for swing elements being added to panels
 	private CardLayout cLayout;
 	
 	private final int FRAME_WIDTH = 800;
@@ -75,6 +71,11 @@ public class GUI {
 	private final int BTN_HEIGHT = 30;
 	private final int TEXTFIELD_WIDTH = 15;
 	
+	
+	/**
+	 * Constructor for GUI class.
+	 * @param theUserLogin is the Login object that will load and store all the different Users
+	 */
 	public GUI(Login theUserLogin) {
 		myUserLogin = theUserLogin;
 		inputPanel = new JPanel();
@@ -84,7 +85,6 @@ public class GUI {
 		
 		loginPanel = new JPanel();
 		regisPanel = new JPanel();
-		
 		
 		containerPanel = new JPanel();
 		
@@ -111,23 +111,17 @@ public class GUI {
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * Calls all the helper methods that create the actual GUI objects.
+	 */
 	public void start() {
-//		BorderLayout bLayout = new BorderLayout();
-//		CardLayout cLayout = new CardLayout();
-
 		myFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-//		myFrame.setLayout(bLayout);
-		
-//		myFrame.setLayout(cLayout);
 
 		containerPanel.setLayout(cLayout);
 			
 		creatLoginPanel();
 		createRegisterPanel();
-		
-//		myFrame.add(loginPanel, INPUTPANEL);
-//		myFrame.add(regisPanel, REGISPANEL);
-		
+
 		containerPanel.add(loginPanel, INPUTPANEL);
 		containerPanel.add(regisPanel, REGISPANEL);
 		
@@ -136,6 +130,9 @@ public class GUI {
 		myFrame.setVisible(true);
 	}
 	
+	/**
+	 * Creates the Login Panel which contains the login input panel and login button panel.
+	 */
 	private void creatLoginPanel() {
 		BorderLayout bordLayout = new BorderLayout();
 		loginPanel.setLayout(bordLayout);
@@ -150,6 +147,10 @@ public class GUI {
 		
 	}
 	
+	/**
+	 * Creates the login input panel and places all of the labels and text fields
+	 * with a gridbag layout.
+	 */
 	private void loginInputPanel() {
 		
 		GridBagLayout gridbag = new GridBagLayout();
@@ -180,17 +181,19 @@ public class GUI {
 		c.ipadx = 30;
 		c.gridy = 2;
 		
-		noUserFoundLabel = new JLabel("The username entered was not found!");
+		noUserFoundLabel = new JLabel();
 		c.gridy = 3;
 		noUserFoundLabel.setVisible(false);
 		inputPanel.add(noUserFoundLabel, c);
 		
 	}
 	
+	/**
+	 * Creates the login button panel, places and creates action listeners for the two buttons.
+	 */
 	private void loginButtonPanel() {
 		GridLayout btnGridLayout = new GridLayout();
 		btnGridLayout.setHgap(5);
-//		buttonPanel.setLayout(btnGridLayout);
 		JButton authenticate = new JButton("Login");
 		authenticate.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
 		JButton register = new JButton("Register");
@@ -202,24 +205,30 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				String enteredUsername = usernameField.getText();
 				String enteredPassword = passwordField.getText();
-				if (myUserLogin.getUser(enteredUsername) == null) {
-					System.out.println("User is null");
-					
-//					FIXME
-//					Label shows up only when JFrame is resized. Don't remember how to fix this.
+				
+				/*
+				 * Calls getUser to search serialized Users, if it doesn't exist then
+				 * getUser returns null.
+				 */
+				if (myUserLogin.getUser(enteredUsername) == null) {		
+					noUserFoundLabel.setText("The username entered was not found!");
 					noUserFoundLabel.setVisible(true);
 					myFrame.repaint();
 					
 				} else {					
+					
+					/*
+					 * If the user exists, but the password doesn't match then show
+					 * the incorrect password label, else send user to their specific GUI.
+					 */
 					if (!myUserLogin.isValidPassword(enteredUsername, enteredPassword)) {
-						JLabel noInvalidPassword = new JLabel("The username or password entered is incorrect.");
-						c.gridy = 3;
-						inputPanel.add(noInvalidPassword, c);
-						inputPanel.repaint();
+						noUserFoundLabel.setText("The username or password entered is incorrect.");
+						noUserFoundLabel.setVisible(true);
+						myFrame.repaint();
 					} else {
 						User user = myUserLogin.getUser(usernameField.getText());
 						if (user instanceof Bidder) {
-							BidderGUI bidGUI = new BidderGUI(user);
+							BidderGUI bidGUI = new BidderGUI(user, containerPanel, cLayout);
 							bidGUI.start();
 						} else if (user instanceof Nonprofit) {
 							NonprofitGUI npoGUI = new NonprofitGUI(user);
@@ -233,19 +242,21 @@ public class GUI {
 			}
 		});
 		
+		/*
+		 * Listener for registration button, if clicked active panel changes to registration panel.
+		 */
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				inputPanel.setVisible(false);
-//				regisPanel.setVisible(true);
-//				myFrame.repaint();
-				
 				cLayout.show(containerPanel, REGISPANEL);
 			}
 		});
-
-		
 	}
 	
+	/**
+	 * Creates the Registration panel that is added to the CardLayout.
+	 * This panel contains the registration input panel and its text fields
+	 * and the registration button panel which contains the create account buttons/actions.
+	 */
 	private void createRegisterPanel() {
 		BorderLayout registerBLayout = new BorderLayout();
 		regisPanel.setLayout(registerBLayout);
@@ -259,6 +270,10 @@ public class GUI {
 		
 	}
 	
+	/**
+	 * Helper method that positions all of the textfields and labels for the registration
+	 * input panel.
+	 */
 	private void registerInputPanel() {
 		GridBagLayout gbLayout = new GridBagLayout();
 		
@@ -328,6 +343,10 @@ public class GUI {
         
 	}
 	
+	/**
+	 * Helper method that creates the button and actionlistener for the 
+	 * registration button panel.
+	 */
 	private void registerButtonPanel() {
 		JButton createAccount = new JButton("Create Account");
 		createAccount.setPreferredSize(new Dimension(REG_BTN_WIDTH, BTN_HEIGHT));
