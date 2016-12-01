@@ -21,7 +21,10 @@ public class AuctionCalendar implements java.io.Serializable {
 	
 	private AuctionDate theDate;
 	private int theAuctionCount;
-	private Collection<Auction> myAuctions;
+	private Map<String, Auction> myAuctions;
+//	private Map<AuctionDate, Auction> myAuctionsDate;
+//	private Collection<Auction> myAuctions;
+//	private Collection<Auction> myPastAuctions;
 	private int maxAuctions = 24;
 	
 	/**
@@ -30,11 +33,27 @@ public class AuctionCalendar implements java.io.Serializable {
 	 */
 	public AuctionCalendar(AuctionDate startingDate) {
 	    theDate = startingDate;
-        myAuctions = new ArrayList<Auction>();
+	    myAuctions = new HashMap<String, Auction>();
+       // myAuctions = new ArrayList<Auction>();
+ //       myPastAuctions = new ArrayList<Auction>();
         Load("Auctions.ser");
+//        movePastAuctions();
+     //  int dates[] = startingDate.getNextXDays(31);
         theAuctionCount = myAuctions.size();
 	}
 	
+//	private void movePastAuctions(){
+//		AuctionDate today = new AuctionDate();
+//		int todaysDate = today.getYear()+today.getMonth()+today.getDay();
+//		int auctionDate;
+//		Auction temp;
+//		Iterator<Auction> itr = myAuctions.iterator();
+//		while(itr.hasNext()){
+//			temp = (Auction) itr.next();
+//        	auctionDate =  temp.getDate().getYear()+temp.getDate().getMonth()+temp.getDate().getDay();
+//        	if(auctionDate < todaysDate) myAuctions.remove(temp);
+//        }
+//	}
 	
 	public int createAndAddAuction(AuctionDate theDate, String theAuctionName, String theOrgName,
     		String theContactPerson, String theDescription, String theComment){
@@ -44,17 +63,22 @@ public class AuctionCalendar implements java.io.Serializable {
 		return addAuction(temp);
 		
 	}
+	
+	
    /**
     * Adds an auction to the calendar.
     * @param theAuction is the auction being added.
     * @return 0 if successfully added.
     * @return 1 if the Auction was not added due to the max number of auctions already exist
    	* @return 2 if the Auction already exists
+   	* @return 3 if the Max number of auctions is already met
     */
    public int addAuction(Auction theAuction) {
 	   if (theAuctionCount >= maxAuctions) return 1;
-	   if (myAuctions.contains(theAuction)) return 2;
-	   myAuctions.add(theAuction);
+	   if (myAuctions.containsKey(theAuction.getOrg())) return 2;
+	   if (theAuctionCount >= maxAuctions) return 3;
+	   myAuctions.put(theAuction.getOrg(), theAuction);
+	   theAuctionCount++;
 	   return 0;
    }
    /**
@@ -64,9 +88,10 @@ public class AuctionCalendar implements java.io.Serializable {
     */
    public int removeAuction(Auction theAuction){
 	   AuctionDate today = new AuctionDate();
-	   if(!myAuctions.contains(theAuction)) return 1;
+	   if(!myAuctions.containsKey(theAuction.getOrg())) return 1;
 	   if(!theAuction.getDate().isTwoOrMoreDaysBefore(today)) return 2;
 	   myAuctions.remove(theAuction);
+	   theAuctionCount++;
 	   return 0;
    }
    
@@ -74,8 +99,25 @@ public class AuctionCalendar implements java.io.Serializable {
     * Returns a collection of all auctions in the calendar.
     * @return a collection of auctions.
     */
-   public Collection<Auction> getAuctions() {
-      return myAuctions;
+   public List<Auction> getAuctions() {
+	   List<Auction> auctionList = new ArrayList<Auction>();
+	   Set<String> temp = myAuctions.keySet();
+	   Iterator<String> itr = temp.iterator();
+	   String tempKey;
+	   Auction buffer;
+      while(itr.hasNext()){
+    	  tempKey = itr.next();
+    	  buffer = myAuctions.get(tempKey);
+    	  if(buffer.getDate().isSameOrAfterDate(theDate)){
+    		  auctionList.add(buffer);
+    	  }
+      }
+      
+      return auctionList;
+    }
+   
+   public Auction getAuction(String OrgName){
+	   return myAuctions.get(OrgName);
    }
    
    /**
@@ -142,7 +184,7 @@ public class AuctionCalendar implements java.io.Serializable {
      {
         FileInputStream fileIn = new FileInputStream(auctionFileName);
         ObjectInputStream in = new ObjectInputStream(fileIn);
-        myAuctions = (Collection) in.readObject();
+        myAuctions = (Map<String, Auction>) in.readObject();
         maxAuctions = in.readInt();
         in.close();
         fileIn.close();
