@@ -25,7 +25,8 @@ public class User implements java.io.Serializable
 	String myEmail;
 	
 	String myPhoneNumber;
-    
+    	
+	AuctionCalendar calendar;
     /**
      * Constructor for objects of class User.
      */        
@@ -37,6 +38,7 @@ public class User implements java.io.Serializable
         myPassword = "";
         myEmail = "";
         myPhoneNumber = "";
+	calendar = new AuctionCalendar(new AuctionDate());
     }
     
     /**
