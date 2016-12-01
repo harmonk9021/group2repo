@@ -231,7 +231,7 @@ public class GUI {
 							BidderGUI bidGUI = new BidderGUI(user, containerPanel, cLayout);
 							bidGUI.start();
 						} else if (user instanceof Nonprofit) {
-							NonprofitGUI npoGUI = new NonprofitGUI(user);
+							NonprofitGUI npoGUI = new NonprofitGUI(user, containerPanel, cLayout);
 							npoGUI.start();
 						} else if  (user instanceof Staff) {
 							StaffGUI staffGUI = new StaffGUI(user);
@@ -361,9 +361,9 @@ public class GUI {
 						!emailField.getText().equals("") &&
 						!phoneNumField.getText().equals("")) {
 					
-					if (!myUserLogin.createUser(nameField.getText(), regisUsernameField.getText(), regisPasswordField.getText(), emailField.getText(), 
+					if (myUserLogin.createUser(nameField.getText(), regisUsernameField.getText(), regisPasswordField.getText(), emailField.getText(), 
 							   phoneNumField.getText(), buttonGroup.getSelection().getActionCommand())) {
-						
+						cLayout.show(containerPanel, INPUTPANEL);
 					}
 					
 				} else {
