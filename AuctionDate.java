@@ -176,6 +176,14 @@ public class AuctionDate {
     	return myHour;
     }
     
+    public int toInt(){
+    	return this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
+    }
+    
+    public LocalDate toLocalDate(){
+    	return LocalDate.of(this.myYear, Month.of(this.myMonth), this.myDay);
+    }
+    
     /**
      * This function will return an int array containing the days of the month
      * from this date to the specified number of days in the future, rolling 
