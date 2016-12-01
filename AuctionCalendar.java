@@ -22,9 +22,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	private AuctionDate theDate;
 	private int theAuctionCount;
 	private Map<String, Auction> myAuctions;
-//	private Map<AuctionDate, Auction> myAuctionsDate;
-//	private Collection<Auction> myAuctions;
-//	private Collection<Auction> myPastAuctions;
+	private Map<String, Auction> myPastAuctions;
 	private int maxAuctions = 24;
 	
 	/**
@@ -34,26 +32,27 @@ public class AuctionCalendar implements java.io.Serializable {
 	public AuctionCalendar(AuctionDate startingDate) {
 	    theDate = startingDate;
 	    myAuctions = new HashMap<String, Auction>();
-       // myAuctions = new ArrayList<Auction>();
- //       myPastAuctions = new ArrayList<Auction>();
+	    myPastAuctions = new HashMap<String, Auction>();
         Load("Auctions.ser");
-//        movePastAuctions();
-     //  int dates[] = startingDate.getNextXDays(31);
+        movePastAuctions();
         theAuctionCount = myAuctions.size();
 	}
 	
-//	private void movePastAuctions(){
-//		AuctionDate today = new AuctionDate();
-//		int todaysDate = today.getYear()+today.getMonth()+today.getDay();
-//		int auctionDate;
-//		Auction temp;
-//		Iterator<Auction> itr = myAuctions.iterator();
-//		while(itr.hasNext()){
-//			temp = (Auction) itr.next();
-//        	auctionDate =  temp.getDate().getYear()+temp.getDate().getMonth()+temp.getDate().getDay();
-//        	if(auctionDate < todaysDate) myAuctions.remove(temp);
-//        }
-//	}
+	private void movePastAuctions(){
+		   Set<String> temp = myAuctions.keySet();
+		   Iterator<String> itr = temp.iterator();
+		   String tempKey;
+		   Auction buffer;
+	      while(itr.hasNext()){
+	    	  tempKey = itr.next();
+	    	  buffer = myAuctions.get(tempKey);
+	    	  if(buffer.getDate().isBeforeDate(theDate)){
+	    		  myPastAuctions.put(buffer.getOrg(), buffer);
+	    		  myAuctions.remove(buffer.getOrg());
+	    	  }
+	      }
+	}
+	
 	
 	public int createAndAddAuction(AuctionDate theDate, String theAuctionName, String theOrgName,
     		String theContactPerson, String theDescription, String theComment){
@@ -165,6 +164,7 @@ public class AuctionCalendar implements java.io.Serializable {
         FileOutputStream fileOut = new FileOutputStream(auctionFileName);
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(myAuctions);
+        out.writeObject(myPastAuctions);
         out.writeInt(maxAuctions);
         out.close();
         fileOut.close();
@@ -185,6 +185,7 @@ public class AuctionCalendar implements java.io.Serializable {
         FileInputStream fileIn = new FileInputStream(auctionFileName);
         ObjectInputStream in = new ObjectInputStream(fileIn);
         myAuctions = (Map<String, Auction>) in.readObject();
+        myPastAuctions = (Map<String, Auction>) in.readObject();
         maxAuctions = in.readInt();
         in.close();
         fileIn.close();
