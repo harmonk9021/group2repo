@@ -129,6 +129,53 @@ public class AuctionDate {
         return false;
     }
     
+        /**
+     * @returns true if the date given is the same date or after this AuctionDate
+     * @returns false if the date is before
+     */
+    public boolean isSameOrAfterDate(AuctionDate theDate){
+    	int aucDate = this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
+    	int paramDate = theDate.myYear*1000000 + theDate.myMonth*10000 + theDate.myDay*100 + theDate.myHour;
+    	if(paramDate>=aucDate) return true;
+    	return false;
+    	
+    }
+    
+    
+    public boolean isTwoOrMoreDaysBefore(AuctionDate theDate)
+    {
+    	LocalDate thisDate = LocalDate.of(this.myYear, Month.of(this.myMonth), this.myDay);
+    	LocalDate paramDate = LocalDate.of(theDate.myYear, Month.of(theDate.myMonth), theDate.myDay);
+    	long daysBetween = ChronoUnit.DAYS.between(paramDate, thisDate);
+//    	if (daysBetween == 1 || daysBetween == 0) return 0;
+//    	if(daysBetween > 1) return 1;
+//    	return 2;
+    	if(daysBetween >= 2) return true;
+    	return false;
+    	
+    	//    	int today, aucDate;
+//    	today = theDate.myYear*1000000 + theDate.myMonth*10000 + theDate.myDay*100 + theDate.myHour;
+//    	aucDate = this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
+//    	if(aucDate - today < 200) return true;
+//    	else return false;
+    }
+    
+    public int getYear(){
+    	return myYear;
+    }
+    
+    public int getMonth(){
+    	return myMonth;
+    }
+    
+    public int getDay(){
+    	return myDay;
+    }
+    
+    public int getHour(){
+    	return myHour;
+    }
+    
     /**
      * This function will return an int array containing the days of the month
      * from this date to the specified number of days in the future, rolling 
