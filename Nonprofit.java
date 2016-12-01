@@ -43,22 +43,51 @@ public class Nonprofit extends User implements java.io.Serializable
 	
 	/**
 	 * Submits a new auction for the NPO.
-	 * @param theAution the auction that the NPO wants to set up.
-	 * @return Returns if the auction request was successful.
+	 * @return 0 if successfully added.
+   	 * @return 1 if the Auction was not added due to the max number of auctions already exist
+   	* @return 2 if the Auction already exists
+   	* @return 3 if the NonProfit Already has an Auction
+   	* @return 4 if the NonProfit has had an Auction Within the last year
+   	* @return 5 if the Date of the Auction is less than one week away from the day of submition
+   	* @return 6 if the date of the auction is farther than one month out from the day of submition
+   	* @return 7 if there is already 2 Auctions happening on that date
 	 */
-	
-	
-	public boolean submitAuctionRequest(Auction theAuction)
+	public int submitAuctionRequest(AuctionDate theDate, String theAuctionName, String theOrgName,
+    		String theContactPerson, String theDescription, String theComment)
 	{
-		boolean result = false;
-		if (theAuction != null) {
-			currentAuction = theAuction;
-			activeAuction = true;
-			result = true;
+		AuctionDate today = new AuctionDate();
+		Auction activeAuction = calendar.getAuction(myUsername);
+		
+		if(activeAuction != null ) return 3;
+		
+		Auction temp = calendar.getPastAuction(myUsername);
+		if( temp != null){
+			if(today.isWithinYear(temp.getDate())) return 4;
 		}
-		return result;
+		
+		LocalDate oneWeek = today.toLocalDate().plusDays(7);
+		long daysBetween = ChronoUnit.DAYS.between(oneWeek, theDate.toLocalDate());
+		if(daysBetween <= 7) return 5;
+		
+		LocalDate oneMonth = today.toLocalDate().plusDays(31);
+		daysBetween = ChronoUnit.DAYS.between(oneWeek, theDate.toLocalDate());
+		if(daysBetween > 31) return 6;
+		
+		List<Auction> allAuctions = calendar.getAuctions();
+		LocalDate buffer;
+		boolean oneAuction = false;
+		for(int i = 0; i < allAuctions.size(); i++){
+			buffer = allAuctions.get(i).getDate().toLocalDate(); 
+			if(buffer.equals(theDate.toLocalDate())){
+				if(oneAuction == true) return 7;
+				else oneAuction = true;
+			}
+		}
+		
+		return calendar.createAndAddAuction(theDate, theAuctionName, this.myUsername, theContactPerson, theDescription, theComment);
+		
+		
 	}
-	
 	
 	/**
 	 * Adds an item into the auction that the NPO is hosting.
