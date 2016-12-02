@@ -65,12 +65,14 @@ public class Nonprofit extends User implements java.io.Serializable
 			if(today.isWithinYear(temp.getDate())) return 4;
 		}
 		
-		LocalDate oneWeek = today.toLocalDate().plusDays(7);
-		long daysBetween = ChronoUnit.DAYS.between(oneWeek, theDate.toLocalDate());
-		if(daysBetween <= 7) return 5;
+//		LocalDate oneWeek = today.toLocalDate().plusDays(7);
+//		long daysBetween = ChronoUnit.DAYS.between(oneWeek, theDate.toLocalDate());
+		long daysBetween = ChronoUnit.DAYS.between(today.toLocalDate(), theDate.toLocalDate());
+		if(daysBetween < 7) return 5;
 		
-		LocalDate oneMonth = today.toLocalDate().plusDays(31);
-		daysBetween = ChronoUnit.DAYS.between(oneWeek, theDate.toLocalDate());
+//		LocalDate oneMonth = today.toLocalDate().plusDays(31);
+//		daysBetween = ChronoUnit.DAYS.between(oneWeek, theDate.toLocalDate());
+		daysBetween = ChronoUnit.DAYS.between(today.toLocalDate(), theDate.toLocalDate());
 		if(daysBetween > 31) return 6;
 		
 		List<Auction> allAuctions = calendar.getAuctions();
@@ -83,7 +85,7 @@ public class Nonprofit extends User implements java.io.Serializable
 				else oneAuction = true;
 			}
 		}
-		
+//		if(calendar.getAuctionsOnDate(theDate) == 2) return 7;
 		return calendar.createAndAddAuction(theDate, theAuctionName, this.myUsername, theContactPerson, theDescription, theComment);
 		
 		
@@ -135,4 +137,20 @@ public class Nonprofit extends User implements java.io.Serializable
 	public boolean hasCurrentAuction() {
 		return activeAuction;
 	}	
+	
+	/**
+	 * FOR TESTING PURPOSES ONLY
+	 * PLEASE DO NOT USE
+	 */
+	public AuctionCalendar getCalendar(){
+		return calendar;
+	}
+	
+	/**
+	 * FOR TESTING PURPOSES ONLY
+	 * PLEASE DO NOT USE
+	 */
+	public void setCalendar(AuctionCalendar theCalendar){
+		calendar = theCalendar;
+	}
 }
