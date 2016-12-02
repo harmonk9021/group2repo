@@ -1,8 +1,10 @@
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.Calendar;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * The GUI for viewing the upcoming auctions in
@@ -16,6 +18,8 @@ public class AuctionCalenderGUI {
 	
 	private JFrame myFrame;
 	
+	private AuctionCalendar aucCal;
+	
 	/**
 	 * Constructor for the auction gui.
 	 */
@@ -23,6 +27,7 @@ public class AuctionCalenderGUI {
 	public AuctionCalenderGUI() {
 		myFrame = new JFrame("Calender");
 		myFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		aucCal = new AuctionCalendar(new AuctionDate());
 	}
 	
 	/**
@@ -45,24 +50,27 @@ public class AuctionCalenderGUI {
 	 */
 
 	private void CalenderScreen() {
-		createDays();
-		for (int i = 0; i < 35; i++) {
-			myFrame.add(new JLabel("day"));
-		}
-	}
-	
-	/**
-	 * Short method to add the days of the week at the
-	 * top of the calender.
-	 */
-
-	private void createDays() {
-		myFrame.add(new JLabel("Sunday"));
-		myFrame.add(new JLabel("Monday"));
-		myFrame.add(new JLabel("Tuesday"));
-		myFrame.add(new JLabel("Wednesday"));
-		myFrame.add(new JLabel("Thursday"));
-		myFrame.add(new JLabel("Friday"));
-		myFrame.add(new JLabel("Saturday"));
+//		createDays();
+		AuctionDate date = new AuctionDate();
+		Calendar cal = Calendar.getInstance();
+		int[] dates = date.getNextXDays(30);
+	    int d = 0;
+	    String[] days = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"};
+	    for (int i = 0; i < 7; i++)
+	    {
+	        myFrame.add(new JLabel(days[i]));
+	    }
+	    for (int i = 1; i < cal.get(Calendar.DAY_OF_WEEK); i++)
+	    {
+	        myFrame.add(new JPanel());
+	    }
+	    for (int x = 0; x < dates.length; x++)
+	    {
+            JPanel calDate = new JPanel();
+            calDate.setBorder(BorderFactory.createTitledBorder("" + dates[d]));
+            calDate.add(new JLabel(aucCal.getAuctionsOnDate(new AuctionDate(date.getYear(), date.getMonth(), dates[d], date.getHour())) + ""));
+            myFrame.add(calDate);
+            d++;
+	    }
 	}
 }
