@@ -88,7 +88,7 @@ public class AuctionCalendar implements java.io.Serializable {
    public int removeAuction(Auction theAuction){
 	   AuctionDate today = new AuctionDate();
 	   if(!myAuctions.containsKey(theAuction.getOrg())) return 1;
-	   if(!theAuction.getDate().isTwoOrMoreDaysBefore(today)) return 2;
+	   if(!today.isTwoOrMoreDaysBefore(theAuction.getDate())) return 2;
 	   myAuctions.remove(theAuction);
 	   theAuctionCount++;
 	   return 0;
