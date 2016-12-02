@@ -1,5 +1,8 @@
 
 import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,10 +15,10 @@ import java.util.Calendar;
  * use Date class that comes in the standard Java library. It is intended to
  * provide a quick and easy way to create and compare specific dates.
  * 
- * @version 11.29.2016.001A
+ * @version 11.17.2016.001A
  * @author Jacob Ackerman
  */
-public class AuctionDate {
+public class AuctionDate implements java.io.Serializable{
     private int myYear;
     private int myMonth;
     private int myDay;
@@ -129,7 +132,7 @@ public class AuctionDate {
         return false;
     }
     
-        /**
+    /**
      * @returns true if the date given is the same date or after this AuctionDate
      * @returns false if the date is before
      */
@@ -141,7 +144,22 @@ public class AuctionDate {
     	
     }
     
+    /**
+     * @returns true if the date given is the before this AuctionDate
+     * @returns false if the date is the same date of after this AuctionDate
+     */
+//    public boolean isBeforeDate(AuctionDate theDate){
+//    	int aucDate = this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
+//    	int paramDate = theDate.myYear*1000000 + theDate.myMonth*10000 + theDate.myDay*100 + theDate.myHour;
+//    	if(paramDate < aucDate) return true;
+//    	return false;
+//    	
+//    }
     
+    /**
+     * @return true if the param date is 2 days or more before this date 
+     * @return false if the param date is 1 day before, is the day, of after this date
+     */
     public boolean isTwoOrMoreDaysBefore(AuctionDate theDate)
     {
     	LocalDate thisDate = LocalDate.of(this.myYear, Month.of(this.myMonth), this.myDay);
