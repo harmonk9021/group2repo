@@ -152,12 +152,14 @@ public class AuctionDate {
 //    	return 2;
     	if(daysBetween >= 2) return true;
     	return false;
-    	
-    	//    	int today, aucDate;
-//    	today = theDate.myYear*1000000 + theDate.myMonth*10000 + theDate.myDay*100 + theDate.myHour;
-//    	aucDate = this.myYear*1000000 + this.myMonth*10000 + this.myDay*100 + this.myHour;
-//    	if(aucDate - today < 200) return true;
-//    	else return false;
+    }
+    
+    public AuctionDate getAuctionDateXDaysAway(int daysOut){
+    	LocalDate temp1 = this.toLocalDate();
+    	LocalDate temp2;
+    	if(daysOut < 0) temp2 = temp1.minusDays(Math.abs(daysOut));
+    	else temp2 = temp1.plusDays(daysOut);
+    	return new AuctionDate(temp2.getYear(), temp2.getMonthValue(), temp2.getDayOfMonth(), this.myHour);
     }
     
     public int getYear(){
