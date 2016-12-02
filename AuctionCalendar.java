@@ -46,7 +46,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	      while(itr.hasNext()){
 	    	  tempKey = itr.next();
 	    	  buffer = myAuctions.get(tempKey);
-	    	  if(buffer.getDate().isBeforeDate(theDate)){
+	    	  if(!buffer.getDate().isSameOrAfterDate(theDate)){
 	    		  myPastAuctions.put(buffer.getOrg(), buffer);
 	    		  myAuctions.remove(buffer.getOrg());
 	    	  }
