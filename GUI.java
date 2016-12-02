@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 /**
  * This class creates the initial User Log-In GUI.
  * @author Kyle Phan
- * @version 11/29/16
+ * @version 12/2/16
  *
  */
 public class GUI {
@@ -35,6 +35,8 @@ public class GUI {
 	
 	private JFrame myFrame;
 	private Login myUserLogin;	//Stores the Login object that contains all users
+	private AuctionCalendar myCalendar;
+	
 	private JPanel inputPanel;	//JPanel that contains all JLabels and JTextFields for existing user login
 	private JPanel buttonPanel;	//JPanel for buttons for existing user login
 	private JPanel regisInputPanel;	//JPanel for Textfields for users registering for an account
@@ -77,8 +79,10 @@ public class GUI {
 	 * Constructor for GUI class.
 	 * @param theUserLogin is the Login object that will load and store all the different Users
 	 */
-	public GUI(Login theUserLogin) {
+	public GUI(Login theUserLogin, AuctionCalendar theCalendar) {
 		myUserLogin = theUserLogin;
+		myCalendar = theCalendar;
+		
 		inputPanel = new JPanel();
 		buttonPanel = new JPanel();
 		regisInputPanel = new JPanel();
@@ -194,8 +198,6 @@ public class GUI {
 	 * Creates the login button panel, places and creates action listeners for the two buttons.
 	 */
 	private void loginButtonPanel() {
-		GridLayout btnGridLayout = new GridLayout();
-//		btnGridLayout.setHgap(5);
 		JButton authenticate = new JButton("Login");
 		authenticate.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
 		JButton register = new JButton("Register");
@@ -230,7 +232,7 @@ public class GUI {
 					} else {
 						User user = myUserLogin.getUser(usernameField.getText());
 						if (user instanceof Bidder) {
-							BidderGUI bidGUI = new BidderGUI(user, containerPanel, cLayout);
+							BidderGUI bidGUI = new BidderGUI(user, myCalendar, containerPanel, cLayout);
 							clearTextFields();
 							bidGUI.start();
 						} else if (user instanceof Nonprofit) {
