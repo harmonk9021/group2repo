@@ -54,6 +54,23 @@ public class Auction implements java.io.Serializable
  
     }
     
+      public Auction(AuctionDate theDate, String theAuctionName, String theOrgName,
+    		String theContactPerson, String theDescription, String theComment)
+    {
+    	aucDate = theDate;
+    	myItems = new ArrayList<Item>();
+		auctionName = theAuctionName;//theName;
+		itemCount = 0;
+		myOrg = theOrgName;
+		myContactPerson = theContactPerson;
+		myDescription = theDescription;
+		myComment = theComment;
+		isCurrent = true;
+		
+//		Scanner input = new Scanner(System.in);
+ 
+    }
+    
     /**
      * Checks if the Item object passed in already exists in this
      * Auction's stored list of items, if not it appends the Item
