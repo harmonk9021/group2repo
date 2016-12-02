@@ -51,6 +51,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	    		  myAuctions.remove(buffer.getOrg());
 	    	  }
 	      }
+		Update("Auctions.ser");
 	}
 	
 	
@@ -78,6 +79,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	   if (theAuctionCount >= maxAuctions) return 3;
 	   myAuctions.put(theAuction.getOrg(), theAuction);
 	   theAuctionCount++;
+	   Update("Auctions.ser");
 	   return 0;
    }
    /**
@@ -91,6 +93,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	   if(!today.isTwoOrMoreDaysBefore(theAuction.getDate())) return 2;
 	   myAuctions.remove(theAuction);
 	   theAuctionCount++;
+	   Update("Auctions.ser");
 	   return 0;
    }
    
@@ -127,6 +130,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	public boolean setMaxAuctions(int theNewMax){
 		if (theNewMax<1) return false;
 		maxAuctions = theNewMax;
+		Update("Auctions.ser");
 		return true;
 	}
 	
