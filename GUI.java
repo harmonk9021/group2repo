@@ -46,6 +46,7 @@ public class GUI {
 	
 	private JLabel noUserFoundLabel;	//Popup JLabel notification that becomes visible if invalid username is entered.
 	private JLabel emptyFieldsLabel;	//Label stating all fields required, will turn red if textfields are empty.
+	private JLabel userAlreadyExists;
 	
 	private JTextField nameField;	//Textfield for registration name input
 	private JTextField usernameField;	//Textfield for login Username input
@@ -89,6 +90,7 @@ public class GUI {
 		containerPanel = new JPanel();
 		
 		emptyFieldsLabel = new JLabel("All fields must be filled out.");
+		userAlreadyExists = new JLabel("The username entered already exists");
 		
 		nameField = new JTextField(TEXTFIELD_WIDTH);
 		usernameField = new JTextField(TEXTFIELD_WIDTH);
@@ -107,7 +109,7 @@ public class GUI {
 		
 		cLayout = new CardLayout();
 		
-		myFrame = new JFrame();
+		myFrame = new JFrame("Auction Central");
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
@@ -193,7 +195,7 @@ public class GUI {
 	 */
 	private void loginButtonPanel() {
 		GridLayout btnGridLayout = new GridLayout();
-		btnGridLayout.setHgap(5);
+//		btnGridLayout.setHgap(5);
 		JButton authenticate = new JButton("Login");
 		authenticate.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
 		JButton register = new JButton("Register");
@@ -222,19 +224,22 @@ public class GUI {
 					 * the incorrect password label, else send user to their specific GUI.
 					 */
 					if (!myUserLogin.isValidPassword(enteredUsername, enteredPassword)) {
-						noUserFoundLabel.setText("The username or password entered is incorrect.");
+						noUserFoundLabel.setText("The username or password \n entered is incorrect.");
 						noUserFoundLabel.setVisible(true);
 						myFrame.repaint();
 					} else {
 						User user = myUserLogin.getUser(usernameField.getText());
 						if (user instanceof Bidder) {
 							BidderGUI bidGUI = new BidderGUI(user, containerPanel, cLayout);
+							clearTextFields();
 							bidGUI.start();
 						} else if (user instanceof Nonprofit) {
 							NonprofitGUI npoGUI = new NonprofitGUI(user, containerPanel, cLayout);
+							clearTextFields();
 							npoGUI.start();
 						} else if  (user instanceof Staff) {
-							StaffGUI staffGUI = new StaffGUI(user);
+							StaffGUI staffGUI = new StaffGUI(user, containerPanel, cLayout);
+							clearTextFields();
 							staffGUI.start();
 						}
 					}
@@ -247,6 +252,7 @@ public class GUI {
 		 */
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				clearTextFields();
 				cLayout.show(containerPanel, REGISPANEL);
 			}
 		});
@@ -283,64 +289,80 @@ public class GUI {
 		c.ipadx = 0;
         c.gridwidth = 1;
         c.gridx = 0;	//Adding constraints for username label position
-        c.gridy = 1;
+        c.gridy = 2;
         regisInputPanel.add(nameLabel, c);
         
         JLabel usernameLabel = new JLabel("Username: ");
-        c.gridy = 2;
+        c.gridy = 3;
         regisInputPanel.add(usernameLabel, c);
         
         JLabel passwordLabel = new JLabel("Password: ");
-		c.gridy = 3;
+		c.gridy = 4;
 		regisInputPanel.add(passwordLabel, c);
         
 		JLabel emailLabel = new JLabel("Email: ");
-		c.gridy = 4;
+		c.gridy = 5;
 		regisInputPanel.add(emailLabel, c);
 
 		JLabel phoneNumLabel = new JLabel("Phone Number: ");
-		c.gridy = 5;
+		c.gridy = 6;
 		regisInputPanel.add(phoneNumLabel, c);
 		
 		c.ipadx = 50;
         c.gridx = 1;
         c.gridy = 0;
-        
         regisInputPanel.add(emptyFieldsLabel, c);
         
         c.gridy = 1;
-        regisInputPanel.add(nameField, c);
+        userAlreadyExists.setVisible(false);
+        regisInputPanel.add(userAlreadyExists, c);
         
         c.gridy = 2;
+        regisInputPanel.add(nameField, c);
+        
+        c.gridy = 3;
         regisInputPanel.add(regisUsernameField, c);
 		
-        c.gridy = 3;
+        c.gridy = 4;
         regisInputPanel.add(regisPasswordField, c);
 		
-        c.gridy = 4;
+        c.gridy = 5;
         regisInputPanel.add(emailField, c);
 		
-        c.gridy = 5;
+        c.gridy = 6;
         regisInputPanel.add(phoneNumField, c);
         
-        c.gridy = 6;
+        c.gridy = 7;
         bidderButton.setActionCommand("1");
         buttonGroup.add(bidderButton);
         regisInputPanel.add(bidderButton, c);
         
-        c.gridy = 7;
+        c.gridy = 8;
         nonprofitButton.setActionCommand("2");
         buttonGroup.add(nonprofitButton);
         regisInputPanel.add(nonprofitButton, c);
 
         c.gridx = 1;
-        c.gridy = 8;
+        c.gridy = 9;
         staffButton.setActionCommand("3");
         buttonGroup.add(staffButton);
         regisInputPanel.add(staffButton, c);
         
         
         
+	}
+	
+	/**
+	 * Clears all textfields when switching between panels.
+	 */
+	private void clearTextFields() {
+		nameField.setText("");
+		usernameField.setText("");
+		passwordField.setText("");
+		regisUsernameField.setText("");
+		regisPasswordField.setText("");
+		emailField.setText("");
+		phoneNumField.setText("");
 	}
 	
 	/**
@@ -363,7 +385,11 @@ public class GUI {
 					
 					if (myUserLogin.createUser(nameField.getText(), regisUsernameField.getText(), regisPasswordField.getText(), emailField.getText(), 
 							   phoneNumField.getText(), buttonGroup.getSelection().getActionCommand())) {
+						clearTextFields();
 						cLayout.show(containerPanel, INPUTPANEL);
+						
+					} else {
+						userAlreadyExists.setVisible(true);
 					}
 					
 				} else {
