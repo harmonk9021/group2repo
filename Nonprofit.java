@@ -1,3 +1,8 @@
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
 /**
  * This is the Nonprofit class that defines what a 
  * nonprofit organization may do. The unique features are
