@@ -54,7 +54,7 @@ public class Auction implements java.io.Serializable
  
     }
     
-      public Auction(AuctionDate theDate, String theAuctionName, String theOrgName,
+    public Auction(AuctionDate theDate, String theAuctionName, String theOrgName,
     		String theContactPerson, String theDescription, String theComment)
     {
     	aucDate = theDate;
@@ -100,7 +100,7 @@ public class Auction implements java.io.Serializable
     public int removeItem(Item theItem){
     	AuctionDate today = new AuctionDate();
     	if (!myItems.contains(theItem)) return 2;
-    	if (aucDate.isWithin2Days(today)) return 1;
+    	if (!aucDate.isTwoOrMoreDaysBefore(today)) return 1;
     	myItems.remove(theItem);
     	return 0;
     }
@@ -114,7 +114,7 @@ public class Auction implements java.io.Serializable
     public int removeBid(Item theItem, String theName){
     	AuctionDate today = new AuctionDate();
     	if (!myItems.contains(theItem)) return 3;
-    	if (aucDate.isWithin2Days(today)) return 1;
+    	if (!aucDate.isTwoOrMoreDaysBefore(today)) return 1;
     	boolean responce = theItem.deleteBid(theName);
     	if (responce == false) return 2;
     	return 0;
