@@ -203,10 +203,20 @@ public class AuctionCalendar implements java.io.Serializable {
        return true;
    }
    
-   
-  // public Collection<Auction> getAuctionsOnDate(AuctionDate date) {
-    //  return myAuctions;
-   //}
-   
-   
+   public int getAuctionsOnDate(AuctionDate date) {
+	   int count = 0;
+	   Set<String> temp = myAuctions.keySet();
+	   Iterator<String> itr = temp.iterator();
+	   String tempKey;
+	   Auction buffer;
+      while(itr.hasNext()){
+    	  tempKey = itr.next();
+    	  buffer = myAuctions.get(tempKey);
+    	  if(buffer.getDate().isSameDay(theDate)){
+    		  count++;
+    	  }
+      }
+      
+      return count;
+   }
 }
