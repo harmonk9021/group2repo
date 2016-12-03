@@ -217,7 +217,7 @@ public class AuctionCalendar implements java.io.Serializable {
       while(itr.hasNext()){
     	  tempKey = itr.next();
     	  buffer = myAuctions.get(tempKey);
-    	  if(buffer.getDate().isSameDay(theDate)){
+    	  if(buffer.getDate().isSameDay(date)){
     		  count++;
     	  }
       }
