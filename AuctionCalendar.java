@@ -31,8 +31,8 @@ public class AuctionCalendar implements java.io.Serializable {
 	 */
 	public AuctionCalendar(AuctionDate startingDate) {
 	    theDate = startingDate;
-	    myAuctions = new HashMap<String, Auction>();
-	    myPastAuctions = new HashMap<String, Auction>();
+	    myAuctions = new HashMap<>();
+	    myPastAuctions = new HashMap<>();
         Load("Auctions.ser");
         movePastAuctions();
         theAuctionCount = myAuctions.size();
@@ -224,4 +224,9 @@ public class AuctionCalendar implements java.io.Serializable {
       
       return count;
    }
+
+    Auction getPastAuction(String myUsername) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return myPastAuctions.get(myUsername);
+    }
 }

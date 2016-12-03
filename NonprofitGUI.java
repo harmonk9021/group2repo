@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -33,10 +34,11 @@ public class NonprofitGUI {
 	 * These static Strings are the titles of each of the cards, must make a new one
 	 * for every new page you intend on making.
 	 */
-	final static String NONPROFITCARD = "Nonprofit Welcome Card";
-	final static String NONPROFITPANEL = "Nonprofit Page";
-	final static String NONPROFITREQUESTPANEL = "Nonprofit Auction Request Page";
-        final static String NONPROFIT_AUCTION_FORM = "Nonprofit Auction Request Form";
+    private final static String INPUTPANEL = "Login Page";
+    private final static String NONPROFITCARD = "Nonprofit Welcome Card";
+	private final static String NONPROFITPANEL = "Nonprofit Page";
+	private final static String NONPROFITREQUESTPANEL = "Nonprofit Auction Request Page";
+        private final static String NONPROFIT_AUCTION_FORM = "Nonprofit Auction Request Form";
 	
 	private Nonprofit myNPO;
 	
@@ -127,6 +129,7 @@ public class NonprofitGUI {
 	 */
 	public void start() {
         myOptionButtons = new ButtonBuilder(new String[] {"Request Auction", "View Auction", "Logout"});
+        
 		
 		NonprofitScreenController();
 		
@@ -137,13 +140,26 @@ public class NonprofitGUI {
         
         private void initializeHasAuctionMessage()
         {
-            ArrayList<Auction> auctionList;
-            auctionList = (ArrayList<Auction>) myCal.getAuctions();
+            //ArrayList<Auction> auctionList;
+            //auctionList = (ArrayList<Auction>) myCal.getAuctions();
+            String auctionDate;
+            //Auction currAuction = myCal.getAuction(myNPO.getUserName());
+            Auction currAuction = myNPO.getAuction();
+            if (currAuction == null)
+            {
+                auctionDate = null;
+            }
+            else
+            {
+                auctionDate = currAuction.getDate().toString();
+                myOptionButtons.getButton(0).setEnabled(false);
+                myOptionButtons.getButton(1).setEnabled(true);
+            }
             
             
             
             HAS_AUCTION_WELCOME = new JTextArea("Welcome, " + myNPO.getName() + "\n"
-                + "\nYour auction is scheduled to be held on $AuctionDate.\n"
+                + "\nYour auction is scheduled to be held on " + auctionDate + ".\n"
                 + "Click \"View Auction\" if you wish to review or update any\n"
                 + "information or item listings.");
             
@@ -178,6 +194,7 @@ public class NonprofitGUI {
         myOptionButtons.getButton(1).setEnabled(false);
 //        myFrame.add(myMainScreen, BorderLayout.SOUTH);
         myOptionButtons.getButton(0).addActionListener(new RequestAuction());
+        myOptionButtons.getButton(2).addActionListener(new LogOut());
         
         NonprofitWelcomeScreen();
         NonprofitAuctionRequestScreen();
@@ -255,7 +272,8 @@ public class NonprofitGUI {
             d++;
             calDate.setVisible(true);
             calDate.repaint();
-            
+            if (x >= 7)
+            {
             JButton button = new JButton("X");
             
             button.addActionListener(new ActionListener() {
@@ -281,9 +299,12 @@ public class NonprofitGUI {
                     
                     myLocalCLayout.show(myLocalContainer, NONPROFIT_AUCTION_FORM);
                 }
+            
                 
             });
+            
             calDate.add(button);
+            }
         }
             
             
@@ -302,6 +323,7 @@ public class NonprofitGUI {
     {
         myRequestFormScreen.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
+        JButton submitButton = new JButton("Submit Request");
         
         c.gridwidth = 1;
         c.gridx = 0;	
@@ -345,6 +367,16 @@ public class NonprofitGUI {
         c.ipadx = 0;
         myRequestFormScreen.add(myStartHour, c);
         
+        c.gridx = 1;	
+        c.gridy = 6;
+        c.ipady = 50;
+        myRequestFormScreen.add(new JPanel(), c);
+        c.gridx = 1;	
+        c.gridy = 7;
+        c.ipady = 0;
+        myRequestFormScreen.add(submitButton, c);
+        
+        submitButton.addActionListener(new Submit());
         
         //JPanel textTags = new JPanel();
         //JPanel formBoxes = new JPanel();
@@ -396,5 +428,134 @@ public class NonprofitGUI {
                 
     	}
             
+    }
+    
+    class LogOut implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			myMainCLayout.show(myMainContainer, INPUTPANEL);
+			myMainContainer.remove(myMainScreen);
+                        
+		}
+	}
+    
+    class Submit implements ActionListener
+    {
+
+        /*
+        private JTextField myAuctionName;
+    private JTextField myContactPerson;
+    private JTextField myItemCount;
+    private JTextField myDescription;
+    private JTextField myComments;
+        */
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String auctionName = "";
+            String contact = "";
+            String itemCount = "";
+            String desc = "";
+            String comments = "";
+            AuctionDate theDate = null;
+            boolean problem = false;
+            if (myStartHour.getSelectedIndex() == 0 || myStartHour.getSelectedIndex() == 1)
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please select a start time to submit.",
+                "Time issue",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            else
+            {
+                theDate = new AuctionDate(myDate[0], myDate[1], myDate[2], myStartHour.getSelectedIndex()-2);
+                System.out.println(theDate.toString());
+            }
+            if (myAuctionName.getText().matches(""))
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please enter a name for this auction.",
+                "Name issue",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            else
+            {
+                auctionName = myAuctionName.getText();
+            }
+            if (myContactPerson.getText().matches(""))
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please enter who will be the contact person for this auction.",
+                "Missing contact",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            else
+            {
+                contact = myContactPerson.getText();
+            }
+            if (myItemCount.getText().matches(""))
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please enter an estimate for the number of items expected.",
+                "Item count issue",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            else
+            {
+                itemCount = myItemCount.getText();
+            }
+            if (myDescription.getText().matches(""))
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "You are missing a description of this auction.",
+                "Missing description",
+                JOptionPane.WARNING_MESSAGE);
+                problem = true;
+            }
+            else
+            {
+                desc = myDescription.getText();
+            }
+            
+            if(!problem)
+            {
+                int moreProblem = myNPO.submitAuctionRequest(theDate, auctionName, myNPO.getUserName(), contact, desc, comments);
+                if (moreProblem == 1)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                "We have too many auctions to handle right now.\nPlease try your request at a later time.",
+                "Sorry!", JOptionPane.UNDEFINED_CONDITION);
+                }
+                else if (moreProblem == 2)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                "You seem to have somehow broken our system.\nPlease contact our site admin at bugreport@auctioncentral.org\nand explain everything you were doing when this problem arised.",
+                "Error Code 2!", JOptionPane.ERROR_MESSAGE);
+                }
+                else if (moreProblem == 3)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                "You seem to have somehow broken our system.\nPlease contact our site admin at bugreport@auctioncentral.org\nand explain everything you were doing when this problem arised.",
+                "Error Code 3!", JOptionPane.ERROR_MESSAGE);
+                }
+                else if (moreProblem == 4)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                "Our records show you've had an auction within the past year.\nPlease try again later.",
+                "Sorry!", JOptionPane.UNDEFINED_CONDITION);
+                }
+                else if (moreProblem == 0)
+                {
+                    initializeHasAuctionMessage();
+                    
+                }
+            }
+            
+        }
+        
     }
 }

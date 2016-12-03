@@ -24,6 +24,8 @@ public class Nonprofit extends User implements java.io.Serializable
 	private boolean activeAuction; 
 	
 	private Auction currentAuction;
+        
+        private AuctionCalendar calendar;
 	
 	/**
      * Constructor for objects of class Nonprofit.
@@ -36,7 +38,8 @@ public class Nonprofit extends User implements java.io.Serializable
 	
 	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber) 
 	{
-		myName = theName;
+	calendar = new AuctionCalendar(new AuctionDate());	
+            myName = theName;
         myUsername = theUsername;
         myPassword = thePassword;
         myEmail = theEmail;
