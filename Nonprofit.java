@@ -91,7 +91,11 @@ public class Nonprofit extends User implements java.io.Serializable
 			}
 		}
 //		if(calendar.getAuctionsOnDate(theDate) == 2) return 7;
-		return calendar.createAndAddAuction(theDate, theAuctionName, this.myUsername, theContactPerson, theDescription, theComment);
+		Auction auctionTemp = new Auction(theDate, theAuctionName, this.myUsername, theContactPerson, theDescription, theComment);
+		currentAuction = auctionTemp;
+		this.activeAuction = true;
+		return calendar.addAuction(auctionTemp);
+// 		return calendar.createAndAddAuction(theDate, theAuctionName, this.myUsername, theContactPerson, theDescription, theComment);
 		
 		
 	}
@@ -142,6 +146,10 @@ public class Nonprofit extends User implements java.io.Serializable
 	public boolean hasCurrentAuction() {
 		return activeAuction;
 	}	
+	
+	public Auction getAuction(){
+		return currentAuction;
+	}
 	
 	/**
 	 * FOR TESTING PURPOSES ONLY
