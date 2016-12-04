@@ -159,7 +159,7 @@ public class BidderGUI {
 				if (j == 0) data[itemID][j] = itemID;
 				if (j == 1) data[itemID][j] = i.getName();
 				if (j == 2) data[itemID][j] = i.getCondition();
-				if (j == 3) data[itemID][j] = i.getStartingBid();
+				if (j == 3) data[itemID][j] = "$" + i.getStartingBid();
 				if (j == 4) {
 					if (myBidder.viewBids().containsKey(i)) {
 						data[itemID][j] = myBidder.viewBids().get(i);
