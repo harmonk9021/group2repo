@@ -19,6 +19,8 @@ import java.util.Random;
  */
 public class AuctionCalendar implements java.io.Serializable {	
 	
+	private static final long serialVersionUID = 1L;
+	private String fileName;
 	private AuctionDate theDate;
 	private int theAuctionCount;
 	private Map<String, Auction> myAuctions;
@@ -29,7 +31,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	 * Constructs and AuctionCalendar with a starting date.
 	 * @param startingDate the starting date of the calendar.
 	 */
-	public AuctionCalendar(AuctionDate startingDate) {
+	public AuctionCalendar(AuctionDate startingDate, String thefileName) {
 	    theDate = startingDate;
 	    myAuctions = new HashMap<>();
 	    myPastAuctions = new HashMap<>();
@@ -53,7 +55,7 @@ public class AuctionCalendar implements java.io.Serializable {
                           System.out.println("removed: " + buffer.getOrg());
 	    	  }
 	      }
-		Update("Auctions.ser");
+// 		Update("Auctions.ser");
 	}
 	
 	
@@ -81,7 +83,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	   if (theAuctionCount >= maxAuctions) return 3;
 	   myAuctions.put(theAuction.getOrg(), theAuction);
 	   theAuctionCount++;
-	   Update("Auctions.ser");
+// 	   Update("Auctions.ser");
 	   return 0;
    }
    /**
@@ -95,7 +97,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	   if(!today.isTwoOrMoreDaysBefore(theAuction.getDate())) return 2;
 	   myAuctions.remove(theAuction);
 	   theAuctionCount++;
-	   Update("Auctions.ser");
+// 	   Update("Auctions.ser");
 	   return 0;
    }
    
@@ -139,7 +141,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	public boolean setMaxAuctions(int theNewMax){
 		if (theNewMax<1) return false;
 		maxAuctions = theNewMax;
-		Update("Auctions.ser");
+// 		Update("Auctions.ser");
 		return true;
 	}
 	
