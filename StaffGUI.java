@@ -37,6 +37,8 @@ public class StaffGUI {
 	private JPanel adminPanel;
 	
 	private JPanel mainPanel;
+	
+	private JPanel infoPanel;
 
 	private JTextField numberOfAuction;
 	
@@ -51,8 +53,7 @@ public class StaffGUI {
 		myStaff = (Staff) theUser;
 		myContainer = containerPanel;
 		myLayout = cLayout;
-		aucCal = new AuctionCalendar(new AuctionDate());
-		staffPanel = new JPanel();
+		aucCal = myStaff.viewAuctions();
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class StaffGUI {
 
 	public void start() {
 		staffScreen();
-		myContainer.add(staffPanel, STAFFPANEL);
+		myContainer.add(mainPanel, STAFFPANEL);
 		myLayout.show(myContainer, STAFFPANEL);
 	}
 	
@@ -70,7 +71,11 @@ public class StaffGUI {
 	 */
 
 	private void staffScreen() {
-		JPanel mainPanel = new JPanel();
+		mainPanel = new JPanel();
+		staffPanel = new JPanel();
+		infoPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		staffPanel.setLayout(new FlowLayout());
 		JButton viewCalender = new JButton("View Calender");
 		JButton adminTools = new JButton("View Admin Tools");
 		viewCalender.addActionListener(new ActionListener() {
@@ -91,10 +96,11 @@ public class StaffGUI {
 			}
 			
 		});
-		mainPanel.setLayout(new FlowLayout());
-		mainPanel.add(viewCalender);
-		mainPanel.add(adminTools);
-		mainPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
+		staffPanel.add(viewCalender);
+		staffPanel.add(adminTools);
+		infoPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
+		mainPanel.add(infoPanel, BorderLayout.CENTER);
+		mainPanel.add(staffPanel, BorderLayout.SOUTH);
 		myContainer.add(mainPanel);
 		mainPanel.setVisible(true);
 	}
@@ -104,7 +110,7 @@ public class StaffGUI {
 	 */
 	
 	private void adminGUI() {
-		JPanel adminPanel = new JPanel();
+		adminPanel = new JPanel();
 		JPanel editPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		JButton changeMaxAuctions = new JButton("Update Max Auctions");
@@ -112,12 +118,20 @@ public class StaffGUI {
 		JLabel errorLabel = new JLabel();
 		editPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		numberOfAuction = new JTextField("Change max auctions");
-		c.ipadx = 0;
+		numberOfAuction = new JTextField("");
+		JLabel maxAuctionsLabel = new JLabel("Change Max Number of Auctions: ");
+		
         c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 1;
-        editPanel.add(numberOfAuction, c);
+        c.gridx = 0;	
+        c.gridy = 0;
+        editPanel.add(maxAuctionsLabel, c);
+        
+		c.ipadx = 50;	
+        c.gridwidth = 2;
+        c.gridx = 1;
+        c.gridy = 0;
+		editPanel.add(numberOfAuction, c);
+		
 		changeMaxAuctions.addActionListener(new ActionListener() {
 
 			@Override
