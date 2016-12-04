@@ -225,7 +225,7 @@ public class AuctionDate implements java.io.Serializable{
             if(currDay > currMonth.getDays())
             {
                 int tmp = currMonth.getMonth();
-                tmp++;
+                tmp = (tmp + 1) % 12;
                 currMonth = Months.convertToMonth(tmp);
                 currDay = 1;
             }
