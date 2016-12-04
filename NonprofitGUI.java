@@ -106,7 +106,7 @@ public class NonprofitGUI {
                 + "\nYou currently have no upcoming auction in our system.\n"
                 + "Please click \"Request Auction\" if you would like to request an auction.");
         
-        initializeHasAuctionMessage();
+        
         
         NO_AUCTION_WELCOME.setEditable(false);
         
@@ -144,7 +144,8 @@ public class NonprofitGUI {
             //auctionList = (ArrayList<Auction>) myCal.getAuctions();
             String auctionDate;
             //Auction currAuction = myCal.getAuction(myNPO.getUserName());
-            Auction currAuction = myNPO.getAuction();
+            Auction currAuction = myCal.getAuction(myNPO.getUserName());
+            System.out.println("result: " + myCal.getAuction(myNPO.getUserName()));
             if (currAuction == null)
             {
                 auctionDate = null;
@@ -199,6 +200,7 @@ public class NonprofitGUI {
         NonprofitWelcomeScreen();
         NonprofitAuctionRequestScreen();
         initializeAuctionRequestForm();
+        
 		
 		myLocalContainer.setLayout(myLocalCLayout);
 		myLocalContainer.add(myWelcomeScreen, NONPROFITPANEL);
@@ -214,7 +216,16 @@ public class NonprofitGUI {
 	 * This method creates the JPanel which should contain the Welcome text areas.
 	 */
 	private void NonprofitWelcomeScreen() {
+            //System.out.println(myNPO.getAuction());
+            System.out.println("result: " + myCal.getAuction(myNPO.getUserName()));
+            //System.out.println(myNPO.getUserName());
+            if (myCal.getAuction(myNPO.getUserName()) == null)
 		myWelcomeScreen.add(NO_AUCTION_WELCOME, BorderLayout.CENTER);
+            else
+            {
+                initializeHasAuctionMessage();
+                myWelcomeScreen.add(HAS_AUCTION_WELCOME, BorderLayout.CENTER);
+            }
 	}
         
 	/**
@@ -523,7 +534,7 @@ public class NonprofitGUI {
             
             if(!problem)
             {
-                int moreProblem = myNPO.submitAuctionRequest(theDate, auctionName, myNPO.getUserName(), contact, desc, comments);
+                int moreProblem = myNPO.submitAuctionRequest(theDate, auctionName, myNPO.getUserName(), contact, desc, comments, myCal);
                 if (moreProblem == 1)
                 {
                     JOptionPane.showMessageDialog(myMainScreen,
@@ -551,6 +562,7 @@ public class NonprofitGUI {
                 else if (moreProblem == 0)
                 {
                     initializeHasAuctionMessage();
+                    myCal.Update("Auctions.ser");
                     
                 }
             }

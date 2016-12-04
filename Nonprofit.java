@@ -21,11 +21,11 @@ public class Nonprofit extends User implements java.io.Serializable
 
 	private String myContactPerson;
 	
-	private boolean activeAuction; 
+	private boolean myActiveAuction; 
 	
 	private Auction currentAuction;
         
-        private AuctionCalendar calendar;
+        //private AuctionCalendar calendar;
 	
 	/**
      * Constructor for objects of class Nonprofit.
@@ -36,16 +36,16 @@ public class Nonprofit extends User implements java.io.Serializable
      * @param thePhoneNumber The phone number to contact the NPO with.
      */
 	
-	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber) 
+	public Nonprofit(String theName, String theUsername, String thePassword, String theEmail, String thePhoneNumber /*AuctionCalendar theCalendar*/) 
 	{
-	calendar = new AuctionCalendar(new AuctionDate());	
+	//calendar = theCalendar;//new AuctionCalendar(new AuctionDate());	
             myName = theName;
         myUsername = theUsername;
         myPassword = thePassword;
         myEmail = theEmail;
         myPhoneNumber = thePhoneNumber;
 		myContactPerson = "";
-		activeAuction = false;
+		myActiveAuction = false;
 		currentAuction = null;
 	}
 	
@@ -61,10 +61,11 @@ public class Nonprofit extends User implements java.io.Serializable
    	* @return 7 if there is already 2 Auctions happening on that date
 	 */
 	public int submitAuctionRequest(AuctionDate theDate, String theAuctionName, String theOrgName,
-    		String theContactPerson, String theDescription, String theComment)
+    		String theContactPerson, String theDescription, String theComment, AuctionCalendar calendar)
 	{
 		AuctionDate today = new AuctionDate();
-		Auction activeAuction = calendar.getAuction(myUsername);
+		Auction activeAuction; 
+                activeAuction = calendar.getAuction(myUsername);
 		
 		if(activeAuction != null ) return 3;
 		
@@ -94,9 +95,10 @@ public class Nonprofit extends User implements java.io.Serializable
 			}
 		}
 //		if(calendar.getAuctionsOnDate(theDate) == 2) return 7;
-		Auction auctionTemp = new Auction(theDate, theAuctionName, this.myUsername, theContactPerson, theDescription, theComment);
+		Auction auctionTemp = new Auction(theDate, theAuctionName, myUsername, theContactPerson, theDescription, theComment);
+                //System.out.println(myUsername);
 		currentAuction = auctionTemp;
-		this.activeAuction = true;
+		this.myActiveAuction = true;
 		return calendar.addAuction(auctionTemp);
 // 		return calendar.createAndAddAuction(theDate, theAuctionName, this.myUsername, theContactPerson, theDescription, theComment);
 		
@@ -110,7 +112,7 @@ public class Nonprofit extends User implements java.io.Serializable
 	
 	public boolean addItem(String theName, String theDonorName, String theDescription,
 			int theQuantity, float theStartingBid, String theCondition,
-			String theSize, String theComments) 
+			String theSize, String theComments, AuctionCalendar calendar) 
 	{
 		boolean result = false;
 		Item item = new Item(theName, theDonorName, theDescription, theQuantity, theStartingBid, 
@@ -147,7 +149,7 @@ public class Nonprofit extends User implements java.io.Serializable
 	 */
 	
 	public boolean hasCurrentAuction() {
-		return activeAuction;
+		return myActiveAuction;
 	}	
 	
 	public Auction getAuction(){
@@ -159,7 +161,8 @@ public class Nonprofit extends User implements java.io.Serializable
 	 * PLEASE DO NOT USE
 	 */
 	public AuctionCalendar getCalendar(){
-		return calendar;
+		//return calendar;
+            return null;
 	}
 	
 	/**
@@ -167,6 +170,7 @@ public class Nonprofit extends User implements java.io.Serializable
 	 * PLEASE DO NOT USE
 	 */
 	public void setCalendar(AuctionCalendar theCalendar){
-		calendar = theCalendar;
+		//calendar = theCalendar;
 	}
+        
 }

@@ -46,9 +46,11 @@ public class AuctionCalendar implements java.io.Serializable {
 	      while(itr.hasNext()){
 	    	  tempKey = itr.next();
 	    	  buffer = myAuctions.get(tempKey);
-	    	  if(!buffer.getDate().isSameOrAfterDate(theDate)){
+                  System.out.println(buffer.getOrg());
+	    	  if(buffer.getDate().isSameOrAfterDate(theDate)){
 	    		  myPastAuctions.put(buffer.getOrg(), buffer);
 	    		  myAuctions.remove(buffer.getOrg());
+                          System.out.println("removed: " + buffer.getOrg());
 	    	  }
 	      }
 		Update("Auctions.ser");
@@ -120,7 +122,14 @@ public class AuctionCalendar implements java.io.Serializable {
     }
    
    public Auction getAuction(String OrgName){
-	   return myAuctions.get(OrgName);
+       //System.out.println("Ding!");
+       if (myAuctions.containsKey(OrgName))
+       {
+           //System.out.println(OrgName);
+           return myAuctions.get(OrgName);
+       }
+       else
+           return null;
    }
    
    /**
