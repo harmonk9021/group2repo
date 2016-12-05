@@ -341,7 +341,7 @@ public class BidderGUI {
 		/*
 		 * If the auction date is within 2 days, set Remove Bid button to disabled -- Business Rule
 		 */
-		if (theAuction.getDate().isTwoOrMoreDaysBefore(new AuctionDate())) {
+		if (!theAuction.getDate().isTwoOrMoreDaysBefore(new AuctionDate())) {
 			myOptionButtons.getButton(3).setEnabled(false);
 		}
 		
