@@ -59,6 +59,7 @@ public class AuctionDate implements java.io.Serializable{
             myMonth = month;
         else
             throw new IllegalArgumentException("Month was outside valid range (1-12)");
+            //myMonth = 12;
         if (day > 31)
         {
             throw new IllegalArgumentException("Day was outside valid range (1-31)");
