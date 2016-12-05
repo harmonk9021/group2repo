@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 public class GUI {
 	
 	final static String USERFILE = "Users.ser";
+	final static String AUCTIONFILE = "Auctions.ser";
 	
 	/*
 	 * Static names for all the different panels used in the CardLayout
@@ -233,6 +234,7 @@ public class GUI {
 						myFrame.repaint();
 					} else {
 						User user = myUserLogin.getUser(usernameField.getText());
+						myCalendar.Load(AUCTIONFILE);
 						if (user instanceof Bidder) {
 							BidderGUI bidGUI = new BidderGUI(user, myUserLogin, myCalendar, containerPanel, cLayout);
 							clearTextFields();
