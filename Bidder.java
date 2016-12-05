@@ -36,7 +36,7 @@ public class Bidder extends User implements java.io.Serializable
 		myName = theName;
         myUsername = theUsername;
         myPassword = thePassword;
-        myEmail = thePassword;
+        myEmail = theEmail;
         myPhoneNumber = thePhoneNumber;
 		myBids = new HashMap<Item, Float>();
     }
@@ -63,10 +63,20 @@ public class Bidder extends User implements java.io.Serializable
 	 * @return Returns if the removal was successful.
 	 */
 	
+//	public boolean removeBid(Item theItem) {
+//		float theBid = myBids.get(theItem);
+//		boolean result = false;
+//		if (myBids.remove(theItem, theBid)) {
+//			result = true;
+//		}
+//		return result;
+//	}
+	
 	public boolean removeBid(Item theItem) {
-		float theBid = myBids.get(theItem);
+//		float theBid = myBids.get(theItem);
 		boolean result = false;
-		if (myBids.remove(theItem, theBid)) {
+		if (theItem.deleteBid(myUsername)) {
+			myBids.remove(theItem);
 			result = true;
 		}
 		return result;
