@@ -172,6 +172,23 @@ public class AuctionDate implements java.io.Serializable{
     	return false;
     }
     
+    /**
+     * @return true if the param date is 2 days or more before this date 
+     * @return false if the param date is 1 day before, is the day, of after this date
+     */
+    public boolean isTwoOrMoreDaysBeforeBid(AuctionDate theDate)
+    {
+    	LocalDate thisDate = LocalDate.of(this.myYear, Month.of(this.myMonth), this.myDay);
+    	LocalDate paramDate = LocalDate.of(theDate.myYear, Month.of(theDate.myMonth), theDate.myDay);
+    	long daysBetween = ChronoUnit.DAYS.between(paramDate, thisDate);
+//    	if (daysBetween == 1 || daysBetween == 0) return 0;
+//    	if(daysBetween > 1) return 1;
+//    	return 2;
+    	if(daysBetween >= 2) return true;
+    	return false;
+    }
+    
+    
     public AuctionDate getAuctionDateXDaysAway(int daysOut){
     	LocalDate temp1 = this.toLocalDate();
     	LocalDate temp2;
