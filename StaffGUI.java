@@ -154,9 +154,13 @@ public class StaffGUI {
 				 try {
 				      int i = Integer.parseInt(string.trim());
 				      aucCal.setMaxAuctions(i);
+				      aucCal.Update("Auctions.ser");
 				      adminPanel.setVisible(false);
-				      staffScreen();
-				      myContainer.repaint();
+				     // staffScreen();
+				      infoPanel.removeAll();
+				      infoPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
+				      mainPanel.setVisible(true);
+				      myContainer.remove(adminPanel);
 				    }
 				    catch (NumberFormatException nfe)
 				    {
@@ -172,7 +176,9 @@ public class StaffGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				adminPanel.setVisible(false);
-				staffScreen();
+				//staffScreen();
+				myContainer.remove(adminPanel);
+				mainPanel.setVisible(true);
 			}
 			
 		});
