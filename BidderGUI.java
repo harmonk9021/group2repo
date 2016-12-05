@@ -55,6 +55,8 @@ public class BidderGUI {
 	private Object[][] myTableData;
 	private JTable myItemTable;
 	
+	private boolean within2Days = false;
+	
 	private Login myLogin;
 	private Bidder myBidder;
 	private AuctionCalendar myCalendar;
@@ -200,6 +202,13 @@ public class BidderGUI {
 						setAuctionInfo(auc);
 						myOptionButtons.getButton(2).setEnabled(true);
 						myOptionButtons.getButton(0).setEnabled(true);
+						if (within2Days) {
+							JOptionPane.showMessageDialog(myMainScreen,
+					                chosenAuction.getAuctionName() + " is less than 2 days away!\n"
+					                + "All bids become final within 2 days of the auction.",
+					                "Auction Ending Soon!",
+					                JOptionPane.INFORMATION_MESSAGE);
+							}
 					}
 				});
 				
@@ -235,6 +244,14 @@ public class BidderGUI {
 				}
 			}
 			itemID++;
+		}
+		
+		/*
+		 * If the auction date is within 2 days, set Remove Bid button to disabled -- Business Rule
+		 */
+		if (!chosenAuction.getDate().isTwoOrMoreDaysBefore(new AuctionDate())) {
+			myOptionButtons.getButton(4).setEnabled(false);
+			within2Days = true;
 		}
 		
 		myItemTable = new JTable(myTableData, COLUMNNAMES);		
@@ -312,12 +329,13 @@ public class BidderGUI {
 		
 		setItem(theItem);
 		
-		/*
-		 * If the auction date is within 2 days, set Remove Bid button to disabled -- Business Rule
-		 */
-		if (!theAuction.getDate().isTwoOrMoreDaysBefore(new AuctionDate())) {
-			myOptionButtons.getButton(4).setEnabled(false);
-		}
+//		/*
+//		 * If the auction date is within 2 days, set Remove Bid button to disabled -- Business Rule
+//		 */
+//		if (!theAuction.getDate().isTwoOrMoreDaysBefore(new AuctionDate())) {
+//			myOptionButtons.getButton(4).setEnabled(false);
+//			within2Days = true;
+//		}
 		
 		myLocalContainer.add(myViewItemDetailsScreen, BIDDERVIEWITEMDETAILS);
 		myLocalCLayout.show(myLocalContainer, BIDDERVIEWITEMDETAILS);
@@ -579,7 +597,16 @@ public class BidderGUI {
 			} else {
 				BidderViewItemDetailsScreen(itemsFromAuction.get(myItemTable.getSelectedRow()), chosenAuction);
 				myOptionButtons.getButton(1).setVisible(true);
-				myOptionButtons.getButton(2).setEnabled(false);
+				myOptionButtons.getButton(4).setEnabled(false);
+				if (within2Days) {
+					myOptionButtons.getButton(2).setEnabled(false);
+					JOptionPane.showMessageDialog(myMainScreen,
+							chosenAuction.getAuctionName() + " is less than 2 days away!\n"
+									+ "You may review the item information but cannot remove your bid\n"
+									+ "within 2 days of the auction.",
+									"Auction Ending Soon!",
+									JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		}
 	}
