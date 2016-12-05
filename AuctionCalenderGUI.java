@@ -50,12 +50,17 @@ public class AuctionCalenderGUI {
 	 */
 
 	private void CalenderScreen() {
-//		createDays();
-		AuctionDate date = new AuctionDate();
-		Calendar cal = Calendar.getInstance();
-		int[] dates = date.getNextXDays(30);
+	    AuctionDate date = new AuctionDate();
+	    Calendar cal = Calendar.getInstance();
+	    int[] dates = date.getNextXDays(30);
 	    int d = 0;
+	    String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	    String[] days = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"};
+	    String month = months[date.getMonth() - 1];
+	    myFrame.add(new JLabel(month));
+		for (int j = 2; j < 8; j++) {
+			myFrame.add(new JLabel(""));
+		}
 	    for (int i = 0; i < 7; i++)
 	    {
 	        myFrame.add(new JLabel(days[i]));
