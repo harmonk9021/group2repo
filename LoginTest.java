@@ -13,8 +13,9 @@ public class LoginTest {
 	
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp(){
 		thisLogin = new Login("loginTest.ser");
+	//	thisLogin.loadUserInfo(userFileName)
 		user1 = new User();
 		
 		user1.setUserName("Steven");
@@ -36,11 +37,13 @@ public class LoginTest {
 	
 	@Test
 	public void testIsValidPasswordOnNotValidPassword() {
+		thisLogin.addUser(user1);
 		assertTrue(thisLogin.isValidPassword(user1.getUserName(), user1.getPassword()));
 	}
 	
 	@Test
 	public void testIsValidPasswordOnValidPassword() {
+		thisLogin.addUser(user1);
 		assertFalse(thisLogin.isValidPassword(user1.getUserName(), "Not the password"));
 	}
 

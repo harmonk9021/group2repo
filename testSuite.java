@@ -5,9 +5,10 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	AuctionTest.class,
 	AuctionCalendarTest.class,
-	DatabaseTest.class,
+	AuctionDateTest.class,
 	ItemTest.class,
-	UserTest.class
+	UserTest.class,
+	LoginTest.class
 })
 
 public class testSuite {
