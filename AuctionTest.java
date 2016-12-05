@@ -17,31 +17,31 @@ import org.junit.Test;
 public class AuctionTest
 {
 	
-	public AuctionDate myCurrentDate;
-	public String myName;
-	public Auction myAuction;
+	private AuctionDate myCurrentDate;
+	private String myName;
+	private Auction myAuction;
 	
-	public String expectedItemName = "Driver 1";
-	public String expectedItemDonor = "Sebastian Vettel";
-	public String expectedItemDesc = "Racing, or ping pong?";
-	public int expectedItemQuantity = 5;
-	public float expectedStartingBid = 197;
-	public String expectedItemCond = "Unbelievable";
-	public String expectedItemSize = "Small";
-	public String expectedItemComment = "BLUE FLAG! BLUE FLAG!";
+	private String expectedItemName = "Driver 1";
+	private String expectedItemDonor = "Sebastian Vettel";
+	private String expectedItemDesc = "Racing, or ping pong?";
+	private int expectedItemQuantity = 5;
+	private float expectedStartingBid = 197;
+	private String expectedItemCond = "Unbelievable";
+	private String expectedItemSize = "Small";
+	private String expectedItemComment = "BLUE FLAG! BLUE FLAG!";
 	
-	public String expectedItemName2 = "Driver 2";
-	public String expectedItemDonor2 = "Kimi Raikkonen";
-	public String expectedItemDesc2 = "Bwoah";
-	public int expectedItemQuantity2 = 7;
-	public float expectedStartingBid2 = 178;
-	public String expectedItemCond2 = "It's the same for everyone.";
-	public String expectedItemSize2 = "Small";
-	public String expectedItemComment2 = "Leave me alone, I know what I'm doing.";
+	private String expectedItemName2 = "Driver 2";
+	private String expectedItemDonor2 = "Kimi Raikkonen";
+	private String expectedItemDesc2 = "Bwoah";
+	private int expectedItemQuantity2 = 7;
+	private float expectedStartingBid2 = 178;
+	private String expectedItemCond2 = "It's the same for everyone.";
+	private String expectedItemSize2 = "Small";
+	private String expectedItemComment2 = "Leave me alone, I know what I'm doing.";
 	
-	Item myItem;
-	Item myItem2;
-	Item myItemAgain;
+	private Item myItem;
+	private Item myItem2;
+	private Item myItemAgain;
 	
 	@Before
 	public void setup() {
