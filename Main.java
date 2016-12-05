@@ -7,7 +7,7 @@ public class Main {
 		AuctionDate myDate = new AuctionDate();
 		AuctionDate aucDate = new AuctionDate(2016, 12, 15, 12);
 		
-		AuctionCalendar myCalendar = new AuctionCalendar(myDate);
+		AuctionCalendar myCalendar = new AuctionCalendar(myDate, "Auctions.ser");
 //		Auction testAuction = new Auction(aucDate, "Test Auction 1", "We're FOR Profit", "Jim Bob",
 //										  "We take your money and make a profit", "The less you know, the better");
 		System.out.println(myCalendar.createAndAddAuction(aucDate, "Test Auction 1", "We're FOR Profit", "Jim Bob",

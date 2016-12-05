@@ -163,13 +163,17 @@ public class AuctionDate implements java.io.Serializable{
      */
     public boolean isTwoOrMoreDaysBefore(AuctionDate theDate)
     {
-    	LocalDate thisDate = LocalDate.of(this.myYear, Month.of(this.myMonth), this.myDay);
-    	LocalDate paramDate = LocalDate.of(theDate.myYear, Month.of(theDate.myMonth), theDate.myDay);
-    	long daysBetween = ChronoUnit.DAYS.between(paramDate, thisDate);
+    	//LocalDate thisDate = LocalDate.of(this.myYear, Month.of(this.myMonth), this.myDay);
+    	//LocalDate paramDate = LocalDate.of(theDate.myYear, Month.of(theDate.myMonth), theDate.myDay);
+    	//long daysBetween = ChronoUnit.DAYS.between(paramDate, thisDate);
+        
+        if (isSameMonth(theDate) && ((theDate.myDay - myDay) >= 2 || (myDay - theDate.myDay) >= 2))
+            return true;
+        
 //    	if (daysBetween == 1 || daysBetween == 0) return 0;
 //    	if(daysBetween > 1) return 1;
 //    	return 2;
-    	if(daysBetween >= 2) return true;
+    	//if(daysBetween >= 2) return true;
     	return false;
     }
     

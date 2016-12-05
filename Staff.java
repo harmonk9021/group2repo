@@ -40,7 +40,7 @@ public class Staff extends User implements java.io.Serializable
      */
     
     public AuctionCalendar viewAuctions() {
-	AuctionCalendar calender = new AuctionCalendar(new AuctionDate());
+	AuctionCalendar calender = new AuctionCalendar(new AuctionDate(), "Auctions.ser");
     	return calender;
     }
 }

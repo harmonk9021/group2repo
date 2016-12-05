@@ -217,6 +217,11 @@ public class Auction implements java.io.Serializable
     	return myItems;
     }
     
+    public String getAuctionName()
+    {
+        return auctionName;
+    }
+    
     
     
     /**

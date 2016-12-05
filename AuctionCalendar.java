@@ -91,10 +91,10 @@ public class AuctionCalendar implements java.io.Serializable {
     * @return 1 if the Auction did not exist
     * @retrun 2 if the date of deletion is within 2 days of the Auction date
     */
-   public int removeAuction(Auction theAuction){
+   public int removeAuction(String theAuction){
 	   AuctionDate today = new AuctionDate();
-	   if(!myAuctions.containsKey(theAuction.getOrg())) return 1;
-	   if(!today.isTwoOrMoreDaysBefore(theAuction.getDate())) return 2;
+	   if(!myAuctions.containsKey(theAuction)) return 1;
+	   if(!today.isTwoOrMoreDaysBefore(myAuctions.get(theAuction).getDate())) return 2;
 	   myAuctions.remove(theAuction);
 	   theAuctionCount++;
 // 	   Update("Auctions.ser");

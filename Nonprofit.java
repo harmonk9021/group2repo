@@ -117,7 +117,7 @@ public class Nonprofit extends User implements java.io.Serializable
 		boolean result = false;
 		Item item = new Item(theName, theDonorName, theDescription, theQuantity, theStartingBid, 
 				theCondition, theSize, theComments);
-		if (calendar.getAuction(myUsername)!=null && currentAuction.addItem(item)) {
+		if (calendar.getAuction(myUsername)!=null && calendar.getAuction(myUsername).addItem(item)) {
 			result = true;
 		}
 		return result;

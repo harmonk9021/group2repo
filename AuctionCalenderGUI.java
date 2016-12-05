@@ -27,7 +27,7 @@ public class AuctionCalenderGUI {
 	public AuctionCalenderGUI() {
 		myFrame = new JFrame("Calender");
 		myFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		aucCal = new AuctionCalendar(new AuctionDate());
+		aucCal = new AuctionCalendar(new AuctionDate(), "Auctions.ser");
 	}
 	
 	/**

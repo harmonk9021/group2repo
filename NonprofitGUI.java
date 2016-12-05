@@ -264,7 +264,10 @@ public class NonprofitGUI {
         NonprofitWelcomeScreen();
         NonprofitAuctionRequestScreen();
         initializeAuctionRequestForm();
-        initializeViewAuction();
+        if (myCal.getAuction(myNPO.getUserName()) !=  null)
+        {
+            initializeViewAuction();
+        }
         initializeAddItemForm();
         
 		
@@ -313,6 +316,7 @@ public class NonprofitGUI {
         boolean result = NPViewItemsScreen(auction/*, viewAuctionButtons*/);
         viewAuctionButtons.getButton(2).setEnabled(result);
         
+        viewAuctionButtons.getButton(0).addActionListener(new RemoveAuction());
         viewAuctionButtons.getButton(1).addActionListener(new AddItemForm());
         viewAuctionButtons.getButton(2).addActionListener(new RemoveItem());
     }
@@ -399,17 +403,17 @@ public class NonprofitGUI {
     private boolean NPViewItemsScreen(Auction theAuction/*, ButtonBuilder theButtons*/) {
 		List<Item> myItems = theAuction.getItems();
 		
-		Object[][] data = new Object[myItems.size() + 1][COLUMNNUMBERS];
+		Object[][] data = new Object[myItems.size()][COLUMNNUMBERS];
 		int itemID = 1;
-		for (int k = 0; k < COLUMNNUMBERS; k++) {
-			data[0][k] = COLUMNNAMES[k];
-		}
+		//for (int k = 0; k < COLUMNNUMBERS; k++) {
+		//	data[0][k] = COLUMNNAMES[k];
+		//}
 		for (Item i : myItems) {
 			for (int j = 0; j < COLUMNNUMBERS; j++) {
-				if (j == 0) data[itemID][j] = itemID;
-				if (j == 1) data[itemID][j] = i.getName();
-				if (j == 2) data[itemID][j] = i.getCondition();
-				if (j == 3) data[itemID][j] = "$" + i.getStartingBid();
+				if (j == 0) data[itemID-1][j] = itemID;
+				if (j == 1) data[itemID-1][j] = i.getName();
+				if (j == 2) data[itemID-1][j] = i.getCondition();
+				if (j == 3) data[itemID-1][j] = "$" + i.getStartingBid();
 				/*
                                 if (j == 4) {
 					if (myBidder.viewBids().containsKey(i)) {
@@ -834,7 +838,7 @@ public class NonprofitGUI {
                 {
                     initializeHasAuctionMessage();
                     myCal.Update("Auctions.ser");
-                    
+                    initializeViewAuction();
                     setUpConfirmation();
                     myLocalCLayout.show(myLocalContainer, NP_CONFIRMATION_SCREEN);
                 }
@@ -1038,6 +1042,32 @@ public class NonprofitGUI {
                     + "\nAre you sure you wish to do this?");
             if (selected == JOptionPane.YES_OPTION)
             {
+                int result = myCal.removeAuction(myNPO.getUserName());
+                if (result == 0)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                    "Your auction has been canceled. You may request a new auction.",
+                    "Success!",
+                    JOptionPane.INFORMATION_MESSAGE);
+                    myOptionButtons.getButton(1).setEnabled(false);
+                    myOptionButtons.getButton(0).setEnabled(true);
+                    myLocalCLayout.show(myLocalContainer, NONPROFITPANEL);
+                    myCal.Update("Auctions.ser");
+                }
+                if (result == 1)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                    "Auction was not found. Please contact site admin at webmaster@auctioncentral.org",
+                    "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+                }
+                if (result == 2)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                    "Your auction may not be removed at this time.\nReason: auction too close to start date.",
+                    "Sorry",
+                    JOptionPane.ERROR_MESSAGE);
+                }
                 
             }
         }

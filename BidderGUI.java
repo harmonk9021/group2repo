@@ -158,7 +158,7 @@ public class BidderGUI {
 	private void BidderViewAuctionsScreen() {
 		for (Auction auc : myCalendar.getAuctions()) {
 			if (auc.getItems().size() > 0) {
-				JButton button = new JButton(auc.getOrg());
+				JButton button = new JButton(auc.getAuctionName());
 				
 				button.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
