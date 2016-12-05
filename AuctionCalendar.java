@@ -14,8 +14,8 @@ import java.util.Random;
 /**
  * This is a representation of a calendar for upcoming auctions.
  * 
- * @author Cody Arnold 
- * @version 11/17/16
+ * @author Cody Arnold, Katherine Harmon
+ * @version 12/4/16
  */
 public class AuctionCalendar implements java.io.Serializable {	
 	
@@ -58,7 +58,14 @@ public class AuctionCalendar implements java.io.Serializable {
 // 		Update("Auctions.ser");
 	}
 	
-	
+	/**
+	    * creates and Adds an auction to the calendar.
+	    * @param theAuction is the auction being added.
+	    * @return 0 if successfully added.
+	    * @return 1 if the Auction was not added due to the max number of auctions already exist
+	   	* @return 2 if the Auction already exists
+	   	* 
+	    */
 	public int createAndAddAuction(AuctionDate theDate, String theAuctionName, String theOrgName,
     		String theContactPerson, String theDescription, String theComment){
 		
@@ -87,6 +94,7 @@ public class AuctionCalendar implements java.io.Serializable {
 	   return 0;
    }
    /**
+    * removes an auction from the calendar
     * @return 0 if the Auction is successfully removed
     * @return 1 if the Auction did not exist
     * @retrun 2 if the date of deletion is within 2 days of the Auction date
@@ -123,6 +131,9 @@ public class AuctionCalendar implements java.io.Serializable {
       return auctionList;
     }
    
+   /**gets the current auction belonging to the param name
+    * @returns the auction belonging to OrgName
+    */
    public Auction getAuction(String OrgName){
        //System.out.println("Ding!");
        if (myAuctions.containsKey(OrgName))
