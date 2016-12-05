@@ -2,7 +2,8 @@
  * Test cases for Auction class.
  * 
  * @author Kyle Phan
- * @version 11/21/16
+ * @editor Katie Harmon
+ * @version 12/4/16
  */
 
 
