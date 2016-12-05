@@ -78,6 +78,7 @@ public class StaffGUI {
 		staffPanel.setLayout(new FlowLayout());
 		JButton viewCalender = new JButton("View Calender");
 		JButton adminTools = new JButton("View Admin Tools");
+		JButton logOut = new JButton("Log Out");
 		viewCalender.addActionListener(new ActionListener() {
 
 			@Override
@@ -96,8 +97,18 @@ public class StaffGUI {
 			}
 			
 		});
+		logOut.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				myLayout.show(myContainer, STAFFPANEL);
+				myContainer.remove(mainPanel);
+			}
+			
+		});
 		staffPanel.add(viewCalender);
 		staffPanel.add(adminTools);
+		staffPanel.add(logOut);
 		infoPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
 		mainPanel.add(infoPanel, BorderLayout.CENTER);
 		mainPanel.add(staffPanel, BorderLayout.SOUTH);
