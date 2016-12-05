@@ -26,6 +26,8 @@ import javax.swing.JTextField;
  */
 public class GUI {
 	
+	final static String USERFILE = "Users.ser";
+	
 	/*
 	 * Static names for all the different panels used in the CardLayout
 	 * for myFrame
@@ -226,13 +228,13 @@ public class GUI {
 					 * the incorrect password label, else send user to their specific GUI.
 					 */
 					if (!myUserLogin.isValidPassword(enteredUsername, enteredPassword)) {
-						noUserFoundLabel.setText("The username or password \n entered is incorrect.");
+						noUserFoundLabel.setText("The password entered is incorrect.");
 						noUserFoundLabel.setVisible(true);
 						myFrame.repaint();
 					} else {
 						User user = myUserLogin.getUser(usernameField.getText());
 						if (user instanceof Bidder) {
-							BidderGUI bidGUI = new BidderGUI(user, myCalendar, containerPanel, cLayout);
+							BidderGUI bidGUI = new BidderGUI(user, myUserLogin, myCalendar, containerPanel, cLayout);
 							clearTextFields();
 							bidGUI.start();
 						} else if (user instanceof Nonprofit) {
@@ -365,6 +367,10 @@ public class GUI {
 		regisPasswordField.setText("");
 		emailField.setText("");
 		phoneNumField.setText("");
+		
+		noUserFoundLabel.setVisible(false);
+		emptyFieldsLabel.setForeground(Color.BLACK);
+		userAlreadyExists.setVisible(false);
 	}
 	
 	/**
@@ -388,6 +394,7 @@ public class GUI {
 					if (myUserLogin.createUser(nameField.getText(), regisUsernameField.getText(), regisPasswordField.getText(), emailField.getText(), 
 							   phoneNumField.getText(), buttonGroup.getSelection().getActionCommand())) {
 						clearTextFields();
+						myUserLogin.writeUserInfo(USERFILE);
 						cLayout.show(containerPanel, INPUTPANEL);
 						
 					} else {
