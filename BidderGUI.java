@@ -113,7 +113,7 @@ public class BidderGUI {
         myMainCLayout = theCLayout;
         
         
-        System.out.println(myBidder.viewBids().keySet());
+        System.out.println("Bidder Items: " + myBidder.viewBids().keySet());
         
         
         currencyFormatter = NumberFormat.getCurrencyInstance();
@@ -239,6 +239,8 @@ public class BidderGUI {
 					for (Item k : myBidder.viewBids().keySet()) {
 						if (k.getName().equals(i.getName())) {
 							myTableData[itemID-1][j] = currencyFormatter.format(myBidder.viewBids().get(k));
+						} else {
+							myTableData[itemID-1][j] = "";
 						}
 					}
 				}
@@ -249,7 +251,7 @@ public class BidderGUI {
 		/*
 		 * If the auction date is within 2 days, set Remove Bid button to disabled -- Business Rule
 		 */
-		if (!chosenAuction.getDate().isTwoOrMoreDaysBefore(new AuctionDate())) {
+		if (!chosenAuction.getDate().isTwoOrMoreDaysBeforeBid(new AuctionDate())) {
 			myOptionButtons.getButton(4).setEnabled(false);
 			within2Days = true;
 		}
@@ -416,6 +418,8 @@ public class BidderGUI {
 					for (Item k : myBidder.viewBids().keySet()) {
 						if (k.getName().equals(i.getName())) {
 							myTableData[itemID-1][j] = currencyFormatter.format(myBidder.viewBids().get(k));
+						} else {
+							myTableData[itemID-1][j] = "";
 						}
 					}
 				}
@@ -446,12 +450,14 @@ public class BidderGUI {
 				}
 			}
 			System.out.println(myLocalContainer.getComponents());
+			within2Days = false;
 			myViewAuctionsScreen = new JPanel();
 			BidderViewAuctionsScreen();
 			myLocalContainer.add(myViewAuctionsScreen, BIDDERVIEWAUCS);
 			clearTextField();
 			myWelcomeScreen.remove(auctionInfo);
 			myOptionButtons.getButton(0).setEnabled(false);
+			myOptionButtons.getButton(1).setVisible(false);
 			myOptionButtons.getButton(2).setEnabled(false);
 			myOptionButtons.getButton(2).setVisible(true);
 			myOptionButtons.getButton(3).setVisible(false);
@@ -470,6 +476,7 @@ public class BidderGUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			redrawTable();
+			myViewItemsScreen.repaint();
 			myLocalCLayout.show(myLocalContainer, BIDDERVIEWITEMS);
 			myOptionButtons.getButton(1).setVisible(false);
 			myOptionButtons.getButton(2).setEnabled(true);
@@ -524,6 +531,7 @@ public class BidderGUI {
 //					myLocalContainer.remove(myViewItemsScreen);
 					myLocalContainer.remove(myViewItemDetailsScreen);
 					redrawTable();
+					myViewItemsScreen.repaint();
 					myOptionButtons.getButton(1).setVisible(false);
 					myOptionButtons.getButton(2).setEnabled(true);
 					myOptionButtons.getButton(3).setVisible(false);
@@ -566,6 +574,7 @@ public class BidderGUI {
 			clearTextField();
 			myLocalContainer.remove(myViewItemDetailsScreen);
 			redrawTable();
+			myViewItemsScreen.repaint();
 			myOptionButtons.getButton(1).setVisible(false);
 			myOptionButtons.getButton(2).setEnabled(true);
 			myOptionButtons.getButton(3).setVisible(false);
@@ -597,9 +606,9 @@ public class BidderGUI {
 			} else {
 				BidderViewItemDetailsScreen(itemsFromAuction.get(myItemTable.getSelectedRow()), chosenAuction);
 				myOptionButtons.getButton(1).setVisible(true);
-				myOptionButtons.getButton(4).setEnabled(false);
+				myOptionButtons.getButton(2).setEnabled(false);
 				if (within2Days) {
-					myOptionButtons.getButton(2).setEnabled(false);
+					myOptionButtons.getButton(4).setEnabled(false);
 					JOptionPane.showMessageDialog(myMainScreen,
 							chosenAuction.getAuctionName() + " is less than 2 days away!\n"
 									+ "You may review the item information but cannot remove your bid\n"
@@ -624,6 +633,8 @@ public class BidderGUI {
 		public void actionPerformed(ActionEvent e) {
 			myMainCLayout.show(myMainContainer, INPUTPANEL);
 			myMainContainer.remove(myMainScreen);
+			myLogin.writeUserInfo(USERFILE);
+			myCalendar.Update(THEFILENAME);
 		}
 	}
 }
