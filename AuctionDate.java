@@ -4,19 +4,14 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * This is a custom built version of the otherwise cryptic and cumbersome to
  * use Date class that comes in the standard Java library. It is intended to
  * provide a quick and easy way to create and compare specific dates.
  * 
- * @version 11.17.2016.001A
+ * @version 12.4.2016.001A
  * @author Jacob Ackerman
+ * @editor Katherine Harmon
  */
 public class AuctionDate implements java.io.Serializable{
     private int myYear;
