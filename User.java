@@ -38,7 +38,7 @@ public class User implements java.io.Serializable
         myPassword = "";
         myEmail = "";
         myPhoneNumber = "";
-	calendar = new AuctionCalendar(new AuctionDate());
+	calendar = new AuctionCalendar(new AuctionDate(), "String");
     }
     
     /**
