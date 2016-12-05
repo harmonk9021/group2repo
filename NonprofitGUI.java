@@ -1,3 +1,4 @@
+//import static BidderGUI.COLUMNNUMBERS;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
@@ -6,8 +7,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,8 +22,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 /**
  * The GUI for users that are represented as Nonprofit
@@ -39,8 +49,24 @@ public class NonprofitGUI {
 	private final static String NONPROFITPANEL = "Nonprofit Page";
 	private final static String NONPROFITREQUESTPANEL = "Nonprofit Auction Request Page";
         private final static String NONPROFIT_AUCTION_FORM = "Nonprofit Auction Request Form";
+        private static final String NP_CONFIRMATION_SCREEN = "NP Confirmation Screen";
+        private static final String NP_AUCTION_VIEW_SCREEN = "NP Auction View";
+        private static final String NP_ITEM_ADD_FORM = "NP Item Add Form";
 	
 	private Nonprofit myNPO;
+        
+        final static int IDWIDTH = 20;
+	final static int NAMEWIDTH = 100;
+	final static int CONDITIONWIDTH = 30;
+	final static int MINBIDWIDTH = 30;
+	final static int MYBIDWIDTH = 30;
+	final static int COLUMNNUMBERS = 4;	
+	
+	final static String[] COLUMNNAMES = {"ID #",
+            							 "Item Name",
+            							 "Condition",
+            							 "Min. Bid",
+        };
 	
 	/*
 	 * Local container is a JPanel with CardLayout that will hold the various different JPanels.
@@ -62,12 +88,17 @@ public class NonprofitGUI {
     private JPanel myRequestScreen;	//JPanel that contains the Submit Auction Request form. To be added in myLocalContainer only.
     private JPanel myRequestCalendarScreen;	//JPanel that helps create myRequestScreen. To be added to myRequestScreen only.
     private JPanel myRequestFormScreen;
+    private JPanel myConfirmation;
+    private JPanel myViewAuctionScreen;
+    private JPanel myAddItemForm;
+    private JScrollPane scrollPane;
         
     private JTextArea NO_AUCTION_WELCOME;
     private JTextArea HAS_AUCTION_WELCOME;
     private static final JTextArea AUCTION_REQUEST_HELP = new JTextArea("These are the next 30 days starting from today."
                 + "\nDays that are available will have a clickable button."
                 + "\nPlease select an available day to continue.");
+    private JTextArea CONFIRMATION_MESSAGE;
     
     private JTextField myAuctionName;
     private JTextField myContactPerson;
@@ -75,8 +106,29 @@ public class NonprofitGUI {
     private JTextField myDescription;
     private JTextField myComments;
     private JComboBox myStartHour;
+    private JTable myItemTable;
+    /*
+    name = theName;
+		donorName = "";
+		description = "";
+		quantity = 0;
+		startingBid = 0;
+		condition = "";
+		size = "";
+		comments = "";
+    */
+    
+    private JTextField myItemName;
+    private JTextField myItemDonor;
+    private JTextField myItemDesc;
+    private JSpinner myItemQty;
+    private JSpinner myItemStartBid;
+    private JComboBox myItemCnd;
+    private JComboBox myItemSize;
+    private JTextField myItemComments;
         
     private ButtonBuilder myOptionButtons;
+    private ButtonBuilder viewAuctionButtons;
     private AuctionCalendar myCal;
     private int[] myDate;     //Used to capture the date the user picks on the calendar. 0 = year, 1 = month, 2 = day
 
@@ -99,14 +151,25 @@ public class NonprofitGUI {
         myRequestScreen = new JPanel();
         myRequestCalendarScreen = new JPanel();
         myRequestFormScreen = new JPanel();
-        
-        myCal = new AuctionCalendar(new AuctionDate());
+        viewAuctionButtons = new ButtonBuilder(new String[] {"Cancel Auction", "Add Item", "Remove Item"});
+        myCal = new AuctionCalendar(new AuctionDate(), "Auctions.ser");
+        //CONFIRMATION_MESSAGE = new JTextArea();
+        myConfirmation = new JPanel();
+        myViewAuctionScreen = new JPanel();
+        myAddItemForm = new JPanel();
         
         NO_AUCTION_WELCOME = new JTextArea("Welcome, " + myNPO.getName() + "\n"
                 + "\nYou currently have no upcoming auction in our system.\n"
                 + "Please click \"Request Auction\" if you would like to request an auction.");
         
-        
+        myItemName = new JTextField();
+        myItemDonor = new JTextField();
+        myItemDesc = new JTextField();
+        myItemQty = new JSpinner(new SpinnerNumberModel(0, 0, 999, 1));
+        myItemStartBid = new JSpinner(new SpinnerNumberModel(0, 0, 9999.99, 1));
+        myItemCnd = new JComboBox(new String[] {"Select Condition", "-----------", "New", "Like new", "Good", "Fair", "Poor", "Bad"});
+        myItemSize = new JComboBox(new String[] {"Select Size", "------------", "Tiny", "Small", "Medium", "Large", "Huge"});
+        myItemComments = new JTextField();
         
         NO_AUCTION_WELCOME.setEditable(false);
         
@@ -195,18 +258,26 @@ public class NonprofitGUI {
         myOptionButtons.getButton(1).setEnabled(false);
 //        myFrame.add(myMainScreen, BorderLayout.SOUTH);
         myOptionButtons.getButton(0).addActionListener(new RequestAuction());
+        myOptionButtons.getButton(1).addActionListener(new ViewAuction());
         myOptionButtons.getButton(2).addActionListener(new LogOut());
         
         NonprofitWelcomeScreen();
         NonprofitAuctionRequestScreen();
         initializeAuctionRequestForm();
+        initializeViewAuction();
+        initializeAddItemForm();
         
 		
 		myLocalContainer.setLayout(myLocalCLayout);
 		myLocalContainer.add(myWelcomeScreen, NONPROFITPANEL);
 		myLocalContainer.add(myRequestScreen, NONPROFITREQUESTPANEL);
                 myLocalContainer.add(myRequestFormScreen, NONPROFIT_AUCTION_FORM);
-		myLocalCLayout.show(myLocalContainer, NONPROFITPANEL);
+                myLocalContainer.add(myConfirmation, NP_CONFIRMATION_SCREEN);
+                myLocalContainer.add(myViewAuctionScreen, NP_AUCTION_VIEW_SCREEN);
+                myLocalContainer.add(myAddItemForm, NP_ITEM_ADD_FORM);
+                
+		myLocalCLayout.show(myLocalContainer, NONPROFITPANEL); // Inital Screen
+                
 		
 		myMainScreen.add(myLocalContainer, BorderLayout.CENTER);
         
@@ -226,6 +297,142 @@ public class NonprofitGUI {
                 initializeHasAuctionMessage();
                 myWelcomeScreen.add(HAS_AUCTION_WELCOME, BorderLayout.CENTER);
             }
+	}
+        
+    private void initializeViewAuction()
+    {
+        myViewAuctionScreen.setLayout(new BorderLayout());
+        Auction auction = myCal.getAuction(myNPO.getUserName());
+        JTextArea info = new JTextArea("Here is the details of your upcoming auction, " + auction.getAuctionName() + ".\n"
+                + "You may review and make changes here.");
+        info.setEditable(false);
+        myViewAuctionScreen.add(info, BorderLayout.NORTH);
+        //ButtonBuilder viewAuctionButtons = new ButtonBuilder(new String[] {"Cancel Auction", "Add Item", "Remove Item"});
+        viewAuctionButtons.buildButtons();
+        myViewAuctionScreen.add(viewAuctionButtons, BorderLayout.SOUTH);
+        boolean result = NPViewItemsScreen(auction/*, viewAuctionButtons*/);
+        viewAuctionButtons.getButton(2).setEnabled(result);
+        
+        viewAuctionButtons.getButton(1).addActionListener(new AddItemForm());
+        viewAuctionButtons.getButton(2).addActionListener(new RemoveItem());
+    }
+    
+    private void initializeAddItemForm()
+    {
+        myAddItemForm.setLayout(new BorderLayout());
+        JPanel form = new JPanel();
+        form.setLayout(new GridBagLayout());
+        myAddItemForm.add(form, BorderLayout.CENTER);
+        JLabel info = new JLabel("This is the item submission form. Fields marked with a * are required.");
+        myAddItemForm.add(info, BorderLayout.NORTH);
+        GridBagConstraints c = new GridBagConstraints();
+        JButton submitButton = new JButton("Submit Item");
+        submitButton.addActionListener(new SubmitItem());
+        
+        c.gridwidth = 1;
+        c.gridx = 0;	
+        c.gridy = 0;
+        form.add(new JLabel("Item name: *"), c);
+        c.gridx = 0;	
+        c.gridy = 1;
+        form.add(new JLabel("Donor: "), c);
+        c.gridx = 0;	
+        c.gridy = 2;
+        form.add(new JLabel("Description: *"), c);
+        c.gridx = 0;	
+        c.gridy = 3;
+        form.add(new JLabel("Quantity: "), c);
+        c.gridx = 0;	
+        c.gridy = 4;
+        form.add(new JLabel("Starting bid: *"), c);
+        c.gridx = 0;	
+        c.gridy = 5;
+        form.add(new JLabel("Condition: *"), c);
+        c.gridx = 0;	
+        c.gridy = 6;
+        form.add(new JLabel("Size: *"), c);
+        c.gridx = 0;	
+        c.gridy = 7;
+        form.add(new JLabel("Comments: "), c);
+        
+        c.ipadx = 200;
+        c.gridx = 1;	
+        c.gridy = 0;
+        form.add(myItemName, c);
+        c.gridx = 1;	
+        c.gridy = 1;
+        form.add(myItemDonor, c);
+        c.gridx = 1;	
+        c.gridy = 2;
+        form.add(myItemDesc, c);
+        c.gridx = 1;	
+        c.gridy = 3;
+        c.ipadx = 50;
+        form.add(myItemQty, c);
+        c.gridx = 1;	
+        c.gridy = 4;
+        //c.ipadx = 100;
+        form.add(myItemStartBid, c);
+        c.gridx = 1;	
+        c.gridy = 5;
+        c.ipadx = 0;
+        form.add(myItemCnd, c);
+        c.gridx = 1;	
+        c.gridy = 6;
+        form.add(myItemSize, c);
+        c.gridx = 1;	
+        c.gridy = 7;
+        c.ipadx = 200;
+        form.add(myItemComments, c);
+        
+        c.gridx = 1;	
+        c.gridy = 8;
+        c.ipadx = 0;
+        c.ipady = 50;
+        form.add(new JPanel(), c);
+        c.gridx = 1;	
+        c.gridy = 9;
+        c.ipady = 0;
+        form.add(submitButton, c);
+    }
+    
+    private boolean NPViewItemsScreen(Auction theAuction/*, ButtonBuilder theButtons*/) {
+		List<Item> myItems = theAuction.getItems();
+		
+		Object[][] data = new Object[myItems.size() + 1][COLUMNNUMBERS];
+		int itemID = 1;
+		for (int k = 0; k < COLUMNNUMBERS; k++) {
+			data[0][k] = COLUMNNAMES[k];
+		}
+		for (Item i : myItems) {
+			for (int j = 0; j < COLUMNNUMBERS; j++) {
+				if (j == 0) data[itemID][j] = itemID;
+				if (j == 1) data[itemID][j] = i.getName();
+				if (j == 2) data[itemID][j] = i.getCondition();
+				if (j == 3) data[itemID][j] = "$" + i.getStartingBid();
+				/*
+                                if (j == 4) {
+					if (myBidder.viewBids().containsKey(i)) {
+						data[itemID][j] = myBidder.viewBids().get(i);
+					} else {
+						data[itemID][j] = null;
+					}
+				}
+                                */
+			}
+			itemID++;
+		}
+		//if (myItems.size() == 0)
+                    //theButtons.getButton(2).setEnabled(false);
+		myItemTable = new JTable(data, COLUMNNAMES);
+//		myViewItemsScreen.setLayout(new BorderLayout());
+//		myViewItemsScreen.add(myItemTable, BorderLayout.CENTER);
+		
+		scrollPane = new JScrollPane(myItemTable);
+		//myViewItemsScreen.setLayout(new BorderLayout());
+		myViewAuctionScreen.add(scrollPane, BorderLayout.CENTER);
+                
+                return (myItems.size() > 0);
 	}
         
 	/**
@@ -294,10 +501,17 @@ public class NonprofitGUI {
                     
                     Calendar cal = Calendar.getInstance();
                     myDate[0] = cal.get(Calendar.YEAR);
-                    System.out.println(cal.get(Calendar.YEAR));
+                    
                     if (test >= endCurrMonth)
                     {
-                        myDate[1] = cal.get(Calendar.MONTH)+2;
+                        if (cal.get(Calendar.MONTH)+2 <= 12)
+                            myDate[1] = cal.get(Calendar.MONTH)+2;
+                        else
+                        {
+                            myDate[1] = 1;
+                            myDate[0] = cal.get(Calendar.YEAR)+1;
+                        }
+                        System.out.println(myDate[0]);
                     }
                     else
                     {
@@ -313,12 +527,51 @@ public class NonprofitGUI {
             
                 
             });
+            //cal = Calendar.getInstance();
+                    myDate[0] = cal.get(Calendar.YEAR);
+                    //System.out.println(cal.get(Calendar.YEAR));
+                    if (test >= endCurrMonth)
+                    {
+                        if (cal.get(Calendar.MONTH)+2 <= 12)
+                            myDate[1] = cal.get(Calendar.MONTH)+2;
+                        else
+                        {
+                            myDate[1] = 1;
+                            myDate[0] = cal.get(Calendar.YEAR)+1;
+                        }
+                    }
+                    else
+                    {
+                        myDate[1] = cal.get(Calendar.MONTH)+1;
+                    }
+                    //System.out.println(myDate[1]);
+                    
+                    myDate[2] = i;
+                    //System.out.println(i);
+            if (isTwoAuctionsOnDay(new AuctionDate(myDate[0], myDate[1], myDate[2], 11)))
+                button.setEnabled(false);
             
             calDate.add(button);
             }
         }
             
             
+    }
+    
+    private boolean isTwoAuctionsOnDay(AuctionDate theDate)
+    {
+        List<Auction> auctions = myCal.getAuctions();
+        int aucCount = 0;
+        for (int i = 0; i < auctions.size(); i++)
+        {
+            if (theDate.isSameDay(auctions.get(i).getDate()))
+                aucCount++;
+            
+        }
+        if (aucCount > 1)
+            return true;
+        else
+            return false;
     }
     
     /*
@@ -427,6 +680,24 @@ public class NonprofitGUI {
         }
         return 99;
     }
+    
+    private void setUpConfirmation() 
+        {
+            Auction theAuction = myNPO.getAuction();
+            CONFIRMATION_MESSAGE = new JTextArea("You have successfully submitted an auction request!\n"
+                    + "\nYour auction details are:\n"
+                    + "     -Name: " + theAuction.getAuctionName() + "\n"
+                    + "     -Date: " + theAuction.getDate().toString() + "\n"
+                    + "     -Contact: " + theAuction.getContactPerson() + "\n"
+                    + "     -Description: " + theAuction.getDescription() + "\n\n"
+                    + "Thank you for choosing Auction Central.");
+            CONFIRMATION_MESSAGE.setEditable(false);
+            myConfirmation.setLayout(new BorderLayout());
+            JButton button = new JButton("OK");
+            //myConfirmation.add(button, BorderLayout.SOUTH);
+            myConfirmation.add(CONFIRMATION_MESSAGE, BorderLayout.CENTER);
+           // button.addActionListener(new ReturnToNPMainMenu());
+        }
     
 
     class RequestAuction implements ActionListener
@@ -564,9 +835,211 @@ public class NonprofitGUI {
                     initializeHasAuctionMessage();
                     myCal.Update("Auctions.ser");
                     
+                    setUpConfirmation();
+                    myLocalCLayout.show(myLocalContainer, NP_CONFIRMATION_SCREEN);
                 }
             }
             
+        }
+
+        
+        
+    }
+    /*
+    class ReturnToNPMainMenu implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            NonprofitWelcomeScreen();
+            myLocalCLayout.show(myLocalContainer, NONPROFITPANEL);
+        }
+        
+    }
+    */
+    
+    class ViewAuction implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            myLocalCLayout.show(myLocalContainer, NP_AUCTION_VIEW_SCREEN);
+        }
+        
+    }
+    
+    class AddItemForm implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            myLocalCLayout.show(myLocalContainer, NP_ITEM_ADD_FORM);
+        }
+        
+    }
+    
+    class SubmitItem implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            boolean problem = false;
+            if (myItemName.getText().matches(""))
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please enter a name for this item.",
+                "No name",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            if (myItemDesc.getText().matches(""))
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please give this item a description.",
+                "No description",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            try {
+                myItemStartBid.commitEdit();
+            } catch (ParseException ex) {
+                //Logger.getLogger(NonprofitGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if ((double) myItemStartBid.getValue() <= 0)
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please enter a starting bid for this item.",
+                "No starting bid",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            //System.out.println((double) myItemStartBid.getValue());
+            if (myItemCnd.getSelectedIndex() == 0 || myItemCnd.getSelectedIndex() == 1)
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please select a condition level for this item.",
+                "Condition issue",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            if (myItemSize.getSelectedIndex() == 0 || myItemSize.getSelectedIndex() == 1)
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                "Please select an approximate size for this item.",
+                "Size issue",
+                JOptionPane.ERROR_MESSAGE);
+                problem = true;
+            }
+            
+            if (!problem)
+            {
+                String itemName = myItemName.getText();
+                String itemDonor = myItemDonor.getText();
+                String itemDesc = myItemDesc.getText();
+                int itemQty = (int) myItemQty.getValue();
+                double itemPrice = (double) myItemStartBid.getValue();
+                String itemCnd = (String) myItemCnd.getSelectedItem();
+                String itemSize = (String) myItemSize.getSelectedItem();
+                String itemComment = myItemComments.getText();
+                //System.out.println(itemCnd);
+                /*
+                boolean addItem(String theName, String theDonorName, String theDescription,
+			int theQuantity, float theStartingBid, String theCondition,
+			String theSize, String theComments, AuctionCalendar calendar) 
+                */
+                boolean noProblem = myNPO.addItem(itemName, itemDonor, itemDesc, itemQty, (float) itemPrice, itemCnd, itemSize, itemComment, myCal);
+                if(noProblem)
+                {
+                        JOptionPane.showMessageDialog(myMainScreen,
+                "Your item has been successfully entered into our system.\nYou may continue entering items or click View Auction to review your item list.",
+                "Success!",
+                JOptionPane.PLAIN_MESSAGE);
+                        System.out.println(myCal.getAuction(myNPO.getUserName()).getItems());
+                        myCal.Update("Auctions.ser");
+                        //myViewAuctionScreen = new JPanel();
+                        //myLocalContainer.add(myViewAuctionScreen, NP_AUCTION_VIEW_SCREEN);
+                        //initializeViewAuction();
+                        myViewAuctionScreen.remove(scrollPane);
+                        NPViewItemsScreen(myCal.getAuction(myNPO.getUserName()));
+                        //viewAuctionButtons.getButton(2).setEnabled(true);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                "It seems we already have an item of that name in our system.\nPlease try again with a different item.",
+                "Whoops!",
+                JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        
+    }
+    
+    class RemoveItem implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int id;
+            id = Integer.parseInt(JOptionPane.showInputDialog("Please enter the ID number of the item you wish to delete. Integer numbers only."));
+            if (id < myItemTable.getRowCount())
+            {
+            String item = (String) myItemTable.getModel().getValueAt(id, 1);
+            List<Item> items = myCal.getAuction(myNPO.getUserName()).getItems();
+            int result = 0;
+            
+            for (int i = 0; i < items.size(); i++)
+            {
+                if (items.get(i).getName().equals(item))
+                {
+                    result = myCal.getAuction(myNPO.getUserName()).removeItem(items.get(i));
+                    break;
+                }
+            }
+                if (result == 0)
+                {
+                    JOptionPane.showMessageDialog(myMainScreen,
+                    "Item " + item + " has been removed from the auction.",
+                    "Success!",
+                    JOptionPane.PLAIN_MESSAGE);
+            
+                    myCal.Update("Auctions.ser");
+                    myViewAuctionScreen.remove(scrollPane);
+                    NPViewItemsScreen(myCal.getAuction(myNPO.getUserName()));
+                    myLocalCLayout.show(myLocalContainer, NP_ITEM_ADD_FORM);
+                    myLocalCLayout.show(myLocalContainer, NP_AUCTION_VIEW_SCREEN);
+                }
+                if (result == 1)
+                {
+                JOptionPane.showMessageDialog(myMainScreen,
+                    "Item " + item + " was not able to be removed.\nReason: too close to auction start date.",
+                    "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(myMainScreen,
+                    "Item does not exist at ID "+id+".",
+                    "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+    }
+    
+    class RemoveAuction implements ActionListener
+    {
+        // This should never be possible to call when the NP doesn't have an auction
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selected = JOptionPane.showConfirmDialog(myViewAuctionScreen, "This will cancel your upcoming auction and remove all your items!"
+                    + "\nAre you sure you wish to do this?");
+            if (selected == JOptionPane.YES_OPTION)
+            {
+                
+            }
         }
         
     }
