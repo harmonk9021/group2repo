@@ -16,17 +16,16 @@ public class User implements java.io.Serializable
 	
 	private static final long serialVersionUID = -4482170880572973916L;
 
-	String myName;
+	protected String myName;
 	
-	String myUsername;
+	protected String myUsername;
 	
-	String myPassword;
+	protected String myPassword;
 	
-	String myEmail;
+	protected String myEmail;
 	
-	String myPhoneNumber;
-    	
-	AuctionCalendar calendar;
+	protected String myPhoneNumber;
+    
     /**
      * Constructor for objects of class User.
      */        
@@ -38,7 +37,6 @@ public class User implements java.io.Serializable
         myPassword = "";
         myEmail = "";
         myPhoneNumber = "";
-	calendar = new AuctionCalendar(new AuctionDate());
     }
     
     /**

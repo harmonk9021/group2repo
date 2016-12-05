@@ -1038,6 +1038,11 @@ public class NonprofitGUI {
                     + "\nAre you sure you wish to do this?");
             if (selected == JOptionPane.YES_OPTION)
             {
+                int result = myCal.removeAuction(myCal.getAuction(myNPO.getUserName()));
+                if (result == 0)
+                {
+                    
+                }
                 
             }
         }
