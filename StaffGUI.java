@@ -161,7 +161,7 @@ public class StaffGUI {
 				    	  myMainPanel.setVisible(true);
 				    	  myContainer.remove(myAdminPanel);
 				      } else {
-				    	  JOptionPane.showMessageDialog(myAdminPanel, "Error! Entered value can not be used to set the maximum number of auctions. (negative, zero, or one)", 
+				    	  JOptionPane.showMessageDialog(myAdminPanel, "Error! Entered value can not be used to set the maximum number of auctions. (negative or zero)", 
 				    			  "Error", JOptionPane.INFORMATION_MESSAGE);
 				      }
 				    }
