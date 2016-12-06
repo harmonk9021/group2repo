@@ -112,7 +112,7 @@ public class Login implements java.io.Serializable  {
 	    {
 		 	if(isUnusedUserName(theUser.getUserName())){
 		 		myUserList.put(theUser.getUserName(), theUser); // placeholder based on assumed getter name
-		 		writeUserInfo(this.fileName);
+// 		 		writeUserInfo(this.fileName);
 		 		return true;
 		 	}
 		 	else return false;
