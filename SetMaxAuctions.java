@@ -15,12 +15,10 @@ import org.junit.Test;
  */
 public class SetMaxAuctionsTest {
 	private AuctionCalendar calendar;
-	private User testUser;
 	
 	@Before
 	public void setup() {
-		testUser = new Nonprofit("theName", "testUsername", "thePassword", "theEmail", "thePhone");
-		calendar = testUser.getCalendar();
+		calendar = new AuctionCalendar(new AuctionDate(), "Tests.ser");
 	}
 	
 	@Test
