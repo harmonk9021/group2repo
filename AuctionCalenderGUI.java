@@ -54,28 +54,29 @@ public class AuctionCalenderGUI {
 	    Calendar cal = Calendar.getInstance();
 	    int[] dates = date.getNextXDays(30);
 	    int d = 0;
-	    String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	    String[] days = {"Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"};
-	    String month = months[date.getMonth() - 1];
-	    myFrame.add(new JLabel(month));
-		for (int j = 2; j < 8; j++) {
-			myFrame.add(new JLabel(""));
-		}
 	    for (int i = 0; i < 7; i++)
 	    {
 	        myFrame.add(new JLabel(days[i]));
 	    }
 	    for (int i = 1; i < cal.get(Calendar.DAY_OF_WEEK); i++)
 	    {
-	        myFrame.add(new JPanel());
+	    	myFrame.add(new JPanel());
 	    }
 	    for (int x = 0; x < dates.length; x++)
 	    {
-            JPanel calDate = new JPanel();
-            calDate.setBorder(BorderFactory.createTitledBorder("" + dates[d]));
-            calDate.add(new JLabel(aucCal.getAuctionsOnDate(new AuctionDate(date.getYear(), date.getMonth(), dates[d], date.getHour())) + ""));
-            myFrame.add(calDate);
-            d++;
+            	if (x != 0) { 
+	    		JPanel calDate = new JPanel();
+            		calDate.setBorder(BorderFactory.createTitledBorder("" + dates[d]));
+            		calDate.add(new JLabel(aucCal.getAuctionsOnDate(new AuctionDate(date.getYear(), date.getMonth(), dates[d], date.getHour())) + ""));
+            		myFrame.add(calDate);
+	    		} else {
+	    			JPanel calDate = new JPanel();
+            			calDate.setBorder(BorderFactory.createTitledBorder("" + dates[d]));
+            			calDate.add(new JLabel("Today"));
+            			myFrame.add(calDate);
+	    			}
+           	d++;
 	    }
 	}
 }
