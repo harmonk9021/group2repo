@@ -7,8 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -32,21 +32,21 @@ public class StaffGUI {
 
 	private CardLayout myLayout;
 	
-	private JPanel staffPanel;
+	private JPanel myStaffPanel;
 	
-	private JPanel adminPanel;
+	private JPanel myAdminPanel;
 	
-	private JPanel mainPanel;
+	private JPanel myMainPanel;
 	
-	private JPanel infoPanel;
+	private JPanel myInfoPanel;
 
 	private JTextField numberOfAuction;
 	
 	/**
 	 * Constructor class for the staff gui
 	 * @param theUser The staff user object
-	 * @param cLayout 
-	 * @param containerPanel 
+	 * @param cLayout The layout manager for the frame.
+	 * @param containerPanel The container for the frame.
 	 */
 
 	public StaffGUI(User theUser, JPanel containerPanel, CardLayout cLayout) {
@@ -62,7 +62,7 @@ public class StaffGUI {
 
 	public void start() {
 		staffScreen();
-		myContainer.add(mainPanel, STAFFPANEL);
+		myContainer.add(myMainPanel, STAFFPANEL);
 		myLayout.show(myContainer, STAFFPANEL);
 	}
 	
@@ -71,11 +71,11 @@ public class StaffGUI {
 	 */
 
 	private void staffScreen() {
-		mainPanel = new JPanel();
-		staffPanel = new JPanel();
-		infoPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		staffPanel.setLayout(new FlowLayout());
+		myMainPanel = new JPanel();
+		myStaffPanel = new JPanel();
+		myInfoPanel = new JPanel();
+		myMainPanel.setLayout(new BorderLayout());
+		myStaffPanel.setLayout(new FlowLayout());
 		JButton viewCalender = new JButton("View Calender");
 		JButton adminTools = new JButton("View Admin Tools");
 		JButton logOut = new JButton("Log Out");
@@ -92,7 +92,7 @@ public class StaffGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				mainPanel.setVisible(false);
+				myMainPanel.setVisible(false);
 				adminGUI();
 			}
 			
@@ -102,18 +102,18 @@ public class StaffGUI {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				myLayout.show(myContainer, STAFFPANEL);
-				myContainer.remove(mainPanel);
+				myContainer.remove(myMainPanel);
 			}
 			
 		});
-		staffPanel.add(viewCalender);
-		staffPanel.add(adminTools);
-		staffPanel.add(logOut);
-		infoPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
-		mainPanel.add(infoPanel, BorderLayout.CENTER);
-		mainPanel.add(staffPanel, BorderLayout.SOUTH);
-		myContainer.add(mainPanel);
-		mainPanel.setVisible(true);
+		myStaffPanel.add(viewCalender);
+		myStaffPanel.add(adminTools);
+		myStaffPanel.add(logOut);
+		myInfoPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
+		myMainPanel.add(myInfoPanel, BorderLayout.CENTER);
+		myMainPanel.add(myStaffPanel, BorderLayout.SOUTH);
+		myContainer.add(myMainPanel);
+		myMainPanel.setVisible(true);
 	}
 	
 	/**
@@ -121,12 +121,11 @@ public class StaffGUI {
 	 */
 	
 	private void adminGUI() {
-		adminPanel = new JPanel();
+		myAdminPanel = new JPanel();
 		JPanel editPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		JButton changeMaxAuctions = new JButton("Update Max Auctions");
 		JButton cancel = new JButton("Cancel Changes");
-		JLabel errorLabel = new JLabel();
 		editPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		numberOfAuction = new JTextField("");
@@ -153,20 +152,23 @@ public class StaffGUI {
 				}
 				 try {
 				      int i = Integer.parseInt(string.trim());
-				      aucCal.setMaxAuctions(i);
-				      aucCal.Update("Auctions.ser");
-				      adminPanel.setVisible(false);
-				     // staffScreen();
-				      infoPanel.removeAll();
-				      infoPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
-				      mainPanel.setVisible(true);
-				      myContainer.remove(adminPanel);
+				      boolean result = aucCal.setMaxAuctions(i); 
+				      if (result == true) {
+				    	  aucCal.Update("Auctions.ser");
+				    	  myAdminPanel.setVisible(false);
+				    	  myInfoPanel.removeAll();
+				    	  myInfoPanel.add(new JLabel("Max Auctions: " + aucCal.getMaxAuctions()));
+				    	  myMainPanel.setVisible(true);
+				    	  myContainer.remove(myAdminPanel);
+				      } else {
+				    	  JOptionPane.showMessageDialog(myAdminPanel, "Error! Entered value can not be used to set the maximum number of auctions. (negative or zero)", 
+				    			  "Error", JOptionPane.INFORMATION_MESSAGE);
+				      }
 				    }
 				    catch (NumberFormatException nfe)
 				    {
-				      errorLabel.setText("Not a valid input");
-				      errorLabel.setVisible(true);
-				      myContainer.repaint();
+				    	JOptionPane.showMessageDialog(myAdminPanel, "Error! Entered value can not be used to set the maximum number of auctions. (Not an integer)", 
+				    			  "Error", JOptionPane.INFORMATION_MESSAGE);
 				    }
 			}
 			
@@ -175,21 +177,19 @@ public class StaffGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				adminPanel.setVisible(false);
-				//staffScreen();
-				myContainer.remove(adminPanel);
-				mainPanel.setVisible(true);
+				myAdminPanel.setVisible(false);
+				myContainer.remove(myAdminPanel);
+				myMainPanel.setVisible(true);
 			}
 			
 		});
-		adminPanel.setLayout(new BorderLayout());
+		myAdminPanel.setLayout(new BorderLayout());
 		buttonPanel.setLayout(new FlowLayout());
-		adminPanel.add(editPanel, BorderLayout.CENTER);
-		adminPanel.add(buttonPanel, BorderLayout.SOUTH);
+		myAdminPanel.add(editPanel, BorderLayout.CENTER);
+		myAdminPanel.add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.add(changeMaxAuctions);
 		buttonPanel.add(cancel);
-		myContainer.add(adminPanel);
-		adminPanel.setVisible(true);
+		myContainer.add(myAdminPanel);
+		myAdminPanel.setVisible(true);
 	}
-
 }
