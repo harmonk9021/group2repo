@@ -142,12 +142,12 @@ public class AddItemTest
 	
 	@Test
 	public void testNonProfitAddItem() {
+		AuctionCalendar calendar = new AuctionCalendar(new AuctionDate(), "Tests.ser");
 		Nonprofit testNonprofit = new Nonprofit("Toys4Kids", "Nonprof", "word123", "Toys4Kids@email.com", "999-8765");
 		AuctionDate today = new AuctionDate();
 		testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(11), "blah", 
-				"OrgName1", "blah", "blah", "blah");
+				"OrgName1", "blah", "blah", "blah", calendar);
 		assertTrue(testNonprofit.addItem("Shoes", "John", 
-				"Gently Used", 1, (float) 25.00, "Good", "Medium", "None"));
-		//assertTrue(testNonprofit.getAuction().getItems().contains("Shoes"));
+				"Gently Used", 1, (float) 25.00, "Good", "Medium", "None", calendar));
 	}
 }
