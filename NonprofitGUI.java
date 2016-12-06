@@ -879,6 +879,7 @@ public class NonprofitGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             myLocalCLayout.show(myLocalContainer, NP_ITEM_ADD_FORM);
+            viewAuctionButtons.getButton(2).setEnabled(true);
         }
         
     }
@@ -987,7 +988,13 @@ public class NonprofitGUI {
         public void actionPerformed(ActionEvent e) {
             int id;
             id = Integer.parseInt(JOptionPane.showInputDialog("Please enter the ID number of the item you wish to delete. Integer numbers only."));
-            if (id < myItemTable.getRowCount())
+            id--;
+            if (id < 0)
+                JOptionPane.showMessageDialog(myMainScreen,
+                    "Invalid entry. Can not be 0 or negative.",
+                    "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+            else if (id < myItemTable.getRowCount())
             {
             String item = (String) myItemTable.getModel().getValueAt(id, 1);
             List<Item> items = myCal.getAuction(myNPO.getUserName()).getItems();
@@ -1013,6 +1020,11 @@ public class NonprofitGUI {
                     NPViewItemsScreen(myCal.getAuction(myNPO.getUserName()));
                     myLocalCLayout.show(myLocalContainer, NP_ITEM_ADD_FORM);
                     myLocalCLayout.show(myLocalContainer, NP_AUCTION_VIEW_SCREEN);
+                    
+                    if (myCal.getAuction(myNPO.getUserName()).getItems().isEmpty())
+                    {
+                        viewAuctionButtons.getButton(2).setEnabled(false);
+                    }
                 }
                 if (result == 1)
                 {
@@ -1024,6 +1036,7 @@ public class NonprofitGUI {
             }
             else
             {
+                id++;
                 JOptionPane.showMessageDialog(myMainScreen,
                     "Item does not exist at ID "+id+".",
                     "Error!",
@@ -1051,6 +1064,11 @@ public class NonprofitGUI {
                     JOptionPane.INFORMATION_MESSAGE);
                     myOptionButtons.getButton(1).setEnabled(false);
                     myOptionButtons.getButton(0).setEnabled(true);
+                    //HAS_AUCTION_WELCOME = new JTextArea();
+                    myWelcomeScreen = new JPanel(new BorderLayout());
+                    NonprofitWelcomeScreen();
+                    myLocalContainer.add(myWelcomeScreen, NONPROFITPANEL);
+                    
                     myLocalCLayout.show(myLocalContainer, NONPROFITPANEL);
                     myCal.Update("Auctions.ser");
                 }
