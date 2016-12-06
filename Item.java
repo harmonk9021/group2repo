@@ -65,10 +65,6 @@ public class Item implements Serializable {
 		return myBids.get(bidderName);
 	}
 	
-	/** Displays relevant information from this Item */
-	public void displayItem(){
-		ItemUI.displayItemUI(this);
-	}
 	
 	/**@return true if the bid was successfully removed
 	 * @return false if the name was not found in the bid list
