@@ -32,10 +32,12 @@ public class AuctionCalendar implements java.io.Serializable {
 	 * @param startingDate the starting date of the calendar.
 	 */
 	public AuctionCalendar(AuctionDate startingDate, String thefileName) {
+		fileName = theFileName;
 	    theDate = startingDate;
 	    myAuctions = new HashMap<>();
 	    myPastAuctions = new HashMap<>();
-        Load("Auctions.ser");
+//         Load("Auctions.ser");
+		Load(this.fileName);
         movePastAuctions();
         theAuctionCount = myAuctions.size();
 	}
