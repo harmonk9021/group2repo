@@ -67,43 +67,43 @@ public class RemoveAuctionTest {
 	}
 
 	@Test
-    public void testIsTwoOrMoreDaysBeforeOnParamDateIsBefore2Days(){
+    public void testIsTwoOrMoreDaysBeforeBidOnParamDateIsBefore2Days(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 10, 20, 13);
-    	assertTrue(date1.isTwoOrMoreDaysBefore(date2));	
+    	assertTrue(date1.isTwoOrMoreDaysBeforeBid(date2));	
     }
     
     @Test
-    public void testIsTwoOrMoreDaysBeforeOnParamDateIs2Days(){
+    public void testIsTwoOrMoreDaysBeforeBidOnParamDateIs2Days(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 11, 19, 12);
-    	assertTrue(date1.isTwoOrMoreDaysBefore(date2));
+    	assertTrue(date1.isTwoOrMoreDaysBeforeBid(date2));
     }
     
     @Test
-    public void testIsTwoOrMoreDaysBeforeOnParamDateIsWithin2Days(){
+    public void testIsTwoOrMoreDaysBeforeBidOnParamDateIsWithin2Days(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 11, 21, 11);
-    	assertFalse(date1.isTwoOrMoreDaysBefore(date2));
+    	assertFalse(date1.isTwoOrMoreDaysBeforeBid(date2));
     }
     
     @Test
-    public void testIsTwoOrMoreDaysBeforeOnParamDateIsAfterDate(){
+    public void testIsTwoOrMoreDaysBeforeBidOnParamDateIsAfterDate(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 12, 01, 12);
-    	assertFalse(date1.isTwoOrMoreDaysBefore(date2));
+    	assertFalse(date1.isTwoOrMoreDaysBeforeBid(date2));
     }
     
     @Test
-    public void testIsTwoOrMoreDaysBeforeOnParamDateIsBefore2DaysSwitchBetweenYears(){
+    public void testIsTwoOrMoreDaysBeforeBidOnParamDateIsBefore2DaysSwitchBetweenYears(){
     	AuctionDate date1 = new AuctionDate(2017, 01, 01, 12);
     	AuctionDate date2 = new AuctionDate(2016, 12, 29, 12);
-    	assertTrue(date1.isTwoOrMoreDaysBefore(date2));
+    	assertTrue(date1.isTwoOrMoreDaysBeforeBid(date2));
     } 
     @Test
-    public void testIsTwoOrMoreDaysBeforeOnParamDateIsWithin2DaysSwitchBetweenYears(){
+    public void testIsTwoOrMoreDaysBeforeBidOnParamDateIsWithin2DaysSwitchBetweenYears(){
     	AuctionDate date1 = new AuctionDate(2017, 01, 01, 12);
     	AuctionDate date2 = new AuctionDate(2016, 12, 31, 12);
-    	assertFalse(date1.isTwoOrMoreDaysBefore(date2));
+    	assertFalse(date1.isTwoOrMoreDaysBeforeBid(date2));
     } 
 }
