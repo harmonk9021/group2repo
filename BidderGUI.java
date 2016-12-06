@@ -236,13 +236,37 @@ public class BidderGUI {
 				if (j == 2) myTableData[itemID-1][j] = i.getCondition();
 				if (j == 3) myTableData[itemID-1][j] = currencyFormatter.format(i.getStartingBid());
 				if (j == 4) {
+					boolean sameName = false;
+					float bidFromBidder = 0;
 					for (Item k : myBidder.viewBids().keySet()) {
+//						System.out.println(i.getBid(myBidder.getName()));
+//						System.out.println(myBidder.viewBids());
+//						System.out.println(k.getName());
 						if (k.getName().equals(i.getName())) {
-							myTableData[itemID-1][j] = currencyFormatter.format(myBidder.viewBids().get(k));
-						} else {
-							myTableData[itemID-1][j] = "";
-						}
+//							System.out.println("Inserting into bids column");
+							sameName = true;
+							bidFromBidder = myBidder.viewBids().get(k);
+							break;
+//							myTableData[itemID-1][j] = currencyFormatter.format(myBidder.viewBids().get(k));
+						} 
+//						else {
+//							System.out.println("Clearing bids column");
+//							myTableData[itemID-1][j] = "";
+//						}
 					}
+					if (sameName && i.getBid(myBidder.getName()) == bidFromBidder) {
+						myTableData[itemID-1][j] = currencyFormatter.format(bidFromBidder);
+					} else {
+						myTableData[itemID-1][j] = "";
+					}
+					
+//					for (Item k : myBidder.viewBids().keySet()) {
+//						if (k.getName().equals(i.getName())) {
+//							myTableData[itemID-1][j] = currencyFormatter.format(myBidder.viewBids().get(k));
+//						} else {
+//							myTableData[itemID-1][j] = "";
+//						}
+//					}
 				}
 			}
 			itemID++;
@@ -415,13 +439,31 @@ public class BidderGUI {
 				if (j == 2) myTableData[itemID-1][j] = i.getCondition();
 				if (j == 3) myTableData[itemID-1][j] = currencyFormatter.format(i.getStartingBid());
 				if (j == 4) {
+					boolean sameName = false;
+					float bidFromBidder = 0;
 					for (Item k : myBidder.viewBids().keySet()) {
+//						System.out.println(i.getBid(myBidder.getName()));
+//						System.out.println(myBidder.viewBids());
+//						System.out.println(k.getName());
 						if (k.getName().equals(i.getName())) {
-							myTableData[itemID-1][j] = currencyFormatter.format(myBidder.viewBids().get(k));
-						} else {
-							myTableData[itemID-1][j] = "";
-						}
+//							System.out.println("Inserting into bids column");
+							sameName = true;
+							bidFromBidder = myBidder.viewBids().get(k);
+							break;
+//							myTableData[itemID-1][j] = currencyFormatter.format(myBidder.viewBids().get(k));
+						} 
+//						else {
+//							System.out.println("Clearing bids column");
+//							myTableData[itemID-1][j] = "";
+//						}
 					}
+					if (sameName && i.getBid(myBidder.getName()) == bidFromBidder) {
+						myTableData[itemID-1][j] = currencyFormatter.format(bidFromBidder);
+					} else {
+						myTableData[itemID-1][j] = "";
+					}
+					
+//					System.out.println("________________________");
 				}
 			}
 			itemID++;
@@ -529,7 +571,7 @@ public class BidderGUI {
 					clearTextField();
 //					myLocalContainer.remove(myViewAuctionsScreen);
 //					myLocalContainer.remove(myViewItemsScreen);
-					myLocalContainer.remove(myViewItemDetailsScreen);
+//					myLocalContainer.remove(myViewItemDetailsScreen);
 					redrawTable();
 					myViewItemsScreen.repaint();
 					myOptionButtons.getButton(1).setVisible(false);
@@ -566,13 +608,13 @@ public class BidderGUI {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Bid removed...?");
 			
-			myBidder.removeBid(chosenItem);
+			System.out.println("Was bid removed? " + myBidder.removeBid(chosenItem));
 //			theItem.deleteBid(myBidder.getUserName());
 			myItemTable.validate();
 			myLogin.writeUserInfo(USERFILE);
 			myCalendar.Update(THEFILENAME);
 			clearTextField();
-			myLocalContainer.remove(myViewItemDetailsScreen);
+//			myLocalContainer.remove(myViewItemDetailsScreen);
 			redrawTable();
 			myViewItemsScreen.repaint();
 			myOptionButtons.getButton(1).setVisible(false);
