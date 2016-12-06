@@ -25,11 +25,9 @@ public class AddAuctionTest {
 	public void setup(){
 		today = new AuctionDate();
 		elevenDays = today.getAuctionDateXDaysAway(11);
-
-	//	testNonprofit = new Nonprofit("Toys4Kids", "Nonprof", "word123", "Toys4Kids@email.com", "999-8765");
 		
 		testNonprofit = new Nonprofit("theName", "testUsername", "thePassword", "theEmail", "thePhone");
-		calendar = testNonprofit.getCalendar();
+		calendar = new AuctionCalendar(new AuctionDate(), "Tests.ser");
 		
 		auction1 = new Auction(today.getAuctionDateXDaysAway(10), "catsforkids", "username1",
 	    		"sarah", "rad", "none");
@@ -66,27 +64,27 @@ public class AddAuctionTest {
 	@Test
 	public void testSubmitAuctionRequestOnDoesNotHaveAFutureAuction() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnHasAFutureAuction() {
 		testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah");
+				"OrgName1", "blah", "blah", "blah", calendar);
 		assertEquals(3, testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"blah", "blah", "blah", "blah"));
+				"blah", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnHasNoPastAuctions() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnNoAuctionsOnSchedualedDay() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
@@ -94,135 +92,130 @@ public class AddAuctionTest {
 		Nonprofit nonprofit1 = new Nonprofit("CatsForKids", "lolol", "word123", 
 				"Toys4Kids@email.com", "999-8765");
 		nonprofit1.submitAuctionRequest(elevenDays, "groober", "theOrgName",
-				"theContactPerson", "theDescription", "theComment");
+				"theContactPerson", "theDescription", "theComment", calendar);
 		assertEquals(0, testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test 
 	public void testSubmitAuctionRequestOnTwoOtherAuctionsOnSchedualedDay() {
 		testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah");
+				"OrgName1", "blah", "blah", "blah", calendar);
 		Nonprofit nonprofit1 = new Nonprofit("CatsForKids", "lolol", "word123", 
 				"Toys4Kids@email.com", "999-8765");
 		Nonprofit nonprofit2 = new Nonprofit("change", "change", "word123", 
 				"Toys4Kids@email.com", "999-8765");
-		nonprofit1.setCalendar(testNonprofit.getCalendar());
 		nonprofit1.submitAuctionRequest(elevenDays, "a", 
-				"OrgName2", "blah", "blah", "blah");
-		nonprofit2.setCalendar(nonprofit1.getCalendar());
+				"OrgName2", "blah", "blah", "blah", calendar);
 		assertEquals(7, nonprofit2.submitAuctionRequest(elevenDays, "ab", 
-				"OrgName3", "blah", "blah", "blah"));
+				"OrgName3", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionCountIsLessThanMax() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionCountIsAtMaxMinusOne() {
 		testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah");
+				"OrgName1", "blah", "blah", "blah", calendar);
 		Nonprofit nonprofit1 = new Nonprofit("CatsForKids", "lolol", "word123", 
 				"Toys4Kids@email.com", "999-8765");
-		nonprofit1.setCalendar(testNonprofit.getCalendar());
-		nonprofit1.getCalendar().setMaxAuctions(2);
+		calendar.setMaxAuctions(2);
 		assertEquals(0, nonprofit1.submitAuctionRequest(elevenDays, "a", 
-				"OrgName2", "blah", "blah", "blah"));
+				"OrgName2", "blah", "blah", "blah", calendar));
 		
 		
 	}
 	
 	@Test 
 	public void testSubmitAuctionRequestOnAuctionCountIsAtMax() {
+		
 		testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah");
+				"OrgName1", "blah", "blah", "blah", calendar);
 		Nonprofit nonprofit1 = new Nonprofit("CatsForKids", "lolol", "word123", 
 				"Toys4Kids@email.com", "999-8765");
-		nonprofit1.setCalendar(testNonprofit.getCalendar());
-		nonprofit1.getCalendar().setMaxAuctions(1);
+		calendar.setMaxAuctions(1);
 		assertEquals(1, nonprofit1.submitAuctionRequest(elevenDays, "a", 
-				"OrgName2", "blah", "blah", "blah"));
+				"OrgName2", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionCountIsGreaterThanMax() {
 		testNonprofit.submitAuctionRequest(elevenDays, "blah", 
-				"OrgName1", "blah", "blah", "blah");
+				"OrgName1", "blah", "blah", "blah", calendar);
 		Nonprofit nonprofit1 = new Nonprofit("CatsForKids", "lolol", "word123", 
 				"Toys4Kids@email.com", "999-8765");
 		Nonprofit nonprofit2 = new Nonprofit("change", "change", "word123", 
 				"Toys4Kids@email.com", "999-8765");
-		nonprofit1.setCalendar(testNonprofit.getCalendar());
 		nonprofit1.submitAuctionRequest(today.getAuctionDateXDaysAway(14), "a", 
-				"OrgName2", "blah", "blah", "blah");
-		nonprofit2.setCalendar(nonprofit1.getCalendar());
-		nonprofit2.getCalendar().setMaxAuctions(1);
+				"OrgName2", "blah", "blah", "blah", calendar);
+		calendar.setMaxAuctions(1);
 		assertEquals(1, nonprofit2.submitAuctionRequest(elevenDays, "ab", 
-				"OrgName3", "blah", "blah", "blah"));
+				"OrgName3", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedOneMonthAway() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(31), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 		
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedLessThanOneMonthAway() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(20), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedOneMonthPlusOneDayAway() {
 		assertEquals(6, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(32), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedMoreThanOneMonthAway() {
 		assertEquals(6, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(40), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedOneWeekAway() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(7), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedMoreThanOneweekAway() {
 		assertEquals(0, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(20), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedSixDaysAway() {
 		assertEquals(5, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(6), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedLessThanSixDaysAway() {
 		assertEquals(5, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(3), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedOnTheDateOfSubmittion() {
 		assertEquals(5, testNonprofit.submitAuctionRequest(today, "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
 	public void testSubmitAuctionRequestOnAuctionIsSchedualedBeforeTheDateOfSubmittion() {
 		assertEquals(5, testNonprofit.submitAuctionRequest(today.getAuctionDateXDaysAway(-2), "blah", 
-				"OrgName1", "blah", "blah", "blah"));
+				"OrgName1", "blah", "blah", "blah", calendar));
 	}
 	
 	@Test
