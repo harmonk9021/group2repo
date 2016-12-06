@@ -25,7 +25,6 @@ public class RemoveBidTest {
 		myItem.setStartingBid((float)100.00);
 		testBidder = new Bidder("John", "bidguy", "pass123", "John@email.com", "555-1234");
 		myAuction = new Auction(new AuctionDate().getAuctionDateXDaysAway(11), "Steven");
-//		myAuction.addItem(myItem);
 	}
 	
 	@Test
