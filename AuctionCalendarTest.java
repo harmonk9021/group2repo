@@ -1,8 +1,8 @@
 /**
  * Test cases for AuctionCalendar class.
  * 
- * @author Cody Arnold
- * @version 11/19/16
+ * @author Katie Harmon
+ * @version 12/4/16
  */
 
 
@@ -33,8 +33,8 @@ public class AuctionCalendarTest {
 	public void setup() {
 		testUser = new Nonprofit("theName", "testUsername", "thePassword", "theEmail", "thePhone");
 		today = new AuctionDate();
-		calendar = testUser.getCalendar();
-		
+	//	calendar = testUser.getCalendar();
+		calendar = new AuctionCalendar(new AuctionDate(), "Tests.ser");
 		todayDate = LocalDate.of(today.getYear(), Month.of(today.getMonth()),today.getDay());
 		auction1 = new Auction(today.getAuctionDateXDaysAway(10), "catsforkids", "username1",
 	    		"sarah", "rad", "none");
@@ -76,7 +76,7 @@ public class AuctionCalendarTest {
 		AuctionDate threeDaysBefore = new AuctionDate(threeDaysBeforeDate.getYear(), threeDaysBeforeDate.getMonthValue(), threeDaysBeforeDate.getDayOfMonth(), today.getHour());
 		calendar.createAndAddAuction(threeDaysBefore, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(threeDaysBefore, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(0, calendar.removeAuction(myAuction));
+		assertEquals(0, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ public class AuctionCalendarTest {
 		AuctionDate twoDaysBefore = new AuctionDate(twoDaysBeforeDate.getYear(), twoDaysBeforeDate.getMonthValue(), twoDaysBeforeDate.getDayOfMonth(), today.getHour());
 		calendar.createAndAddAuction(twoDaysBefore, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(twoDaysBefore, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(0, calendar.removeAuction(myAuction));
+		assertEquals(0, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
@@ -94,7 +94,7 @@ public class AuctionCalendarTest {
 		AuctionDate oneDaysBefore = new AuctionDate(oneDaysBeforeDate.getYear(), oneDaysBeforeDate.getMonthValue(), oneDaysBeforeDate.getDayOfMonth(), today.getHour());
 		calendar.createAndAddAuction(oneDaysBefore, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(oneDaysBefore, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(2, calendar.removeAuction(myAuction));
+		assertEquals(2, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
@@ -103,14 +103,14 @@ public class AuctionCalendarTest {
 		AuctionDate oneDaysAfter = new AuctionDate(oneDaysAfterDate.getYear(), oneDaysAfterDate.getMonthValue(), oneDaysAfterDate.getDayOfMonth(), today.getHour());
 		calendar.createAndAddAuction(oneDaysAfter, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(oneDaysAfter, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(2, calendar.removeAuction(myAuction));
+		assertEquals(2, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
 	public void testRemoveAuctionOnRemoveOnAuctionDate(){
 		calendar.createAndAddAuction(today, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(today, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(2, calendar.removeAuction(myAuction));
+		assertEquals(2, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class AuctionCalendarTest {
 		LocalDate threeDaysBeforeDate = todayDate.minusDays(3);
 		AuctionDate threeDaysBefore = new AuctionDate(threeDaysBeforeDate.getYear(), threeDaysBeforeDate.getMonthValue(), threeDaysBeforeDate.getDayOfMonth(), today.getHour());
 		myAuction = new Auction(threeDaysBefore, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(1, calendar.removeAuction(myAuction));
+		assertEquals(1, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
