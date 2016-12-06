@@ -29,48 +29,47 @@ public class RemoveAuctionTest {
 	public void testRemoveAuctionOnRemovingBeforeTwoDaysBeforeAuctionDate() {
 		calendar.createAndAddAuction(today.getAuctionDateXDaysAway(-3), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(today.getAuctionDateXDaysAway(-3), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(0, calendar.removeAuction(myAuction));
+		assertEquals(0, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
 	public void testRemoveAuctionOnRemovingExactlyTwoDaysBeforeAuctionDate(){
 		calendar.createAndAddAuction(today.getAuctionDateXDaysAway(-2), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(today.getAuctionDateXDaysAway(-2), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(0, calendar.removeAuction(myAuction));
+		assertEquals(0, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
 	public void testRemoveAuctionOnRemoveWithinTwoDaysOfAuctionDate(){
 		calendar.createAndAddAuction(today.getAuctionDateXDaysAway(-1), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(today.getAuctionDateXDaysAway(-1), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(2, calendar.removeAuction(myAuction));
+		assertEquals(2, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
 	public void testRemoveAuctionOnRemoveAfterAuctionDate(){
 		calendar.createAndAddAuction(today.getAuctionDateXDaysAway(1), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(today.getAuctionDateXDaysAway(1), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(2, calendar.removeAuction(myAuction));
+		assertEquals(2, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
 	public void testRemoveAuctionOnRemoveOnAuctionDate(){
 		calendar.createAndAddAuction(today, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
 		myAuction = new Auction(today, "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(2, calendar.removeAuction(myAuction));
+		assertEquals(2, calendar.removeAuction("KatiesOrg"));
 	}
 	
 	@Test
 	public void testRemoveAuctionOnAuctionDoesNotExist(){
 		myAuction = new Auction(today.getAuctionDateXDaysAway(-3), "KatiesAuction", "KatiesOrg", "Katie", "lolol", "none brah");
-		assertEquals(1, calendar.removeAuction(myAuction));
+		assertEquals(1, calendar.removeAuction("KatiesOrg"));
 	}
 
 	@Test
     public void testIsTwoOrMoreDaysBeforeOnParamDateIsBefore2Days(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 10, 20, 13);
-    	//assertFalse(date2.isWithin2Days(date1));
     	assertTrue(date1.isTwoOrMoreDaysBefore(date2));	
     }
     
@@ -78,7 +77,6 @@ public class RemoveAuctionTest {
     public void testIsTwoOrMoreDaysBeforeOnParamDateIs2Days(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 11, 19, 12);
-//    	assertFalse(date2.isWithin2Days(date1));
     	assertTrue(date1.isTwoOrMoreDaysBefore(date2));
     }
     
@@ -86,7 +84,6 @@ public class RemoveAuctionTest {
     public void testIsTwoOrMoreDaysBeforeOnParamDateIsWithin2Days(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 11, 21, 11);
-//    	assertTrue(date2.isWithin2Days(date1));
     	assertFalse(date1.isTwoOrMoreDaysBefore(date2));
     }
     
@@ -94,7 +91,6 @@ public class RemoveAuctionTest {
     public void testIsTwoOrMoreDaysBeforeOnParamDateIsAfterDate(){
     	AuctionDate date1 = new AuctionDate(2016, 11, 21, 12);
     	AuctionDate date2 = new AuctionDate(2016, 12, 01, 12);
-//    	assertTrue(date2.isWithin2Days(date1));
     	assertFalse(date1.isTwoOrMoreDaysBefore(date2));
     }
     
@@ -102,14 +98,12 @@ public class RemoveAuctionTest {
     public void testIsTwoOrMoreDaysBeforeOnParamDateIsBefore2DaysSwitchBetweenYears(){
     	AuctionDate date1 = new AuctionDate(2017, 01, 01, 12);
     	AuctionDate date2 = new AuctionDate(2016, 12, 29, 12);
-//    	assertFalse(date2.isWithin2Days(date1));
     	assertTrue(date1.isTwoOrMoreDaysBefore(date2));
     } 
     @Test
     public void testIsTwoOrMoreDaysBeforeOnParamDateIsWithin2DaysSwitchBetweenYears(){
     	AuctionDate date1 = new AuctionDate(2017, 01, 01, 12);
     	AuctionDate date2 = new AuctionDate(2016, 12, 31, 12);
-//    	assertTrue(date2.isWithin2Days(date1));
     	assertFalse(date1.isTwoOrMoreDaysBefore(date2));
     } 
 }
