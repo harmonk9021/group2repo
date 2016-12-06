@@ -204,33 +204,4 @@ public class AuctionTest
 	public void testRemoveBidOnItemDoesNotExist(){
 		assertEquals(3, myAuction.removeBid(myItem, "Steven"));
 	}
-//	@Test
-//	public void testCheckCurrentSameDate() {
-//		Auction myAuction = new Auction(myDate, myName);
-//		Boolean isCurrent = myAuction.checkCurrent(myDate);
-//		
-//		assertFalse(isCurrent);
-//	}
-//	
-//	@Test
-//	public void testCheckCurrentBeforeDate() {
-//		Date testDate = new Date();
-//		testDate.setDate(25);
-//		
-//		Auction myAuction = new Auction(myDate, myName);
-//		Boolean isCurrent = myAuction.checkCurrent(testDate);
-//		
-//		assertTrue(isCurrent);
-//	}
-//	
-//	@Test
-//	public void testCheckCurrentAfterDate() {
-//		Date testDate = new Date();
-//		testDate.setDate(1);
-//		
-//		Auction myAuction = new Auction(myDate, myName);
-//		Boolean isCurrent = myAuction.checkCurrent(testDate);
-//		
-//		assertTrue(isCurrent);
-//	}
 }
